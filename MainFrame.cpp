@@ -13,12 +13,14 @@ MainFrame::~MainFrame()
 void MainFrame::OnExit(wxCommandEvent& event)
 {
     wxUnusedVar(event);
+	
     Close();
 }
 
 void MainFrame::OnAbout(wxCommandEvent& event)
 {
     wxUnusedVar(event);
+	
     wxAboutDialogInfo info;
     info.SetCopyright(_("My MainFrame"));
     info.SetLicence(_("GPL v2 or later"));

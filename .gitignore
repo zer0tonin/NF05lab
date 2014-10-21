@@ -6,3 +6,5 @@ Makefile
 *.dll
 *.o
 *.a
+*.o.d
+*.d
