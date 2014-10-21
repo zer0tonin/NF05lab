@@ -1,3 +1,8 @@
 ExtLibs/*
 Makefile
 .codelite/*
+*.mk
+*.exe
+*.dll
+*.o
+*.a
