@@ -74,7 +74,7 @@
     }, {
      "type": "string",
      "m_label": "Title:",
-     "m_value": "My Frame"
+     "m_value": "NF05Lab"
     }, {
      "type": "virtualFolderPicker",
      "m_label": "Virtual Folder:",
