@@ -2,7 +2,7 @@
 <CodeLite_Workspace Name="NF05Lab" Database="">
   <Project Name="NF05Lab" Path="NF05Lab.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="no">
       <Project Name="NF05Lab" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">

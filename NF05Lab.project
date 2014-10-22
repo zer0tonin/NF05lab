@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="NF05Lab" InternalType="GUI">
   <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
     <Plugin Name="CMakePlugin">
       <![CDATA[[{
   "name": "Debug",
@@ -11,10 +14,16 @@
   "buildType": "",
   "arguments": [],
   "parentProject": ""
+ }, {
+  "name": "Release",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
  }]]]>
-    </Plugin>
-    <Plugin Name="qmake">
-      <![CDATA[00010001N0005Debug000000000000]]>
     </Plugin>
   </Plugins>
   <Description/>
@@ -120,12 +129,49 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="MinGW ( CodeLite-4.8.1 )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O2;-Wall;$(shell wx-config --cflags)" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O2;-Wall" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
+        <IncludePath Value="ExtLibs/wxwidgets/include"/>
+        <IncludePath Value="ExtLibs/wxwidgets/lib/gcc481TDM_dll/mswu"/>
         <Preprocessor Value="NDEBUG"/>
+        <Preprocessor Value="WIN32"/>
+        <Preprocessor Value="_WINDOWS"/>
+        <Preprocessor Value="wxUSE_UNICODE=1"/>
+        <Preprocessor Value="WXUSINGDLL"/>
+        <Preprocessor Value="__WXMSW__"/>
+        <Preprocessor Value="__GNUWIN32__"/>
+        <Preprocessor Value="wxUSE_GUI=1"/>
       </Compiler>
-      <Linker Options="$(shell wx-config --libs);-mwindows" Required="yes"/>
-      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <Linker Options="-mwindows" Required="yes">
+        <LibraryPath Value="ExtLibs/wxwidgets/lib/gcc481TDM_dll"/>
+        <Library Value="wxexpat"/>
+        <Library Value="wxjpeg"/>
+        <Library Value="wxpng"/>
+        <Library Value="wxregexu"/>
+        <Library Value="wxscintilla"/>
+        <Library Value="wxtiff"/>
+        <Library Value="wxzlib"/>
+        <Library Value="wxbase30u_gcc481TDM"/>
+        <Library Value="wxbase30u_net_gcc481TDM"/>
+        <Library Value="wxbase30u_xml_gcc481TDM"/>
+        <Library Value="wxmsw30u_adv_gcc481TDM"/>
+        <Library Value="wxmsw30u_aui_gcc481TDM"/>
+        <Library Value="wxmsw30u_core_gcc481TDM"/>
+        <Library Value="wxmsw30u_gl_gcc481TDM"/>
+        <Library Value="wxmsw30u_html_gcc481TDM"/>
+        <Library Value="wxmsw30u_media_gcc481TDM"/>
+        <Library Value="wxmsw30u_propgrid_gcc481TDM"/>
+        <Library Value="wxmsw30u_ribbon_gcc481TDM"/>
+        <Library Value="wxmsw30u_richtext_gcc481TDM"/>
+        <Library Value="wxmsw30u_stc_gcc481TDM"/>
+        <Library Value="wxmsw30u_webview_gcc481TDM"/>
+        <Library Value="wxmsw30u_xrc_gcc481TDM"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no">
+        <IncludePath Value="."/>
+        <IncludePath Value="ExtLibs/wxwidgets/include"/>
+        <IncludePath Value="ExtLibs/wxwidgets/lib/gcc481TDM_dll/mswu"/>
+      </ResourceCompiler>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
