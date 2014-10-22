@@ -22,6 +22,7 @@
 #include <map>
 #include <wx/menu.h>
 #include <wx/toolbar.h>
+#include <wx/button.h>
 #include <wx/treectrl.h>
 #include <wx/statusbr.h>
 
@@ -32,6 +33,12 @@ protected:
     wxAuiManager* m_auimgr13;
     wxAuiToolBar* m_auibar15;
     wxPanel* m_panel17;
+    wxButton* m_button45;
+    wxButton* m_button47;
+    wxButton* m_button49;
+    wxButton* m_button51;
+    wxButton* m_button53;
+    wxButton* m_button55;
     wxPanel* m_panel23;
     wxTreeCtrl* m_treeCtrl31;
     wxMenuBar* m_menuBar;
@@ -39,9 +46,12 @@ protected:
     wxMenuItem* m_menuItem7;
     wxMenu* m_name8;
     wxMenuItem* m_menuItem9;
+    wxMenu* m_menu39;
+    wxMenuItem* m_menuItem41;
     wxStatusBar* m_statusBar11;
 
 protected:
+    virtual void CalculDeterminant(wxCommandEvent& event) { event.Skip(); }
     virtual void OnExit(wxCommandEvent& event) { event.Skip(); }
     virtual void OnAbout(wxCommandEvent& event) { event.Skip(); }
 

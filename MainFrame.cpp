@@ -1,5 +1,6 @@
 #include "MainFrame.h"
 #include <wx/aboutdlg.h>
+#include <wx/msgdlg.h> 
 
 MainFrame::MainFrame(wxWindow* parent)
     : MainFrameBaseClass(parent)
@@ -27,4 +28,9 @@ void MainFrame::OnAbout(wxCommandEvent& event)
     info.SetLicence(_("GPL v2 or later"));
     info.SetDescription(_("Short description goes here"));
     ::wxAboutBox(info);
+}
+
+void MainFrame::CalculDeterminant(wxCommandEvent& event)
+{
+	wxMessageBox("Calcul du déterminant", "Boite de dialogue");
 }

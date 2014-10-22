@@ -47,6 +47,35 @@ MainFrameBaseClass::MainFrameBaseClass(wxWindow* parent, wxWindowID id, const wx
     
     m_auimgr13->AddPane(m_panel17, wxAuiPaneInfo().Direction(wxAUI_DOCK_CENTER).Layer(0).Row(0).Position(0).BestSize(100,100).MinSize(100,100).MaxSize(100,100).Fixed().CaptionVisible(false).MaximizeButton(false).CloseButton(false).MinimizeButton(false).PinButton(false));
     
+    wxFlexGridSizer* flexGridSizer43 = new wxFlexGridSizer(0, 2, 0, 0);
+    flexGridSizer43->SetFlexibleDirection( wxBOTH );
+    flexGridSizer43->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+    m_panel17->SetSizer(flexGridSizer43);
+    
+    m_button45 = new wxButton(m_panel17, wxID_ANY, _("Calcul du déterminant"), wxDefaultPosition, wxSize(-1,-1), 0);
+    
+    flexGridSizer43->Add(m_button45, 0, wxALL, 5);
+    
+    m_button47 = new wxButton(m_panel17, wxID_ANY, _("Addition"), wxDefaultPosition, wxSize(-1,-1), 0);
+    
+    flexGridSizer43->Add(m_button47, 0, wxALL, 5);
+    
+    m_button49 = new wxButton(m_panel17, wxID_ANY, _("My Button"), wxDefaultPosition, wxSize(-1,-1), 0);
+    
+    flexGridSizer43->Add(m_button49, 0, wxALL, 5);
+    
+    m_button51 = new wxButton(m_panel17, wxID_ANY, _("My Button"), wxDefaultPosition, wxSize(-1,-1), 0);
+    
+    flexGridSizer43->Add(m_button51, 0, wxALL, 5);
+    
+    m_button53 = new wxButton(m_panel17, wxID_ANY, _("My Button"), wxDefaultPosition, wxSize(-1,-1), 0);
+    
+    flexGridSizer43->Add(m_button53, 0, wxALL, 5);
+    
+    m_button55 = new wxButton(m_panel17, wxID_ANY, _("My Button"), wxDefaultPosition, wxSize(-1,-1), 0);
+    
+    flexGridSizer43->Add(m_button55, 0, wxALL, 5);
+    
     m_panel23 = new wxPanel(m_mainPanel, wxID_ANY, wxDefaultPosition, wxSize(-1,-1), wxTAB_TRAVERSAL);
     
     m_auimgr13->AddPane(m_panel23, wxAuiPaneInfo().Caption(_("Historique")).Direction(wxAUI_DOCK_LEFT).Layer(0).Row(0).Position(0).BestSize(200,300).MinSize(200,300).CaptionVisible(true).MaximizeButton(true).CloseButton(true).MinimizeButton(true).PinButton(true));
@@ -61,7 +90,7 @@ MainFrameBaseClass::MainFrameBaseClass(wxWindow* parent, wxWindowID id, const wx
     
     m_treeCtrl31 = new wxTreeCtrl(m_panel23, wxID_ANY, wxDefaultPosition, wxSize(-1,-1), wxTR_DEFAULT_STYLE);
     
-    flexGridSizer29->Add(m_treeCtrl31, 0, wxALL|wxEXPAND, 5);
+    flexGridSizer29->Add(m_treeCtrl31, 0, wxALL|wxEXPAND, 0);
     
     m_menuBar = new wxMenuBar(0);
     this->SetMenuBar(m_menuBar);
@@ -78,6 +107,12 @@ MainFrameBaseClass::MainFrameBaseClass(wxWindow* parent, wxWindowID id, const wx
     m_menuItem9 = new wxMenuItem(m_name8, wxID_ABOUT, _("About..."), wxT(""), wxITEM_NORMAL);
     m_name8->Append(m_menuItem9);
     
+    m_menu39 = new wxMenu();
+    m_menuBar->Append(m_menu39, _("Menu"));
+    
+    m_menuItem41 = new wxMenuItem(m_menu39, wxID_ANY, _("Item5"), wxT(""), wxITEM_NORMAL);
+    m_menu39->Append(m_menuItem41);
+    
     m_statusBar11 = new wxStatusBar(this, wxID_ANY, wxSTB_DEFAULT_STYLE);
     m_statusBar11->SetFieldsCount(1);
     this->SetStatusBar(m_statusBar11);
@@ -88,6 +123,7 @@ MainFrameBaseClass::MainFrameBaseClass(wxWindow* parent, wxWindowID id, const wx
     }
     Centre(wxBOTH);
     // Connect events
+    m_button45->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MainFrameBaseClass::CalculDeterminant), NULL, this);
     this->Connect(m_menuItem7->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrameBaseClass::OnExit), NULL, this);
     this->Connect(m_menuItem9->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrameBaseClass::OnAbout), NULL, this);
     
@@ -95,6 +131,7 @@ MainFrameBaseClass::MainFrameBaseClass(wxWindow* parent, wxWindowID id, const wx
 
 MainFrameBaseClass::~MainFrameBaseClass()
 {
+    m_button45->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MainFrameBaseClass::CalculDeterminant), NULL, this);
     this->Disconnect(m_menuItem7->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrameBaseClass::OnExit), NULL, this);
     this->Disconnect(m_menuItem9->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrameBaseClass::OnAbout), NULL, this);
     

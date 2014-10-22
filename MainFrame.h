@@ -10,5 +10,7 @@ public:
 
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+protected:
+    virtual void CalculDeterminant(wxCommandEvent& event);
 };
 #endif // MAINFRAME_H
