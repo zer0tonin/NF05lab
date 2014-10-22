@@ -4,6 +4,7 @@
 MainFrame::MainFrame(wxWindow* parent)
     : MainFrameBaseClass(parent)
 {
+	m_auibar15->Realize();
 }
 
 MainFrame::~MainFrame()
