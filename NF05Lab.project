@@ -31,16 +31,15 @@
   <VirtualDirectory Name="src">
     <File Name="main.cpp"/>
     <File Name="MainFrame.cpp"/>
-    <File Name="wxcrafter.cpp"/>
-    <File Name="wxcrafter_bitmaps.cpp"/>
+    <File Name="Dialogs.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
-    <File Name="wxcrafter.h"/>
+    <File Name="Dialogs.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
-    <File Name="wxcrafter.wxcp"/>
     <File Name="win_resources.rc"/>
+    <File Name="Dialogs.fbp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

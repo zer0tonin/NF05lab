@@ -3,9 +3,9 @@
 #include <wx/msgdlg.h> 
 
 MainFrame::MainFrame(wxWindow* parent)
-    : MainFrameBaseClass(parent)
+    : RibbonFrameBase(parent)
 {
-	m_auibar15->Realize();
+	m_ribbonBar1->Realize();
 }
 
 MainFrame::~MainFrame()

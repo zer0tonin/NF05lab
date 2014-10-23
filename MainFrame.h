@@ -1,8 +1,8 @@
 #ifndef MAINFRAME_H
 #define MAINFRAME_H
-#include "wxcrafter.h"
+#include "Dialogs.h"
 
-class MainFrame : public MainFrameBaseClass
+class MainFrame : public RibbonFrameBase
 {
 public:
     MainFrame(wxWindow* parent);
