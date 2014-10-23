@@ -5,10 +5,10 @@
     <WorkspaceConfiguration Name="Debug" Selected="no">
       <Project Name="NF05Lab" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="no">
+    <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="NF05Lab" ConfigName="Release"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release Linux" Selected="yes">
+    <WorkspaceConfiguration Name="Release Linux" Selected="no">
       <Project Name="NF05Lab" ConfigName="Release Linux"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
