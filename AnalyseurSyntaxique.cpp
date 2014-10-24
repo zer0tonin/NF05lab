@@ -5,7 +5,7 @@
 namespace parseur
 {
 
-Noeud::Noeud() : m_lexType(Lexeme::INDEFINI), m_type(INDEFINI)
+Noeud::Noeud() : m_lexType(Lexeme::INDEFINI), m_type(INDEFINI), m_donneeNombre(0), m_donneeChaine()
 {
 	
 }
@@ -18,7 +18,7 @@ Noeud::Noeud(const Lexeme &lexeme) : m_lexType(lexeme.type), m_type(INDEFINI), m
 		m_type = CONSTANTE;
 }
 
-Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_type(ROOT)
+Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_lexType(Lexeme::INDEFINI), m_type(ROOT), m_donneeNombre(0), m_donneeChaine()
 {
 	for(int i = 0; i < lexemes.size(); i++)
 	{
@@ -26,7 +26,7 @@ Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_type(ROOT)
 	}
 }
 
-Noeud::Noeud(const std::vector<Noeud*> &enfants) : m_lexType(Lexeme::INDEFINI), m_enfants(enfants)
+Noeud::Noeud(const std::vector<Noeud*> &enfants) : m_lexType(Lexeme::INDEFINI), m_enfants(enfants), m_donneeNombre(0), m_donneeChaine()
 {
 	
 }
@@ -89,82 +89,10 @@ bool Noeud::MettreEnArbre()
 	if(a == m_enfants.size() && (niveauParenthese != 0))
 		return false;
 	
-	//Ensuite, on traite les opérateurs de la priorité la plus basse à la priorité la plus haute
-	
-	// - Addition, soustraction (attention, cas de l'addition/soustraction unaire, par exemple : -1, +2)
-	for(int a = 0; a < m_enfants.size(); a++)
-	{
-		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MOINS)
-		{
-			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
-			//(on traite le précédent uniquement si l'opérateur n'est pas au début,
-			//ce qui impliquera forcément une opération unaire)
-			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
-			//l'opérateur.
-			Noeud *nouveauNoeud = nullptr;
-			if(a > 0 && 
-				(m_enfants[a - 1]->m_type == CONSTANTE || m_enfants[a - 1]->m_type == VARIABLE_MATRICE || m_enfants[a - 1]->m_type == PARENTHESE) &&
-				(m_enfants[a + 1]->m_type == CONSTANTE || m_enfants[a + 1]->m_type == VARIABLE_MATRICE || m_enfants[a + 1]->m_type == PARENTHESE))
-			{
-				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
-				std::vector<Noeud*> listeNoeudPourOperateur;
-				int b = a - 1;
-				while(b > 0)
-				{
-					listeNoeudPourOperateur.push_back(m_enfants[b]);
-					b--;
-				}
-				b = a + 1;
-				while(b < m_enfants.size())
-				{
-					listeNoeudPourOperateur.push_back(m_enfants[b]);
-					b++;
-				}
-				
-				//Création du noeud de l'opérateur
-				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
-				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
-				
-				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
-				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
-				
-				//On ajoute le noeud généré de l'opérateur
-				m_enfants.insert(m_enfants.begin() + a - 1, nouveauNoeud);
-				a--;
-			}
-			else if(a == 0)
-			{
-				//L'opérateur est au début de la liste, donc ce sera un opérateur unaire
-				std::vector<Noeud*> listeNoeudPourOperateur;
-				int b = a + 1;
-				while(b < m_enfants.size())
-				{
-					listeNoeudPourOperateur.push_back(m_enfants[b]);
-					b++;
-				}
-				
-				//Création du noeud de l'opérateur
-				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
-				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
-				
-				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
-				m_enfants.erase(m_enfants.begin() + a, m_enfants.begin() + a + 1);
-				
-				//On ajoute le noeud généré de l'opérateur
-				m_enfants.insert(m_enfants.begin() + a, nouveauNoeud);
-			}
-			else
-			{
-				//L'opérateur est par exemple suivi d'un autre opérateur/parenthèse ou en est précédé
-				//C'est une erreur de syntaxe
-				return false;
-			}
-			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
-		}
-	}
+	//Ensuite, on traite les opérateurs de la priorité la plus haute à la priorité la plus basse
 	
 	// - Multiplication, division
-	/*for(int a = 0; a < m_enfants.size(); a++)
+	for(int a = 0; a < m_enfants.size(); a++)
 	{
 		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MULTIPLIE || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_DIVISE)
 		{
@@ -173,16 +101,12 @@ bool Noeud::MettreEnArbre()
 			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
 			//l'opérateur.
 			Noeud *nouveauNoeud = nullptr;
-			if(a > 0 && 
-				(m_enfants[a - 1]->m_type == CONSTANTE || m_enfants[a - 1]->m_type == VARIABLE_MATRICE || m_enfants[a - 1]->m_type == PARENTHESE) &&
-				(m_enfants[a + 1]->m_type == CONSTANTE || m_enfants[a + 1]->m_type == VARIABLE_MATRICE || m_enfants[a + 1]->m_type == PARENTHESE))
+			if(a > 0)
 			{
 				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
 				std::vector<Noeud*> listeNoeudPourOperateur;
 				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
 				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
-				
-				wxMessageBox(wxString::FromDouble(m_enfants[a - 1]->m_type));
 				
 				//Création du noeud de l'opérateur
 				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
@@ -199,12 +123,64 @@ bool Noeud::MettreEnArbre()
 			{
 				//L'opérateur est par exemple précédé/suivi d'un autre opérateur/parenthèse ou en est précédé
 				//C'est une erreur de syntaxe
-				//return false;
+				return false;
 			}
-			if(nouveauNoeud != nullptr)
 			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
 		}
-	}*/
+	}
+	
+	// - Addition, soustraction (attention, cas de l'addition/soustraction unaire, par exemple : -1, +2)
+	for(int a = 0; a < m_enfants.size(); a++)
+	{
+		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MOINS)
+		{
+			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
+			//(on traite le précédent uniquement si l'opérateur n'est pas au début,
+			//ce qui impliquera forcément une opération unaire)
+			Noeud *nouveauNoeud = nullptr;
+			if(a > 0)
+			{
+				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
+				std::vector<Noeud*> listeNoeudPourOperateur;
+				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
+				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
+				
+				//Création du noeud de l'opérateur
+				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
+				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
+				
+				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
+				
+				//On ajoute le noeud généré de l'opérateur
+				m_enfants.insert(m_enfants.begin() + a - 1, nouveauNoeud);
+				a--;
+			}
+			else if(a == 0)
+			{
+				//L'opérateur est au début de la liste, donc ce sera un opérateur unaire
+				std::vector<Noeud*> listeNoeudPourOperateur;
+				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
+				
+				//Création du noeud de l'opérateur
+				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
+				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
+				
+				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				m_enfants.erase(m_enfants.begin() + a, m_enfants.begin() + a + 2);
+				
+				//On ajoute le noeud généré de l'opérateur
+				m_enfants.insert(m_enfants.begin() + a, nouveauNoeud);
+			}
+			else
+			{
+				//L'opérateur est par exemple suivi d'un autre opérateur/parenthèse ou en est précédé
+				//C'est une erreur de syntaxe
+				return false;
+			}
+			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
+		}
+	}
 		
 	return true;
 }
@@ -218,7 +194,24 @@ wxString Noeud::AfficherContenu(int niveau) const
 		contenu += "---";
 	}
 	
-	contenu += " " + wxString::FromDouble((double)m_type) + " from lexeme " + wxString::FromDouble((double)m_lexType) + " with data=" + wxString::FromDouble(m_donneeNombre) + ";" + m_donneeChaine;
+	contenu += " ";
+	if(m_type == OPERATEUR_PLUS)
+		contenu += "+";
+	else if(m_type == OPERATEUR_MOINS)
+		contenu += "-";
+	else if(m_type == OPERATEUR_MULTIPLIE)
+		contenu += "*";
+	else if(m_type == OPERATEUR_DIVISE)
+		contenu += "/";
+	else if(m_type == PARENTHESE)
+		contenu += "()";
+	else if(m_type == CONSTANTE)
+		contenu += wxString::FromDouble(m_donneeNombre);
+	else if(m_type == VARIABLE_MATRICE)
+		contenu += m_donneeChaine;
+		
+	contenu += " ";
+	
 	for(int a = 0; a < m_enfants.size(); a++)
 	{
 		contenu += "\n" + m_enfants[a]->AfficherContenu(niveau + 1);
