@@ -44,13 +44,13 @@ Matrice MultiplicationMatrice(Matrice M1, Matrice M2)
 
 Matrice DivisionMatrice(Matrice M1, Matrice M2)
 {
-	Matrice Resultat;
+	Matrice Resultat(M1.ObtenirLignes(), M2.ObtenirColonnes());
 	M2 = M2.Inverse();
 	Resultat = MultiplicationMatrice(M1, M2);
 	return Resultat;
 }
 
-float ProduitScalaire(Matrice M1, Matrice M2);
+float ProduitScalaire(Matrice M1, Matrice M2)
 {
 	int i;
 	float Resultat = 0;
@@ -66,7 +66,7 @@ float ProduitScalaire(Matrice M1, Matrice M2);
 
 Matrice MultiplicationMatriceScalaire(Matrice M1, float Scalaire)
 {
-	Matrice Resultat;
+	Matrice Resultat(M1.ObtenirLignes(), M1.ObtenirColonnes());
 	int i, j;
 	for (i=0; i<=M1.ObtenirLignes(); i++)
 	{
@@ -78,7 +78,7 @@ Matrice MultiplicationMatriceScalaire(Matrice M1, float Scalaire)
 	return Resultat;
 }
 
-Matrice DivisionMatriceScalaire(Matrice M1, float Scalaire);
+Matrice DivisionMatriceScalaire(Matrice M1, float Scalaire)
 {
 	return MultiplicationMatriceScalaire(M1, 1/Scalaire);
 }
