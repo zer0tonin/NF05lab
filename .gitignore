@@ -8,3 +8,4 @@ Makefile
 *.a
 *.o.d
 *.d
+NF05Lab.txt
