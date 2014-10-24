@@ -5,7 +5,7 @@
 
 Matrice SommeMatrice(Matrice M1, Matrice M2);
 Matrice MultiplicationMatrice(Matrice M1, Matrice M2);
-Matrice Division(Matrice M1, Matrice M2);
+Matrice DivisionMatrice(Matrice M1, Matrice M2);
 float ProduitScalaire(Matrice M1, Matrice M2);
 
 Matrice MultiplicationMatriceScalaire(Matrice M1, float Scalaire);
