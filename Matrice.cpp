@@ -1,6 +1,6 @@
 #include "Matrice.h"
 #include <limits>
-#include <math>
+#include <math.h>
 
 Matrice::Matrice(int Lignes, int Colonnes): Longueur(Lignes-1), Largeur(Colonnes-1), Contenu(Lignes, std::vector<float>(Colonnes, 0) )
 {
@@ -34,7 +34,7 @@ float Matrice::ObtenirValeur(int Ligne, int Colonne) const
 
 void Matrice::FixerValeur(int Ligne, int Colonne, float Valeur) 
 {
-	if (Matrice::CaseExiste(Ligne,Colonne))
+	if (CaseExiste(Ligne,Colonne))
 	{
 		Contenu[Ligne][Colonne] = Valeur;
 	}
@@ -49,7 +49,7 @@ float Matrice::Determinant() const
 {
 	float resultat = 0;
 	int i, n= 0;
-	if Matrice::Carree()
+	if (Carree())
 	{
 		if(Longueur == 0)
 		{
@@ -59,7 +59,7 @@ float Matrice::Determinant() const
 		{
 			for(i=0; i<=Longueur; i++)
 			{
-				resultat += pow(-1, n)*Contenu[0][i]*Determinant(RetraitColonne(i));
+				resultat += pow(-1, n)*Contenu[0][i]*RetraitColonne(i).Determinant();
 			}
 			return resultat;
 		}
@@ -107,13 +107,15 @@ bool Matrice::CaseExiste(int Ligne, int Colonne) const
 	}
 }
 
-Matrice RetraitColonne(int Colonne) const
+Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i;
+	Matrice Resultat(Longueur, Largeur);
+	Resultat.Contenu = Contenu;
 	for (i=0; i<=Longueur; i++)
 	{
-		Contenu[i].erase (Contenu[i].begin + Colonne);
+		Resultat.Contenu[i].erase (Resultat.Contenu[i].begin() + Colonne);
 	}
-	Contenu.erase (Contenu.begin);
-	return Contenu;
+	Resultat.Contenu.erase (Resultat.Contenu.begin());
+	return Resultat;
 }
