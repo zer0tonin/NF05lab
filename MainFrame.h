@@ -13,8 +13,8 @@ public:
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
 protected:
-    virtual void CalculDeterminant(wxCommandEvent& event);
-	
+
 	RibbonMetroArtProvider m_artProvider;
+	
 };
 #endif // MAINFRAME_H
