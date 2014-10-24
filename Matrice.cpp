@@ -42,6 +42,16 @@ void Matrice::FixerValeur(int Ligne, int Colonne, float Valeur)
 
 Matrice Matrice::Transposee() const
 {
+	Matrice Resultat(Colonnes, Lignes);
+	int i, j;
+	for (i=0; i<=Colonnes; i++)
+	{
+		for (j=0; j<=Lignes; j++)
+		{
+			Resultat.FixerValeur(i, j, Contenu[j][i]);
+		}
+	}
+	return Resultat;
 	
 }
 
@@ -109,13 +119,21 @@ bool Matrice::CaseExiste(int Ligne, int Colonne) const
 
 Matrice Matrice::RetraitColonne(int Colonne) const
 {
-	int i;
-	Matrice Resultat(Lignes, Colonnes);
-	Resultat.Contenu = Contenu;
-	for (i=0; i<=Lignes; i++)
+	int i, j;
+	Matrice Resultat(Lignes-1, Colonnes-1);
+	for (i=1, i<=Lignes; i++)
 	{
-		Resultat.Contenu[i].erase (Resultat.Contenu[i].begin() + Colonne);
+		for (j=0; j<=Colonnes; j++)
+		{
+			if (j < Colonne)
+			{
+				Resultat.FixerValeur(i-1, j);
+			}
+			else if (j > Colonne)
+			{
+				Resultat.FixerValeur(i-1, j-1);
+			}
+		}
 	}
-	Resultat.Contenu.erase (Resultat.Contenu.begin());
 	return Resultat;
 }
