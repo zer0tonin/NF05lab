@@ -2,7 +2,7 @@
 #include <limits>
 #include <math.h>
 
-Matrice::Matrice(int Lignes, int Colonnes): Longueur(Lignes-1), Largeur(Colonnes-1), Contenu(Lignes, std::vector<float>(Colonnes, 0) )
+Matrice::Matrice(int Longueur, int Largeur): Lignes(Longueur-1), Colonnes(Largeur-1), Contenu(Lignes, std::vector<float>(Colonnes, 0) )
 {
 }
 
@@ -10,14 +10,14 @@ Matrice::~Matrice()
 {
 }
 
-int Matrice::ObtenirLongueur() const
+int Matrice::ObtenirLignes() const
 {
-	return Longueur+1;
+	return Lignes;
 }
 
-int Matrice::ObtenirLargeur() const
+int Matrice::ObtenirColonnes() const
 {
-	return Largeur+1;
+	return Colonnes;
 }
 
 float Matrice::ObtenirValeur(int Ligne, int Colonne) const
@@ -51,13 +51,13 @@ float Matrice::Determinant() const
 	int i, n= 0;
 	if (Carree())
 	{
-		if(Longueur == 0)
+		if(Lignes == 0)
 		{
 			return Contenu[0][0];
 		}
 		else
 		{
-			for(i=0; i<=Longueur; i++)
+			for(i=0; i<=Lignes; i++)
 			{
 				resultat += pow(-1, n)*Contenu[0][i]*RetraitColonne(i).Determinant();
 			}
@@ -73,7 +73,7 @@ Matrice Matrice::Inverse() const
 }
 bool Matrice::Carree() const
 {
-	if (Longueur == Largeur)
+	if (Lignes == Colonnes)
 	{
 		return true;
 	}
@@ -97,7 +97,7 @@ bool Matrice::Inversible() const
 
 bool Matrice::CaseExiste(int Ligne, int Colonne) const
 {
-	if (Ligne <= Longueur && Colonne <= Largeur)
+	if (Ligne <= Lignes && Colonne <= Colonnes)
 	{
 		return true;
 	}
@@ -110,9 +110,9 @@ bool Matrice::CaseExiste(int Ligne, int Colonne) const
 Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i;
-	Matrice Resultat(Longueur, Largeur);
+	Matrice Resultat(Lignes, Colonnes);
 	Resultat.Contenu = Contenu;
-	for (i=0; i<=Longueur; i++)
+	for (i=0; i<=Lignes; i++)
 	{
 		Resultat.Contenu[i].erase (Resultat.Contenu[i].begin() + Colonne);
 	}
