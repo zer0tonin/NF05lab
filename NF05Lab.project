@@ -44,6 +44,7 @@
     <File Name="RibbonMetroArtProvider.cpp"/>
     <File Name="AnalyseurLexical.cpp"/>
     <File Name="Matrice.cpp"/>
+    <File Name="AnalyseurSyntaxique.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
@@ -51,6 +52,7 @@
     <File Name="RibbonMetroArtProvider.h"/>
     <File Name="AnalyseurLexical.h"/>
     <File Name="Matrice.h"/>
+    <File Name="AnalyseurSyntaxique.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>

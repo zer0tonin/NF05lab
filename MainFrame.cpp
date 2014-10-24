@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "AnalyseurLexical.h"
+#include "AnalyseurSyntaxique.h"
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true)
 {
@@ -12,7 +13,9 @@ MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(
 	
 	std::cout << "Va parser..." << std::endl;
 	parseur::AnalyseurLexical lex;
-	lex.Parse("(A+B)*3+C/2");
+	parseur::AnalyseurSyntaxique syn;
+	if(syn.CreerArbreSyntaxique(lex.Parse("A+(B+C)+D")))
+		syn.AfficherContenu();
 }
 
 MainFrame::~MainFrame()

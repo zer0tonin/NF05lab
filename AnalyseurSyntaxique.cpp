@@ -1,0 +1,253 @@
+#include "AnalyseurSyntaxique.h"
+
+#include <wx/msgdlg.h>
+
+namespace parseur
+{
+
+Noeud::Noeud() : m_lexType(Lexeme::INDEFINI), m_type(INDEFINI)
+{
+	
+}
+
+Noeud::Noeud(const Lexeme &lexeme) : m_lexType(lexeme.type), m_type(INDEFINI), m_donneeNombre(lexeme.nombre), m_donneeChaine(lexeme.chaine)
+{
+	if(m_lexType == Lexeme::VARIABLE_MATRICE)
+		m_type = VARIABLE_MATRICE;
+	else if(m_lexType == Lexeme::CONSTANTE)
+		m_type = CONSTANTE;
+}
+
+Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_type(ROOT)
+{
+	for(int i = 0; i < lexemes.size(); i++)
+	{
+		m_enfants.push_back(new Noeud(lexemes.at(i)));
+	}
+}
+
+Noeud::Noeud(const std::vector<Noeud*> &enfants) : m_lexType(Lexeme::INDEFINI), m_enfants(enfants)
+{
+	
+}
+
+Noeud::~Noeud()
+{
+	while(m_enfants.size() > 0)
+	{
+		delete m_enfants[m_enfants.size() - 1];
+		m_enfants.pop_back();
+	}
+}	
+
+bool Noeud::MettreEnArbre()
+{
+	//On parcourt le noeud pour trouver les parenthèses de 1er niveau
+	int niveauParenthese = 0;
+	int debutParenthese = 0;
+	std::vector<Noeud*> noeudsDansParenthese;
+	
+	int a;
+	for(a = 0; a < m_enfants.size(); a++)
+	{
+		if(m_enfants[a]->m_lexType == Lexeme::PARENTHESE_FIN)
+			niveauParenthese--;
+		
+		if(niveauParenthese > 0)
+		{
+			noeudsDansParenthese.push_back(m_enfants[a]);
+		}
+		else if(noeudsDansParenthese.size() > 0)
+		{
+			//Cela signifie que l'on vient de finir une parenthèse, donc
+			//on crée un nouveau noeud avec ces lexèmes (il devra lui aussi
+			//les traiter)
+			Noeud *nouveauNoeud = new Noeud(noeudsDansParenthese);
+			nouveauNoeud->m_type = Noeud::PARENTHESE;
+			
+			//On supprime le lexème (noeud) de la parenthèse fermante puis de celle ouvrante
+			//Ainsi que tous les noeuds entre.
+			m_enfants.erase(m_enfants.begin() + debutParenthese, m_enfants.begin() + a + 1);
+			a -= a - debutParenthese;
+			
+			m_enfants.insert(m_enfants.begin() + debutParenthese, nouveauNoeud);
+			
+			if(!nouveauNoeud->MettreEnArbre())
+				return false;
+			
+			noeudsDansParenthese.clear();
+		}
+		
+		if(m_enfants[a]->m_lexType == Lexeme::PARENTHESE_DEBUT)
+		{
+			if(niveauParenthese == 0)
+				debutParenthese = a;
+			niveauParenthese++;
+		}
+	}
+	
+	if(a == m_enfants.size() && (niveauParenthese != 0))
+		return false;
+	
+	//Ensuite, on traite les opérateurs de la priorité la plus basse à la priorité la plus haute
+	
+	// - Addition, soustraction (attention, cas de l'addition/soustraction unaire, par exemple : -1, +2)
+	for(int a = 0; a < m_enfants.size(); a++)
+	{
+		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MOINS)
+		{
+			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
+			//(on traite le précédent uniquement si l'opérateur n'est pas au début,
+			//ce qui impliquera forcément une opération unaire)
+			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
+			//l'opérateur.
+			Noeud *nouveauNoeud = nullptr;
+			if(a > 0 && 
+				(m_enfants[a - 1]->m_type == CONSTANTE || m_enfants[a - 1]->m_type == VARIABLE_MATRICE || m_enfants[a - 1]->m_type == PARENTHESE) &&
+				(m_enfants[a + 1]->m_type == CONSTANTE || m_enfants[a + 1]->m_type == VARIABLE_MATRICE || m_enfants[a + 1]->m_type == PARENTHESE))
+			{
+				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
+				std::vector<Noeud*> listeNoeudPourOperateur;
+				int b = a - 1;
+				while(b > 0)
+				{
+					listeNoeudPourOperateur.push_back(m_enfants[b]);
+					b--;
+				}
+				b = a + 1;
+				while(b < m_enfants.size())
+				{
+					listeNoeudPourOperateur.push_back(m_enfants[b]);
+					b++;
+				}
+				
+				//Création du noeud de l'opérateur
+				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
+				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
+				
+				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
+				
+				//On ajoute le noeud généré de l'opérateur
+				m_enfants.insert(m_enfants.begin() + a - 1, nouveauNoeud);
+				a--;
+			}
+			else if(a == 0)
+			{
+				//L'opérateur est au début de la liste, donc ce sera un opérateur unaire
+				std::vector<Noeud*> listeNoeudPourOperateur;
+				int b = a + 1;
+				while(b < m_enfants.size())
+				{
+					listeNoeudPourOperateur.push_back(m_enfants[b]);
+					b++;
+				}
+				
+				//Création du noeud de l'opérateur
+				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
+				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
+				
+				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				m_enfants.erase(m_enfants.begin() + a, m_enfants.begin() + a + 1);
+				
+				//On ajoute le noeud généré de l'opérateur
+				m_enfants.insert(m_enfants.begin() + a, nouveauNoeud);
+			}
+			else
+			{
+				//L'opérateur est par exemple suivi d'un autre opérateur/parenthèse ou en est précédé
+				//C'est une erreur de syntaxe
+				return false;
+			}
+			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
+		}
+	}
+	
+	// - Multiplication, division
+	/*for(int a = 0; a < m_enfants.size(); a++)
+	{
+		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MULTIPLIE || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_DIVISE)
+		{
+			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
+			//(pas de possibilité d'avoir une opération unaire cette fois)
+			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
+			//l'opérateur.
+			Noeud *nouveauNoeud = nullptr;
+			if(a > 0 && 
+				(m_enfants[a - 1]->m_type == CONSTANTE || m_enfants[a - 1]->m_type == VARIABLE_MATRICE || m_enfants[a - 1]->m_type == PARENTHESE) &&
+				(m_enfants[a + 1]->m_type == CONSTANTE || m_enfants[a + 1]->m_type == VARIABLE_MATRICE || m_enfants[a + 1]->m_type == PARENTHESE))
+			{
+				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
+				std::vector<Noeud*> listeNoeudPourOperateur;
+				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
+				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
+				
+				wxMessageBox(wxString::FromDouble(m_enfants[a - 1]->m_type));
+				
+				//Création du noeud de l'opérateur
+				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
+				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MULTIPLIE ? Noeud::OPERATEUR_MULTIPLIE : Noeud::OPERATEUR_DIVISE);
+				
+				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
+				
+				//On ajoute le noeud généré de l'opérateur
+				m_enfants.insert(m_enfants.begin() + a - 1, nouveauNoeud);
+				a--;
+			}
+			else
+			{
+				//L'opérateur est par exemple précédé/suivi d'un autre opérateur/parenthèse ou en est précédé
+				//C'est une erreur de syntaxe
+				//return false;
+			}
+			if(nouveauNoeud != nullptr)
+			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
+		}
+	}*/
+		
+	return true;
+}
+
+wxString Noeud::AfficherContenu(int niveau) const
+{
+	wxString contenu;
+	
+	for(int a = 0; a < niveau; a++)
+	{
+		contenu += "---";
+	}
+	
+	contenu += " " + wxString::FromDouble((double)m_type) + " from lexeme " + wxString::FromDouble((double)m_lexType) + " with data=" + wxString::FromDouble(m_donneeNombre) + ";" + m_donneeChaine;
+	for(int a = 0; a < m_enfants.size(); a++)
+	{
+		contenu += "\n" + m_enfants[a]->AfficherContenu(niveau + 1);
+	}
+	
+	return contenu;
+}
+	
+AnalyseurSyntaxique::AnalyseurSyntaxique() : m_noeudPrincipal(nullptr)
+{
+	
+}
+
+AnalyseurSyntaxique::~AnalyseurSyntaxique()
+{
+	if(m_noeudPrincipal != nullptr)
+		delete m_noeudPrincipal;
+}
+
+bool AnalyseurSyntaxique::CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme)
+{
+	m_noeudPrincipal = new Noeud(listeLexeme);
+	return m_noeudPrincipal->MettreEnArbre();
+}
+
+void AnalyseurSyntaxique::AfficherContenu()
+{
+	wxMessageBox(m_noeudPrincipal->AfficherContenu());
+}
+
+}
+

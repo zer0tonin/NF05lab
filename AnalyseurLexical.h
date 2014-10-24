@@ -16,6 +16,8 @@ namespace parseur
  */	
 struct Lexeme
 {
+	Lexeme() : type(INDEFINI), chaine(), nombre(0) {};
+	
 	enum LType
 	{
 		CONSTANTE,
@@ -28,6 +30,8 @@ struct Lexeme
 		FONCTION,
 		PARENTHESE_DEBUT,
 		PARENTHESE_FIN,
+		
+		INDEFINI = -1
 	};
 	
 	LType type;
@@ -50,8 +54,13 @@ public:
 	 */
 	std::vector<Lexeme> Parse(std::string expression);
 	
-private:
+	/**
+	 * Retourne vrai si une erreur a eu lieu lors du dernier parsage
+	 */
+	bool Erreur() const {return m_erreur;};
 	
+private:
+	bool m_erreur;
 
 };
 

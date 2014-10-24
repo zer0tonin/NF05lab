@@ -30,6 +30,7 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 		wxRegEx variableRegex("^[A-Z]");
 		wxRegEx operateurRegex("^[\\+\\-\\*\\/=]");
 		wxRegEx parentheseRegex("^[\\(\\)]");
+		wxRegEx fonctionRegex("^[a-z]+\\(");
 		
 		if(constantRegex.Matches(expression))
 		{
@@ -43,7 +44,7 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			nouveauLexeme.nombre = valeurConstante;
 			listeLexeme.push_back(nouveauLexeme);
 			
-			wxMessageBox(wxString("CONSTANTE: ") + constantRegex.GetMatch(expression, 0));
+			//wxMessageBox(wxString("CONSTANTE: ") + constantRegex.GetMatch(expression, 0));
 		}
 		else if(variableRegex.Matches(expression))
 		{
@@ -55,7 +56,7 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			nouveauLexeme.chaine = variableRegex.GetMatch(expression, 0).ToStdString();
 			listeLexeme.push_back(nouveauLexeme);
 			
-			wxMessageBox(wxString("VARIABLE_MATRICE: ") + variableRegex.GetMatch(expression, 0));
+			//wxMessageBox(wxString("VARIABLE_MATRICE: ") + variableRegex.GetMatch(expression, 0));
 		}
 		else if(operateurRegex.Matches(expression))
 		{
@@ -75,7 +76,7 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 				nouveauLexeme.type = Lexeme::OPERATEUR_EGAL;
 			listeLexeme.push_back(nouveauLexeme);
 			
-			wxMessageBox("OPERATEUR: " + operateurRegex.GetMatch(expression, 0));
+			//wxMessageBox("OPERATEUR: " + operateurRegex.GetMatch(expression, 0));
 		}
 		else if(parentheseRegex.Matches(expression))
 		{
@@ -89,7 +90,21 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 				nouveauLexeme.type = Lexeme::PARENTHESE_FIN;
 			listeLexeme.push_back(nouveauLexeme);
 			
-			wxMessageBox("PARENTHESE: " + parentheseRegex.GetMatch(expression, 0));
+			//wxMessageBox("PARENTHESE: " + parentheseRegex.GetMatch(expression, 0));
+		}
+		else if(fonctionRegex.Matches(expression))
+		{
+			//On est sur une fonction (par exemple, determinant, nombre de lignes d'une matrice)
+			fonctionRegex.GetMatch(&debutCorrespondance, &longueurCorrespondance, 0);
+			
+			Lexeme nouveauLexeme;
+			nouveauLexeme.type = Lexeme::FONCTION;
+			//Extraction du nom de la fonction (on doit supprimer la parenthèse)
+			nouveauLexeme.chaine = fonctionRegex.GetMatch(expression, 0).substr(0, fonctionRegex.GetMatch(expression, 0).size() - 1);
+			
+			listeLexeme.push_back(nouveauLexeme);
+			
+			//wxMessageBox("FONCTION: " + wxString(nouveauLexeme.chaine));
 		}
 		else
 		{
@@ -99,6 +114,15 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 		while(expression[debutCorrespondance + longueurCorrespondance] == ' ')
 			longueurCorrespondance++;
 		expression = expression.substr(debutCorrespondance + longueurCorrespondance);
+	}
+	
+	if(expression.size() != 0)
+	{
+		m_erreur = true;
+	}
+	else
+	{
+		m_erreur = false;
 	}
 	
 	return listeLexeme;
