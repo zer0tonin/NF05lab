@@ -11,7 +11,7 @@ Matrice SommeMatrice(Matrice M1, Matrice M2)
 		{
 			for (j=0; j<=M1.ObtenirColonnes(); j++)
 			{
-				Resultat.FixerValeur(i, j, M1.Contenu[i][j] + M1.Contenu[i][j]);
+				Resultat.FixerValeur(i, j, M1.ObtenirValeur(i, j) + M2.ObtenirValeur(i, j));
 			}
 		}
 		return Resultat;
@@ -20,7 +20,7 @@ Matrice SommeMatrice(Matrice M1, Matrice M2)
 
 Matrice MultiplicationMatrice(Matrice M1, Matrice M2)
 {
-	int i, j;
+	int i, j, k;
 	float Valeur;
 	Matrice Resultat(M1.ObtenirLignes(), M2.ObtenirColonnes());
 	
@@ -28,12 +28,16 @@ Matrice MultiplicationMatrice(Matrice M1, Matrice M2)
 	{
 		for (i=0; i<=M1.ObtenirLignes(); i++)
 		{
-			Valeur = 0;
-			for (j=0; j<=M1.ObtenirColonnes(), j++)
+			for (j=0; j<=M2.ObtenirColonnes(); j++)
 			{
+				Valeur = 0;
+				for(k=0; k<=M1.ObtenirColonnes(); k++)
+				{
+					Valeur += M1.ObtenirValeur(i, k) * M2.ObtenirValeur(k, j);
+				}
+				Resultat.FixerValeur(i, j, Valeur);
 			}
 		}
 		return Resultat;
 	}
-	
 }

@@ -9,10 +9,10 @@ public:
 	Matrice(int Lignes, int Colonnes); //Le contructeur de la classe matrice, qui prend en argument le nombre de lignes et de colonnes
 	~Matrice(); //Le destructeur
 	
-	int Matrice::ObtenirLignes() const;
-	int Matrice::ObtenirColonnes() const;
-	float Matrice::ObtenirValeur(int Ligne, int Colonne) const;
-	void Matrice::FixerValeur(int Ligne, int Colonne, float Valeur);
+	int ObtenirLignes() const;
+	int ObtenirColonnes() const;
+	float ObtenirValeur(int Ligne, int Colonne) const;
+	void FixerValeur(int Ligne, int Colonne, float Valeur);
 	Matrice Transposee() const; //La méthode permettant d'obtenir la transposée
 	float Determinant() const; //La méthode permettant d'obtenir le déterminant
 	Matrice Inverse() const; //La méthode permettant d'obtenir la matrice inverse (si la matrice est inversible)
