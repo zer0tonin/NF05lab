@@ -42,11 +42,13 @@
     <File Name="MainFrame.cpp"/>
     <File Name="Dialogs.cpp"/>
     <File Name="RibbonMetroArtProvider.cpp"/>
+    <File Name="Matrice.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
     <File Name="Dialogs.h"/>
     <File Name="RibbonMetroArtProvider.h"/>
+    <File Name="Matrice.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>
