@@ -45,6 +45,7 @@
     <File Name="AnalyseurLexical.cpp"/>
     <File Name="Matrice.cpp"/>
     <File Name="AnalyseurSyntaxique.cpp"/>
+    <File Name="Calculs.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
@@ -53,6 +54,7 @@
     <File Name="AnalyseurLexical.h"/>
     <File Name="Matrice.h"/>
     <File Name="AnalyseurSyntaxique.h"/>
+    <File Name="Calculs.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>
