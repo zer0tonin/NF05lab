@@ -2,10 +2,17 @@
 #include <wx/aboutdlg.h>
 #include <wx/msgdlg.h> 
 
+#include <iostream>
+#include "AnalyseurLexical.h"
+
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true)
 {
 	m_ribbonBar1->SetArtProvider(&m_artProvider);
 	m_ribbonBar1->Realize();
+	
+	std::cout << "Va parser..." << std::endl;
+	parseur::AnalyseurLexical lex;
+	lex.Parse("(A+B)*3+C/2");
 }
 
 MainFrame::~MainFrame()

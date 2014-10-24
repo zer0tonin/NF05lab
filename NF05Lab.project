@@ -42,11 +42,13 @@
     <File Name="MainFrame.cpp"/>
     <File Name="Dialogs.cpp"/>
     <File Name="RibbonMetroArtProvider.cpp"/>
+    <File Name="AnalyseurLexical.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
     <File Name="Dialogs.h"/>
     <File Name="RibbonMetroArtProvider.h"/>
+    <File Name="AnalyseurLexical.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>
@@ -139,7 +141,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="MinGW ( CodeLite-4.8.1 )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O2;-Wall" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O2;-std=c++11;-Wall" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="ExtLibs/wxwidgets/include"/>
         <IncludePath Value="ExtLibs/wxwidgets/lib/gcc481TDM_dll/mswu"/>
@@ -182,7 +184,7 @@
         <IncludePath Value="ExtLibs/wxwidgets/include"/>
         <IncludePath Value="ExtLibs/wxwidgets/lib/gcc481TDM_dll/mswu"/>
       </ResourceCompiler>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>

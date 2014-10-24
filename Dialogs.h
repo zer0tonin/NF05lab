@@ -54,6 +54,7 @@ class RibbonFrameBase : public wxFrame
 		wxTreeCtrl* m_treeCtrl3;
 		wxPanel* m_panneauVariables;
 		wxTreeCtrl* m_treeCtrl2;
+		wxTreeCtrl* m_treeCtrl4;
 	
 	public:
 		

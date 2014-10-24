@@ -73,6 +73,9 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_panneauVariables->SetSizer( fgSizer1 );
 	m_panneauVariables->Layout();
 	fgSizer1->Fit( m_panneauVariables );
+	m_treeCtrl4 = new wxTreeCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE );
+	m_mgr.AddPane( m_treeCtrl4, wxAuiPaneInfo() .Right() .PinButton( true ).Dock().Resizable().FloatingSize( wxDefaultSize ).DockFixed( false ).BestSize( wxSize( 200,-1 ) ).MinSize( wxSize( 200,-1 ) ) );
+	
 	
 	m_mgr.Update();
 	this->Centre( wxBOTH );
