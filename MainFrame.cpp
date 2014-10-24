@@ -3,8 +3,9 @@
 #include <wx/msgdlg.h> 
 
 MainFrame::MainFrame(wxWindow* parent)
-    : RibbonFrameBase(parent)
+    : RibbonFrameBase(parent), m_artProvider(true)
 {
+	m_ribbonBar1->SetArtProvider(&m_artProvider);
 	m_ribbonBar1->Realize();
 }
 

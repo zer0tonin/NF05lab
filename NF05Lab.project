@@ -41,10 +41,12 @@
     <File Name="main.cpp"/>
     <File Name="MainFrame.cpp"/>
     <File Name="Dialogs.cpp"/>
+    <File Name="RibbonMetroArtProvider.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
     <File Name="Dialogs.h"/>
+    <File Name="RibbonMetroArtProvider.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>

@@ -2,6 +2,8 @@
 #define MAINFRAME_H
 #include "Dialogs.h"
 
+#include "RibbonMetroArtProvider.h"
+
 class MainFrame : public RibbonFrameBase
 {
 public:
@@ -12,5 +14,7 @@ public:
     void OnAbout(wxCommandEvent& event);
 protected:
     virtual void CalculDeterminant(wxCommandEvent& event);
+	
+	RibbonMetroArtProvider m_artProvider;
 };
 #endif // MAINFRAME_H
