@@ -18,8 +18,10 @@ public:
 	Matrice Inverse() const; //La méthode permettant d'obtenir la matrice inverse (si la matrice est inversible)
 	
 private:
+	bool Carree() const;
 	bool CaseExiste(int Ligne, int Colonne) const; //La méthode permettant de vérifier que certaines coordonnées ne sont pas hors de la matrice
 	bool Inversible() const; //La méthode permettant de vérifier que la matrice est inversible
+	Matrice RetraitColonne(int Colonne) const;
 	int Longueur; //Le nombre de lignes
 	int Largeur; //Le nombre de colonnes
 	std::vector < std::vector <float> > Contenu; //Le contenu de la matrice
