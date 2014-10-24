@@ -1,1 +1,1 @@
-./Release/main.cpp.o ./Release/MainFrame.cpp.o ./Release/Dialogs.cpp.o ./Release/RibbonMetroArtProvider.cpp.o ./Release/win_resources.rc.o   
+./Release/main.cpp.o ./Release/MainFrame.cpp.o ./Release/Dialogs.cpp.o ./Release/RibbonMetroArtProvider.cpp.o ./Release/Matrice.cpp.o ./Release/win_resources.rc.o   
