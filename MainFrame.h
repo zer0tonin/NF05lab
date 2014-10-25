@@ -12,6 +12,8 @@ public:
 
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+	
+	virtual void SurValidationCommande(wxCommandEvent& event);
 protected:
 
 	RibbonMetroArtProvider m_artProvider;

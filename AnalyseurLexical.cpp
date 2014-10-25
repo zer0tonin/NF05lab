@@ -19,7 +19,6 @@ AnalyseurLexical::~AnalyseurLexical()
 std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 {
 	std::vector<Lexeme> listeLexeme;
-	wxMessageBox(expression);
 	
 	while(expression.size() > 0)
 	{

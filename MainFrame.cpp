@@ -10,12 +10,6 @@ MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(
 {
 	m_ribbonBar1->SetArtProvider(&m_artProvider);
 	m_ribbonBar1->Realize();
-	
-	std::cout << "Va parser..." << std::endl;
-	parseur::AnalyseurLexical lex;
-	parseur::AnalyseurSyntaxique syn;
-	if(syn.CreerArbreSyntaxique(lex.Parse("((A+E)*3+B/2)*C+D")))
-		syn.AfficherContenu();
 }
 
 MainFrame::~MainFrame()
@@ -38,4 +32,19 @@ void MainFrame::OnAbout(wxCommandEvent& event)
     info.SetLicence(_("GPL v2 or later"));
     info.SetDescription(_("Short description goes here"));
     ::wxAboutBox(info);
+}
+
+void MainFrame::SurValidationCommande(wxCommandEvent& event)
+{
+	wxString commande = m_zoneCommande->GetValue();
+	m_arbreSyntaxe->DeleteAllItems();
+	
+	parseur::AnalyseurLexical lex;
+	parseur::AnalyseurSyntaxique syn;
+	if(syn.CreerArbreSyntaxique(lex.Parse(commande.ToStdString())))
+		syn.AfficherContenu(m_arbreSyntaxe);
+		
+	m_arbreSyntaxe->ExpandAll();
+		
+	m_zoneCommande->SetValue("");
 }

@@ -5,6 +5,7 @@
 
 #include "AnalyseurLexical.h"
 #include <wx/msgdlg.h>
+#include <wx/treectrl.h>
 
 namespace parseur
 {
@@ -26,7 +27,7 @@ public:
 	
 	bool MettreEnArbre();
 	
-	wxString AfficherContenu(int niveau = 0) const;
+	void AfficherContenu(wxTreeCtrl *arbre, wxTreeItemId parent) const;
 	
 protected:
 	std::vector<Noeud*> m_enfants;
@@ -49,7 +50,7 @@ public:
 	 * la priorité des opérations et les parenthèses.
 	 */
 	bool CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme);
-	void AfficherContenu();
+	void AfficherContenu(wxTreeCtrl *arbre);
 
 private:
 	Noeud *m_noeudPrincipal;

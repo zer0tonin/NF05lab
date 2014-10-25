@@ -24,9 +24,10 @@
 #include <wx/ribbon/control.h>
 #include <wx/ribbon/art.h>
 #include <wx/ribbon/bar.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/treectrl.h>
-#include <wx/sizer.h>
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
 
@@ -50,11 +51,17 @@ class RibbonFrameBase : public wxFrame
 		wxRibbonButtonBar* m_ribbonButtonBar2;
 		wxRibbonPage* m_ribbonPage4;
 		wxPanel* m_panneauPrincipal;
+		wxTextCtrl* m_textCtrl1;
+		wxTextCtrl* m_zoneCommande;
 		wxPanel* m_panneauHistorique;
 		wxTreeCtrl* m_treeCtrl3;
 		wxPanel* m_panneauVariables;
 		wxTreeCtrl* m_treeCtrl2;
-		wxTreeCtrl* m_treeCtrl4;
+		wxTreeCtrl* m_arbreSyntaxe;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		

@@ -174,16 +174,10 @@ bool Noeud::MettreEnArbre()
 	return true;
 }
 
-wxString Noeud::AfficherContenu(int niveau) const
+void Noeud::AfficherContenu(wxTreeCtrl *arbre, wxTreeItemId parent) const
 {
 	wxString contenu;
 	
-	for(int a = 0; a < niveau; a++)
-	{
-		contenu += "---";
-	}
-	
-	contenu += " ";
 	if(m_type == Lexeme::OPERATEUR_PLUS)
 		contenu += "+";
 	else if(m_type == Lexeme::OPERATEUR_MOINS)
@@ -201,14 +195,12 @@ wxString Noeud::AfficherContenu(int niveau) const
 	else
 		contenu += "?";
 		
-	contenu += " ";
+	wxTreeItemId noeudGUI = arbre->AppendItem(parent, contenu);
 	
 	for(int a = 0; a < m_enfants.size(); a++)
 	{
-		contenu += "\n" + m_enfants[a]->AfficherContenu(niveau + 1);
+		m_enfants[a]->AfficherContenu(arbre, noeudGUI);
 	}
-	
-	return contenu;
 }
 	
 AnalyseurSyntaxique::AnalyseurSyntaxique() : m_noeudPrincipal(nullptr)
@@ -228,9 +220,9 @@ bool AnalyseurSyntaxique::CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme)
 	return m_noeudPrincipal->MettreEnArbre();
 }
 
-void AnalyseurSyntaxique::AfficherContenu()
+void AnalyseurSyntaxique::AfficherContenu(wxTreeCtrl *arbre)
 {
-	wxMessageBox(m_noeudPrincipal->AfficherContenu());
+	m_noeudPrincipal->AfficherContenu(arbre, arbre->AddRoot("Arbre de syntaxe"));
 }
 
 }
