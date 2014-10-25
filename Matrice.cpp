@@ -121,17 +121,17 @@ Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i, j;
 	Matrice Resultat(Lignes-1, Colonnes-1);
-	for (i=1, i<=Lignes; i++)
+	for (i=1; i<=Lignes; i++)
 	{
 		for (j=0; j<=Colonnes; j++)
 		{
 			if (j < Colonne)
 			{
-				Resultat.FixerValeur(i-1, j);
+				Resultat.FixerValeur(i-1, j, Contenu[i][j]);
 			}
 			else if (j > Colonne)
 			{
-				Resultat.FixerValeur(i-1, j-1);
+				Resultat.FixerValeur(i-1, j-1, Contenu[i][j]);
 			}
 		}
 	}
