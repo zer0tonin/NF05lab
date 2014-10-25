@@ -222,7 +222,7 @@ bool AnalyseurSyntaxique::CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme)
 
 void AnalyseurSyntaxique::AfficherContenu(wxTreeCtrl *arbre)
 {
-	m_noeudPrincipal->AfficherContenu(arbre, arbre->AddRoot("Arbre de syntaxe"));
+	m_noeudPrincipal->AfficherContenu(arbre, arbre->AddRoot(L"Arbre de syntaxe généré"));
 }
 
 }

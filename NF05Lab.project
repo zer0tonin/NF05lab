@@ -159,6 +159,8 @@
         <Preprocessor Value="__WXMSW__"/>
         <Preprocessor Value="__GNUWIN32__"/>
         <Preprocessor Value="wxUSE_GUI=1"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="_UNICODE"/>
       </Compiler>
       <Linker Options="-mwindows" Required="yes">
         <LibraryPath Value="ExtLibs/wxwidgets/lib/gcc481TDM_dll"/>
