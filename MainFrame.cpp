@@ -14,7 +14,7 @@ MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(
 	std::cout << "Va parser..." << std::endl;
 	parseur::AnalyseurLexical lex;
 	parseur::AnalyseurSyntaxique syn;
-	if(syn.CreerArbreSyntaxique(lex.Parse("A   *(B+C) + (C/3*6)")))
+	if(syn.CreerArbreSyntaxique(lex.Parse("(A+B)*(-C)/2")))
 		syn.AfficherContenu();
 }
 

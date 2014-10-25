@@ -28,7 +28,7 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 		
 		wxRegEx constantRegex("^[0-9.]+");
 		wxRegEx variableRegex("^[A-Z]");
-		wxRegEx operateurRegex("^[\\+\\-\\*\\/=]");
+		wxRegEx operateurRegex("^[\\+-\\*\\/=]");
 		wxRegEx parentheseRegex("^[\\(\\)]");
 		wxRegEx fonctionRegex("^[a-z]+\\(");
 		
