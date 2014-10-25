@@ -33,6 +33,8 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
+#define BOUTON_AFFICHAGE_HISTORIQUE 1000
+#define BOUTON_AFFICHAGE_VARIABLES 1001
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -45,11 +47,16 @@ class RibbonFrameBase : public wxFrame
 		wxRibbonBar* m_ribbonBar1;
 		wxRibbonPage* m_ribbonPage1;
 		wxRibbonPage* m_ribbonPage2;
+		wxRibbonPanel* m_ribbonPanel6;
+		wxRibbonButtonBar* m_barreBoutonsAffichage;
 		wxRibbonPage* m_ribbonPage5;
+		wxRibbonPanel* m_ribbonPanel3;
+		wxRibbonButtonBar* m_ribbonButtonBar3;
 		wxRibbonPage* m_ribbonPage3;
 		wxRibbonPanel* m_ribbonPanel2;
 		wxRibbonButtonBar* m_ribbonButtonBar2;
-		wxRibbonPage* m_ribbonPage4;
+		wxRibbonPanel* m_ribbonPanel21;
+		wxRibbonButtonBar* m_ribbonButtonBar21;
 		wxPanel* m_panneauPrincipal;
 		wxTextCtrl* m_textCtrl1;
 		wxTextCtrl* m_zoneCommande;
@@ -60,6 +67,8 @@ class RibbonFrameBase : public wxFrame
 		wxTreeCtrl* m_arbreSyntaxe;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }
 		
 	
