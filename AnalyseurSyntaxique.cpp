@@ -125,7 +125,7 @@ bool Noeud::MettreEnArbre()
 				//C'est une erreur de syntaxe
 				return false;
 			}
-			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
+			//nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
 		}
 	}
 	
@@ -178,7 +178,7 @@ bool Noeud::MettreEnArbre()
 				//C'est une erreur de syntaxe
 				return false;
 			}
-			nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
+			//nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
 		}
 	}
 		
