@@ -12,23 +12,6 @@ namespace parseur
 class Noeud
 {
 public:
-
-	enum NType
-	{
-		ROOT,
-		CONSTANTE,
-		VARIABLE_MATRICE,
-		OPERATEUR_PLUS,
-		OPERATEUR_MOINS,
-		OPERATEUR_MULTIPLIE,
-		OPERATEUR_DIVISE,
-		OPERATEUR_EGAL,
-		FONCTION,
-		PARENTHESE,
-		
-		INDEFINI = -1
-	};
-
 	Noeud();
 	Noeud(const Lexeme &lexeme);
 	Noeud(const std::vector<Lexeme> &lexemes);
@@ -39,7 +22,7 @@ public:
 	Noeud& Enfant(int index) {return *(m_enfants[index]);};
 	const Noeud& Enfant(int index) const {return *(m_enfants.at(index));};
 	
-	NType Type() const {return m_type;}
+	Lexeme::LType Type() const {return m_type;}
 	
 	bool MettreEnArbre();
 	
@@ -47,10 +30,11 @@ public:
 	
 protected:
 	std::vector<Noeud*> m_enfants;
-	NType m_type;
-	Lexeme::LType m_lexType;
+	Lexeme::LType m_type;
+	
 	std::string m_donneeChaine;
 	float m_donneeNombre;
+	bool m_donneeBooleen;
 };
 
 class AnalyseurSyntaxique

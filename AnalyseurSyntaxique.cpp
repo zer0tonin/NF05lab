@@ -5,20 +5,17 @@
 namespace parseur
 {
 
-Noeud::Noeud() : m_lexType(Lexeme::INDEFINI), m_type(INDEFINI), m_donneeNombre(0), m_donneeChaine()
+Noeud::Noeud() : m_type(Lexeme::INDEFINI), m_donneeNombre(0), m_donneeChaine(), m_donneeBooleen(false)
 {
 	
 }
 
-Noeud::Noeud(const Lexeme &lexeme) : m_lexType(lexeme.type), m_type(INDEFINI), m_donneeNombre(lexeme.nombre), m_donneeChaine(lexeme.chaine)
+Noeud::Noeud(const Lexeme &lexeme) : m_type(lexeme.type), m_donneeNombre(lexeme.nombre), m_donneeChaine(lexeme.chaine), m_donneeBooleen(lexeme.booleen)
 {
-	if(m_lexType == Lexeme::VARIABLE_MATRICE)
-		m_type = VARIABLE_MATRICE;
-	else if(m_lexType == Lexeme::CONSTANTE)
-		m_type = CONSTANTE;
+
 }
 
-Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_lexType(Lexeme::INDEFINI), m_type(ROOT), m_donneeNombre(0), m_donneeChaine()
+Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_type(Lexeme::INDEFINI), m_donneeNombre(0), m_donneeChaine(), m_donneeBooleen(false)
 {
 	for(int i = 0; i < lexemes.size(); i++)
 	{
@@ -26,7 +23,7 @@ Noeud::Noeud(const std::vector<Lexeme> &lexemes) : m_lexType(Lexeme::INDEFINI), 
 	}
 }
 
-Noeud::Noeud(const std::vector<Noeud*> &enfants) : m_lexType(Lexeme::INDEFINI), m_enfants(enfants), m_donneeNombre(0), m_donneeChaine()
+Noeud::Noeud(const std::vector<Noeud*> &enfants) : m_type(Lexeme::INDEFINI), m_enfants(enfants), m_donneeNombre(0), m_donneeChaine(), m_donneeBooleen(false)
 {
 	
 }
@@ -50,7 +47,7 @@ bool Noeud::MettreEnArbre()
 	int a;
 	for(a = 0; a < m_enfants.size(); a++)
 	{
-		if(m_enfants[a]->m_lexType == Lexeme::PARENTHESE_FIN)
+		if(m_enfants[a]->m_type == Lexeme::PARENTHESE && !m_enfants[a]->m_donneeBooleen)
 			niveauParenthese--;
 		
 		if(niveauParenthese > 0)
@@ -63,7 +60,7 @@ bool Noeud::MettreEnArbre()
 			//on crée un nouveau noeud avec ces lexèmes (il devra lui aussi
 			//les traiter)
 			Noeud *nouveauNoeud = new Noeud(noeudsDansParenthese);
-			nouveauNoeud->m_type = Noeud::PARENTHESE;
+			nouveauNoeud->m_type = Lexeme::PARENTHESE;
 			
 			//On supprime le lexème (noeud) de la parenthèse fermante puis de celle ouvrante
 			//Ainsi que tous les noeuds entre.
@@ -78,7 +75,7 @@ bool Noeud::MettreEnArbre()
 			noeudsDansParenthese.clear();
 		}
 		
-		if(m_enfants[a]->m_lexType == Lexeme::PARENTHESE_DEBUT)
+		if(m_enfants[a]->m_type == Lexeme::PARENTHESE && m_enfants[a]->m_donneeBooleen)
 		{
 			if(niveauParenthese == 0)
 				debutParenthese = a;
@@ -94,13 +91,13 @@ bool Noeud::MettreEnArbre()
 	// - Multiplication, division
 	for(int a = 0; a < m_enfants.size(); a++)
 	{
-		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MULTIPLIE || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_DIVISE)
+		if(m_enfants[a]->m_type == Lexeme::OPERATEUR_MULTIPLIE || m_enfants[a]->m_type == Lexeme::OPERATEUR_DIVISE)
 		{
 			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
 			//(pas de possibilité d'avoir une opération unaire cette fois)
 			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
 			//l'opérateur.
-			Noeud *nouveauNoeud = nullptr;
+			Noeud *noeudOperateur = m_enfants[a];
 			if(a > 0)
 			{
 				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
@@ -108,15 +105,13 @@ bool Noeud::MettreEnArbre()
 				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
 				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
 				
-				//Création du noeud de l'opérateur
-				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
-				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MULTIPLIE ? Noeud::OPERATEUR_MULTIPLIE : Noeud::OPERATEUR_DIVISE);
+				noeudOperateur->m_enfants = listeNoeudPourOperateur;
 				
 				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
 				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur
-				m_enfants.insert(m_enfants.begin() + a - 1, nouveauNoeud);
+				m_enfants.insert(m_enfants.begin() + a - 1, noeudOperateur);
 				a--;
 			}
 			else
@@ -125,19 +120,18 @@ bool Noeud::MettreEnArbre()
 				//C'est une erreur de syntaxe
 				return false;
 			}
-			//nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
 		}
 	}
 	
 	// - Addition, soustraction (attention, cas de l'addition/soustraction unaire, par exemple : -1, +2)
 	for(int a = 0; a < m_enfants.size(); a++)
 	{
-		if(m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS || m_enfants[a]->m_lexType == Lexeme::OPERATEUR_MOINS)
+		if(m_enfants[a]->m_type == Lexeme::OPERATEUR_PLUS || m_enfants[a]->m_type == Lexeme::OPERATEUR_MOINS)
 		{
 			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
 			//(on traite le précédent uniquement si l'opérateur n'est pas au début,
 			//ce qui impliquera forcément une opération unaire)
-			Noeud *nouveauNoeud = nullptr;
+			Noeud *noeudOperateur = m_enfants[a];
 			if(a > 0)
 			{
 				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
@@ -145,15 +139,13 @@ bool Noeud::MettreEnArbre()
 				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
 				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
 				
-				//Création du noeud de l'opérateur
-				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
-				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
+				noeudOperateur->m_enfants = listeNoeudPourOperateur;
 				
 				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
 				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur
-				m_enfants.insert(m_enfants.begin() + a - 1, nouveauNoeud);
+				m_enfants.insert(m_enfants.begin() + a - 1, noeudOperateur);
 				a--;
 			}
 			else if(a == 0)
@@ -162,15 +154,13 @@ bool Noeud::MettreEnArbre()
 				std::vector<Noeud*> listeNoeudPourOperateur;
 				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
 				
-				//Création du noeud de l'opérateur
-				nouveauNoeud = new Noeud(listeNoeudPourOperateur);
-				nouveauNoeud->m_type = (m_enfants[a]->m_lexType == Lexeme::OPERATEUR_PLUS ? Noeud::OPERATEUR_PLUS : Noeud::OPERATEUR_MOINS);
+				noeudOperateur->m_enfants = listeNoeudPourOperateur;
 				
 				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
 				m_enfants.erase(m_enfants.begin() + a, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur
-				m_enfants.insert(m_enfants.begin() + a, nouveauNoeud);
+				m_enfants.insert(m_enfants.begin() + a, noeudOperateur);
 			}
 			else
 			{
@@ -178,7 +168,6 @@ bool Noeud::MettreEnArbre()
 				//C'est une erreur de syntaxe
 				return false;
 			}
-			//nouveauNoeud->MettreEnArbre(); //On applique la même opération au noeud qui vient d'être créé (recursivité)
 		}
 	}
 		
@@ -195,20 +184,22 @@ wxString Noeud::AfficherContenu(int niveau) const
 	}
 	
 	contenu += " ";
-	if(m_type == OPERATEUR_PLUS)
+	if(m_type == Lexeme::OPERATEUR_PLUS)
 		contenu += "+";
-	else if(m_type == OPERATEUR_MOINS)
+	else if(m_type == Lexeme::OPERATEUR_MOINS)
 		contenu += "-";
-	else if(m_type == OPERATEUR_MULTIPLIE)
+	else if(m_type == Lexeme::OPERATEUR_MULTIPLIE)
 		contenu += "*";
-	else if(m_type == OPERATEUR_DIVISE)
+	else if(m_type == Lexeme::OPERATEUR_DIVISE)
 		contenu += "/";
-	else if(m_type == PARENTHESE)
+	else if(m_type == Lexeme::PARENTHESE)
 		contenu += "()";
-	else if(m_type == CONSTANTE)
+	else if(m_type == Lexeme::CONSTANTE)
 		contenu += wxString::FromDouble(m_donneeNombre);
-	else if(m_type == VARIABLE_MATRICE)
+	else if(m_type == Lexeme::VARIABLE_MATRICE)
 		contenu += m_donneeChaine;
+	else
+		contenu += "?";
 		
 	contenu += " ";
 	

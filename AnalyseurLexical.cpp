@@ -43,8 +43,6 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			constantRegex.GetMatch(expression, 0).ToDouble(&valeurConstante);
 			nouveauLexeme.nombre = valeurConstante;
 			listeLexeme.push_back(nouveauLexeme);
-			
-			//wxMessageBox(wxString("CONSTANTE: ") + constantRegex.GetMatch(expression, 0));
 		}
 		else if(variableRegex.Matches(expression))
 		{
@@ -55,8 +53,6 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			nouveauLexeme.type = Lexeme::VARIABLE_MATRICE;
 			nouveauLexeme.chaine = variableRegex.GetMatch(expression, 0).ToStdString();
 			listeLexeme.push_back(nouveauLexeme);
-			
-			//wxMessageBox(wxString("VARIABLE_MATRICE: ") + variableRegex.GetMatch(expression, 0));
 		}
 		else if(operateurRegex.Matches(expression))
 		{
@@ -75,8 +71,6 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			else if(operateurRegex.GetMatch(expression, 0) == "=")
 				nouveauLexeme.type = Lexeme::OPERATEUR_EGAL;
 			listeLexeme.push_back(nouveauLexeme);
-			
-			//wxMessageBox("OPERATEUR: " + operateurRegex.GetMatch(expression, 0));
 		}
 		else if(parentheseRegex.Matches(expression))
 		{
@@ -84,13 +78,12 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			parentheseRegex.GetMatch(&debutCorrespondance, &longueurCorrespondance, 0);
 			
 			Lexeme nouveauLexeme;
+			nouveauLexeme.type = Lexeme::PARENTHESE;
 			if(parentheseRegex.GetMatch(expression, 0) == "(")
-				nouveauLexeme.type = Lexeme::PARENTHESE_DEBUT;
+				nouveauLexeme.booleen = true; //On stocke VRAI dans le lexème si c'est une parenthèse ouvrante, FAUX sinon.
 			else if(parentheseRegex.GetMatch(expression, 0) == ")")
-				nouveauLexeme.type = Lexeme::PARENTHESE_FIN;
+				nouveauLexeme.booleen = false;
 			listeLexeme.push_back(nouveauLexeme);
-			
-			//wxMessageBox("PARENTHESE: " + parentheseRegex.GetMatch(expression, 0));
 		}
 		else if(fonctionRegex.Matches(expression))
 		{
@@ -103,8 +96,6 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			nouveauLexeme.chaine = fonctionRegex.GetMatch(expression, 0).substr(0, fonctionRegex.GetMatch(expression, 0).size() - 1);
 			
 			listeLexeme.push_back(nouveauLexeme);
-			
-			//wxMessageBox("FONCTION: " + wxString(nouveauLexeme.chaine));
 		}
 		else
 		{

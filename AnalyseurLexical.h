@@ -16,10 +16,11 @@ namespace parseur
  */	
 struct Lexeme
 {
-	Lexeme() : type(INDEFINI), chaine(), nombre(0) {};
+	Lexeme() : type(INDEFINI), chaine(), nombre(0), booleen(false) {};
 	
 	enum LType
 	{
+		DEBUT,
 		CONSTANTE,
 		VARIABLE_MATRICE,
 		OPERATEUR_PLUS,
@@ -28,8 +29,7 @@ struct Lexeme
 		OPERATEUR_DIVISE,
 		OPERATEUR_EGAL,
 		FONCTION,
-		PARENTHESE_DEBUT,
-		PARENTHESE_FIN,
+		PARENTHESE,
 		
 		INDEFINI = -1
 	};
@@ -37,6 +37,7 @@ struct Lexeme
 	LType type;
 	std::string chaine;
 	float nombre;
+	bool booleen;
 };
 
 /**
