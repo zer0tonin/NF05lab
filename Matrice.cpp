@@ -2,29 +2,53 @@
 #include <limits>
 #include <math.h>
 
-Matrice::Matrice(int Longueur, int Largeur): Lignes(Longueur-1), Colonnes(Largeur-1), Contenu(Lignes, std::vector<float>(Colonnes, 0) )
+//La classe matrice en déclaré dans Matrice.h
+
+/*
+ * Le constructeur de la classe matrice permet d'initialiser le nombre de lignes, de colonnes et le contenu de la matrice
+ * On estime que l'utilisateur compte en partant de 1 alors que les tableaux commencent par la case 0
+ * m_ligne et m_colonnes correspondent donc aux nombres de lignes et de colonnes rentrées par l'utilisateur -1.
+ * Au départ, toutes les cases de la matrice contiennent 0
+*/
+Matrice::Matrice(int Longueur, int Largeur): m_lignes(Longueur-1), m_colonnes(Largeur-1), m_contenu(m_lignes, std::vector<float>(m_colonnes, 0) )
 {
 }
+
+/*
+ * Le destructeur de la classe matrice n'effectue pas d'actions particulière.
+*/
 
 Matrice::~Matrice()
 {
 }
 
+/*
+ * La méthode ObtenirLignes() renvoie le nombre de lignes
+*/
+
 int Matrice::ObtenirLignes() const
 {
-	return Lignes;
+	return m_lignes;
 }
+
+/*
+ * La méthode ObtenirColonnes() renvoie le nombre de colonnes
+*/
 
 int Matrice::ObtenirColonnes() const
 {
-	return Colonnes;
+	return m_colonnes;
 }
+
+/*
+ * La méthode ObtenirValeur() renvoie le nombre contenu dans un case après avoir vérifié que la case existe
+*/
 
 float Matrice::ObtenirValeur(int Ligne, int Colonne) const
 {
 	if (Matrice::CaseExiste(Ligne,Colonne))
 	{
-		return Contenu[Ligne][Colonne];
+		return m_contenu[Ligne][Colonne];
 	}
 	/*else
 	{
@@ -32,46 +56,64 @@ float Matrice::ObtenirValeur(int Ligne, int Colonne) const
 	}*/
 }
 
+/*
+ * La méthode FixerValeur() permet de modifier le contenu d'une case après avoir vérifié que la case existe
+*/
+
 void Matrice::FixerValeur(int Ligne, int Colonne, float Valeur) 
 {
 	if (CaseExiste(Ligne,Colonne))
 	{
-		Contenu[Ligne][Colonne] = Valeur;
+		m_contenu[Ligne][Colonne] = Valeur;
 	}
 }
 
+/*
+ * La méthode Transposee renvoie une matrice
+ * à laquelle on a affecté toutes les valeurs contenues dans la matrice de départ
+ * en inversant à chaque fois les lignes et colonnes.
+*/
+
 Matrice Matrice::Transposee() const
 {
-	Matrice Resultat(Colonnes, Lignes);
+	Matrice Resultat(m_colonnes, m_lignes);
 	int i, j;
-	for (i=0; i<=Colonnes; i++)
+	for (i=0; i<=m_colonnes; i++)
 	{
-		for (j=0; j<=Lignes; j++)
+		for (j=0; j<=m_lignes; j++)
 		{
-			Resultat.FixerValeur(i, j, Contenu[j][i]);
+			Resultat.FixerValeur(i, j, m_contenu[j][i]);
 		}
 	}
 	return Resultat;
 	
 }
 
+/*
+ * La méthode Determinant permet d'obtenir le déterminant d'une matrice carrée.
+ * Pour cela on utilise une relation de récurrence :
+ * On sait qu'une matrice carrée de taille 1 à pour déterminant la seule valeure qu'elle contient,
+ * et que toutes matrice carrée de taille supérieure à pour déterminant la somme des
+ * (-1)^n * [Valeur de la première ligne] * [Déterminant de la matrice obtenu en retirant la ligne et la colonne de la valeur précédente]
+*/
+
 float Matrice::Determinant() const
 {
-	float resultat = 0;
+	float Resultat = 0;
 	int i, n= 0;
 	if (Carree())
 	{
-		if(Lignes == 0)
+		if(m_lignes == 0)
 		{
-			return Contenu[0][0];
+			return m_contenu[0][0];
 		}
 		else
 		{
-			for(i=0; i<=Lignes; i++)
+			for(i=0; i<=m_lignes; i++)
 			{
-				resultat += pow(-1, n)*Contenu[0][i]*RetraitColonne(i).Determinant();
+				Resultat += pow(-1, n)*m_contenu[0][i]*RetraitColonne(i).Determinant();
 			}
-			return resultat;
+			return Resultat;
 		}
 	}
 }
@@ -81,9 +123,15 @@ Matrice Matrice::Inverse() const
 {
 	
 }
+
+/*
+ * La méthode Carree() renvoie vrai si le nombre de lignes est égal aux nombres de colonnes
+ * et faux dans tous les autres cas.
+*/
+
 bool Matrice::Carree() const
 {
-	if (Lignes == Colonnes)
+	if (m_lignes == m_colonnes)
 	{
 		return true;
 	}
@@ -92,6 +140,10 @@ bool Matrice::Carree() const
 		return false;
 	}
 }
+
+/*
+ * La méthode Inversible() renvoie vrai si le déterminant est différent de 0.
+*/
 
 bool Matrice::Inversible() const
 {
@@ -105,9 +157,14 @@ bool Matrice::Inversible() const
 	}
 }
 
+/*
+ * La méthode CaseExiste() renvoie vrai si la ligne et la colonne de la case demande
+ * ne dépassent pas le nobmre total de lignes et de colonnes dans la matrice.
+*/
+
 bool Matrice::CaseExiste(int Ligne, int Colonne) const
 {
-	if (Ligne <= Lignes && Colonne <= Colonnes)
+	if (Ligne <= m_lignes && Colonne <= m_colonnes)
 	{
 		return true;
 	}
@@ -117,21 +174,27 @@ bool Matrice::CaseExiste(int Ligne, int Colonne) const
 	}
 }
 
+/*
+ * La méthode RetraitColonne() renvoie une matrice à laquelle on assigné
+ * toutes les valeurs de la matrice de départ sauf la première ligne
+ * et la colonne reçu en argument.
+*/
+
 Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i, j;
-	Matrice Resultat(Lignes-1, Colonnes-1);
-	for (i=1; i<=Lignes; i++)
+	Matrice Resultat(m_lignes-1, m_colonnes-1);
+	for (i=1; i<=m_lignes; i++)
 	{
-		for (j=0; j<=Colonnes; j++)
+		for (j=0; j<=m_colonnes; j++)
 		{
 			if (j < Colonne)
 			{
-				Resultat.FixerValeur(i-1, j, Contenu[i][j]);
+				Resultat.FixerValeur(i-1, j, m_contenu[i][j]);
 			}
 			else if (j > Colonne)
 			{
-				Resultat.FixerValeur(i-1, j-1, Contenu[i][j]);
+				Resultat.FixerValeur(i-1, j-1, m_contenu[i][j]);
 			}
 		}
 	}
