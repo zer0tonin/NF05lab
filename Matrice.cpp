@@ -124,6 +124,10 @@ Matrice Matrice::Inverse() const
 	
 }
 
+/*
+ * On assigne à l'opérateur unaire '-' l'opération qui consiste à multiplier par -1 chaque valeur contenue dans la matrice.
+*/
+
 Matrice Matrice::operator-() const
 {
 	int i, j;
@@ -132,7 +136,7 @@ Matrice Matrice::operator-() const
 	{
 		for(j=0; j<=m_colonnes; j++)
 		{
-			Resultat.FixerValeur(i, j, -1*m_contenu[i][j]);
+			Resultat.FixerValeur(i, j, (-1)*m_contenu[i][j]);
 		}
 	}
 }
