@@ -24,7 +24,7 @@ public:
 	Matrice Commatrice() const;
 	float Determinant() const;
 	Matrice Inverse() const;
-	Matrce operator-() const;
+	Matrice operator-() const;
 	
 private:
 	bool Carree() const;
