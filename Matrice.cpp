@@ -124,6 +124,19 @@ Matrice Matrice::Inverse() const
 	
 }
 
+Matrice Matrice::operator-()
+{
+	int i, j;
+	Matrice Resultat(m_lignes, m_colonnes);
+	for(i=0; i<=m_lignes; i++)
+	{
+		for(j=0; j<=m_colonnes; j++)
+		{
+			Resultat.FixerValeur(i, j, -1*m_contenu[i][j]);
+		}
+	}
+}
+
 /*
  * La méthode Carree() renvoie vrai si le nombre de lignes est égal aux nombres de colonnes
  * et faux dans tous les autres cas.
