@@ -29,7 +29,8 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 		wxRegEx variableRegex("^[A-Z]");
 		wxRegEx operateurRegex("^[\\+-\\*\\/=\\^]");
 		wxRegEx parentheseRegex("^[\\(\\)]");
-		wxRegEx fonctionRegex("^[a-z]+\\(");
+		wxRegEx fonctionRegex("^[a-z]+\\[");
+		wxRegEx finFonctionRegex("^\\]");
 		
 		if(constantRegex.Matches(expression))
 		{
@@ -93,8 +94,21 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 			
 			Lexeme nouveauLexeme;
 			nouveauLexeme.type = Lexeme::FONCTION;
+			nouveauLexeme.booleen = true; //Signifie que c'est la début d'une fonction
 			//Extraction du nom de la fonction (on doit supprimer la parenthèse)
 			nouveauLexeme.chaine = fonctionRegex.GetMatch(expression, 0).substr(0, fonctionRegex.GetMatch(expression, 0).size() - 1);
+			
+			listeLexeme.push_back(nouveauLexeme);
+		}
+		else if(finFonctionRegex.Matches(expression))
+		{
+			//On est sur un crochet fermant "]" donc c'est la fin d'une fonction
+			//On est sur une fonction (par exemple, determinant, nombre de lignes d'une matrice)
+			finFonctionRegex.GetMatch(&debutCorrespondance, &longueurCorrespondance, 0);
+			
+			Lexeme nouveauLexeme;
+			nouveauLexeme.type = Lexeme::FONCTION;
+			nouveauLexeme.booleen = false; //Signifie que c'est la fin d'une fonction
 			
 			listeLexeme.push_back(nouveauLexeme);
 		}

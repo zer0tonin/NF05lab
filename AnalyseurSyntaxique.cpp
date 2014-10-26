@@ -39,12 +39,64 @@ Noeud::~Noeud()
 
 bool Noeud::MettreEnArbre()
 {
+	int a; //Sera utile pour itérer dans la liste des noeuds
+	
+	// - Fonctions
+	
+	//On parcourts le noeud pour trouver les crochets (et donc les fonctions) de premier niveau
+	int niveauCrochet = 0;
+	int debutCrochet = 0;
+	std::vector<Noeud*> noeudsDansCrochet;
+	
+	for(a = 0; a < m_enfants.size(); a++)
+	{
+		if(m_enfants[a]->m_type == Lexeme::FONCTION && !m_enfants[a]->m_donneeBooleen)
+			niveauCrochet--;
+		
+		if(niveauCrochet > 0)
+		{
+			noeudsDansCrochet.push_back(m_enfants[a]);
+		}
+		else if(noeudsDansCrochet.size() > 0)
+		{
+			//Cela signifie que l'on vient de finir une parenthèse, donc
+			//on crée un nouveau noeud avec ces lexèmes (il devra lui aussi
+			//les traiter)
+			Noeud *nouveauNoeud = new Noeud(noeudsDansCrochet);
+			nouveauNoeud->m_type = Lexeme::FONCTION;
+			nouveauNoeud->m_donneeChaine = m_enfants[debutCrochet]->m_donneeChaine;
+			
+			//On supprime le lexème (noeud) de la parenthèse fermante puis de celle ouvrante
+			//Ainsi que tous les noeuds entre.
+			m_enfants.erase(m_enfants.begin() + debutCrochet, m_enfants.begin() + a + 1);
+			a -= a - debutCrochet;
+			
+			m_enfants.insert(m_enfants.begin() + debutCrochet, nouveauNoeud);
+			
+			if(!nouveauNoeud->MettreEnArbre())
+				return false;
+			
+			noeudsDansCrochet.clear();
+		}
+		
+		if(m_enfants[a]->m_type == Lexeme::FONCTION && m_enfants[a]->m_donneeBooleen)
+		{
+			if(niveauCrochet == 0)
+				debutCrochet = a;
+			niveauCrochet++;
+		}
+	}
+	
+	if(a == m_enfants.size() && (niveauCrochet != 0))
+		return false;
+	
+	// - Parenthèses
+	
 	//On parcourt le noeud pour trouver les parenthèses de 1er niveau
 	int niveauParenthese = 0;
 	int debutParenthese = 0;
 	std::vector<Noeud*> noeudsDansParenthese;
-	
-	int a;
+
 	for(a = 0; a < m_enfants.size(); a++)
 	{
 		if(m_enfants[a]->m_type == Lexeme::PARENTHESE && !m_enfants[a]->m_donneeBooleen)
@@ -228,6 +280,8 @@ void Noeud::AfficherContenu(wxTreeCtrl *arbre, wxTreeItemId parent) const
 	else if(m_type == Lexeme::CONSTANTE)
 		contenu += wxString::FromDouble(m_donneeNombre);
 	else if(m_type == Lexeme::VARIABLE_MATRICE)
+		contenu += m_donneeChaine;
+	else if(m_type == Lexeme::FONCTION)
 		contenu += m_donneeChaine;
 	else
 		contenu += "?";
