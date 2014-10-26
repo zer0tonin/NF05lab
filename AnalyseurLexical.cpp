@@ -22,8 +22,8 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 	
 	while(expression.size() > 0)
 	{
-		unsigned int debutCorrespondance;
-		unsigned int longueurCorrespondance;
+		std::size_t debutCorrespondance;
+		std::size_t longueurCorrespondance;
 		
 		wxRegEx constantRegex("^[0-9.]+");
 		wxRegEx variableRegex("^[A-Z]");
