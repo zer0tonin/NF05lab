@@ -18,7 +18,7 @@ Matrice operator+(const Matrice &M1, const Matrice &M2)
 	}
 }
 
-Matrice operator+(const Matrice &M1, const Matrice &M2)
+Matrice operator-(const Matrice &M1, const Matrice &M2)
 {
 	return M1+(-M2);
 }
