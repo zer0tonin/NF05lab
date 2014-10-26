@@ -124,7 +124,7 @@ Matrice Matrice::Inverse() const
 	
 }
 
-Matrice Matrice::operator-()
+Matrice Matrice::operator-() const
 {
 	int i, j;
 	Matrice Resultat(m_lignes, m_colonnes);
