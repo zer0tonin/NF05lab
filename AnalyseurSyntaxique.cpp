@@ -43,14 +43,14 @@ bool Noeud::MettreEnArbre()
 	
 	// - Fonctions
 	
-	//On parcourts le noeud pour trouver les crochets (et donc les fonctions) de premier niveau
+	//On parcourt le noeud pour trouver les crochets (et donc les fonctions) de premier niveau
 	int niveauCrochet = 0;
 	int debutCrochet = 0;
 	std::vector<Noeud*> noeudsDansCrochet;
 	
 	for(a = 0; a < m_enfants.size(); a++)
 	{
-		if(m_enfants[a]->m_type == Lexeme::FONCTION && !m_enfants[a]->m_donneeBooleen)
+		if(m_enfants[a]->m_type == Lexeme::FONCTION && m_enfants[a]->m_enfants.size() == 0 && !m_enfants[a]->m_donneeBooleen)
 			niveauCrochet--;
 		
 		if(niveauCrochet > 0)
@@ -79,7 +79,7 @@ bool Noeud::MettreEnArbre()
 			noeudsDansCrochet.clear();
 		}
 		
-		if(m_enfants[a]->m_type == Lexeme::FONCTION && m_enfants[a]->m_donneeBooleen)
+		if(m_enfants[a]->m_type == Lexeme::FONCTION && m_enfants[a]->m_enfants.size() == 0 && m_enfants[a]->m_donneeBooleen)
 		{
 			if(niveauCrochet == 0)
 				debutCrochet = a;
