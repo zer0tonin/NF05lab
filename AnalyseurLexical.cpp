@@ -27,7 +27,7 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 		
 		wxRegEx constantRegex("^[0-9.]+");
 		wxRegEx variableRegex("^[A-Z]");
-		wxRegEx operateurRegex("^[\\+-\\*\\/=]");
+		wxRegEx operateurRegex("^[\\+-\\*\\/=\\^]");
 		wxRegEx parentheseRegex("^[\\(\\)]");
 		wxRegEx fonctionRegex("^[a-z]+\\(");
 		
@@ -69,6 +69,8 @@ std::vector<Lexeme> AnalyseurLexical::Parse(std::string expression)
 				nouveauLexeme.type = Lexeme::OPERATEUR_DIVISE;
 			else if(operateurRegex.GetMatch(expression, 0) == "=")
 				nouveauLexeme.type = Lexeme::OPERATEUR_EGAL;
+			else if(operateurRegex.GetMatch(expression, 0) == "^")
+				nouveauLexeme.type = Lexeme::OPERATEUR_PUISSANCE;
 			listeLexeme.push_back(nouveauLexeme);
 		}
 		else if(parentheseRegex.Matches(expression))
