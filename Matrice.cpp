@@ -10,7 +10,7 @@
  * m_ligne et m_colonnes correspondent donc aux nombres de lignes et de colonnes rentrées par l'utilisateur -1.
  * Au départ, toutes les cases de la matrice contiennent 0
 */
-Matrice::Matrice(int Longueur, int Largeur): m_lignes(Longueur-1), m_colonnes(Largeur-1), m_contenu(m_lignes, std::vector<float>(m_colonnes, 0) )
+Matrice::Matrice(int Lignes, int Colonnes): m_lignes(Lignes-1), m_colonnes(Colonnes-1), m_contenu(m_lignes, std::vector<float>(m_colonnes, 0) )
 {
 }
 

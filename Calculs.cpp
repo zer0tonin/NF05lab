@@ -1,6 +1,6 @@
 #include "Calculs.h"
 
-Matrice SommeMatrice(Matrice M1, Matrice M2)
+Matrice operator+(const Matrice &M1, const Matrice &M2)
 {
 	int i, j;
 	Matrice Resultat(M1.ObtenirLignes(), M1.ObtenirColonnes());
@@ -18,7 +18,7 @@ Matrice SommeMatrice(Matrice M1, Matrice M2)
 	}
 }
 
-Matrice MultiplicationMatrice(Matrice M1, Matrice M2)
+Matrice operator*(const Matrice &M1, const Matrice &M2)
 {
 	int i, j, k;
 	float Valeur;
@@ -42,12 +42,34 @@ Matrice MultiplicationMatrice(Matrice M1, Matrice M2)
 	}
 }
 
-Matrice DivisionMatrice(Matrice M1, Matrice M2)
+Matrice operator/(const Matrice &M1, const Matrice &M2)
 {
-	Matrice Resultat(M1.ObtenirLignes(), M2.ObtenirColonnes());
-	M2 = M2.Inverse();
-	Resultat = MultiplicationMatrice(M1, M2);
+	return M1*M2.Inverse();
+}
+
+Matrice operator*(const Matrice &M1, float Scalaire)
+{
+	Matrice Resultat(M1.ObtenirLignes(), M1.ObtenirColonnes());
+	int i, j;
+	for (i=0; i<=M1.ObtenirLignes(); i++)
+	{
+		for (j=0; j<=M1.ObtenirColonnes(); j++)
+		{
+			Resultat.FixerValeur(i, j, M1.ObtenirValeur(i, j)*Scalaire);
+		}
+	}
 	return Resultat;
+}
+
+Matrice operator*(float Scalaire, const Matrice &M1)
+{
+	return M1*Scalaire;
+}
+
+
+Matrice operator/(const Matrice &M1, float Scalaire)
+{
+	return M1*1/Scalaire;
 }
 
 float ProduitScalaire(Matrice M1, Matrice M2)
@@ -62,23 +84,4 @@ float ProduitScalaire(Matrice M1, Matrice M2)
 		}
 	}
 	return Resultat;
-}
-
-Matrice MultiplicationMatriceScalaire(Matrice M1, float Scalaire)
-{
-	Matrice Resultat(M1.ObtenirLignes(), M1.ObtenirColonnes());
-	int i, j;
-	for (i=0; i<=M1.ObtenirLignes(); i++)
-	{
-		for (j=0; j<=M1.ObtenirColonnes(); j++)
-		{
-			Resultat.FixerValeur(i, j, M1.ObtenirValeur(i, j)*Scalaire);
-		}
-	}
-	return Resultat;
-}
-
-Matrice DivisionMatriceScalaire(Matrice M1, float Scalaire)
-{
-	return MultiplicationMatriceScalaire(M1, 1/Scalaire);
 }
