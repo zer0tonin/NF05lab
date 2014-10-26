@@ -15,7 +15,7 @@ public:
 	void SupprimerVariable(char nom);
 	
 private:
-	std::map<char, Matrice> m_conteneur; 
+	std::map<char, Matrice*> m_conteneur; 
 };
 
 #endif // CONTENEUR_H
