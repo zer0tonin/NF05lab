@@ -160,7 +160,7 @@ bool Noeud::MettreEnArbre()
 			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
 			//l'opérateur.
 			Noeud *noeudOperateur = m_enfants[a];
-			if(a > 0)
+			if(a > 0 && a < m_enfants.size() - 1)
 			{
 				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
 				std::vector<Noeud*> listeNoeudPourOperateur;
@@ -195,7 +195,7 @@ bool Noeud::MettreEnArbre()
 			//On vérifie évidemment que c'est bien une matrice/nombre ou un noeud "parenthèse" qui précède/suit
 			//l'opérateur.
 			Noeud *noeudOperateur = m_enfants[a];
-			if(a > 0)
+			if(a > 0 && a < m_enfants.size() - 1)
 			{
 				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
 				std::vector<Noeud*> listeNoeudPourOperateur;
@@ -229,7 +229,7 @@ bool Noeud::MettreEnArbre()
 			//(on traite le précédent uniquement si l'opérateur n'est pas au début,
 			//ce qui impliquera forcément une opération unaire)
 			Noeud *noeudOperateur = m_enfants[a];
-			if(a > 0)
+			if(a > 0 && a < m_enfants.size() - 1)
 			{
 				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
 				std::vector<Noeud*> listeNoeudPourOperateur;
@@ -238,14 +238,14 @@ bool Noeud::MettreEnArbre()
 				
 				noeudOperateur->m_enfants = listeNoeudPourOperateur;
 				
-				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				//On supprime l'ancien noeud de l'opérateur et les noeuds des opérandes
 				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur
 				m_enfants.insert(m_enfants.begin() + a - 1, noeudOperateur);
 				a--;
 			}
-			else if(a == 0)
+			else if(a == 0 && m_enfants.size() >= 2)
 			{
 				//L'opérateur est au début de la liste, donc ce sera un opérateur unaire
 				std::vector<Noeud*> listeNoeudPourOperateur;
@@ -253,7 +253,7 @@ bool Noeud::MettreEnArbre()
 				
 				noeudOperateur->m_enfants = listeNoeudPourOperateur;
 				
-				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				//On supprime l'ancien noeud de l'opérateur et le noeud de l'opérande
 				m_enfants.erase(m_enfants.begin() + a, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur

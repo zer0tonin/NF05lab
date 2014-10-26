@@ -1,6 +1,7 @@
 #include "MainFrame.h"
 #include <wx/aboutdlg.h>
 #include <wx/msgdlg.h> 
+#include <wx/log.h>
 
 #include <iostream>
 #include "AnalyseurLexical.h"
@@ -47,11 +48,23 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	
 	parseur::AnalyseurLexical lex;
 	parseur::AnalyseurSyntaxique syn;
-	if(syn.CreerArbreSyntaxique(lex.Parse(commande.ToStdString())))
+	
+	std::vector<parseur::Lexeme> listeLexeme = lex.Parse(commande.ToStdString());
+	if(lex.Erreur())
+	{
+		wxLogError(L"Symbole inconnu dans l'expression !");
+		return;
+	}
+		
+	if(syn.CreerArbreSyntaxique(listeLexeme))
 		syn.AfficherContenu(m_arbreSyntaxe);
+	else
+	{
+		wxLogError(L"Expression malformée !");
+		return;
+	}
 		
 	m_arbreSyntaxe->ExpandAll();
-		
 	m_zoneCommande->SetValue("");
 }
 
