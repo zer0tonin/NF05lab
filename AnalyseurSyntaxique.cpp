@@ -59,9 +59,9 @@ bool Noeud::MettreEnArbre()
 		}
 		else if(noeudsDansCrochet.size() > 0)
 		{
-			//Cela signifie que l'on vient de finir une parenthèse, donc
-			//on crée un nouveau noeud avec ces lexèmes (il devra lui aussi
-			//les traiter)
+			//Cela signifie que l'on vient de finir une fonction, donc
+			//on crée un nouveau noeud avec les noeuds contenus dans les parenthèses
+			//(il devra lui aussi les traiter)
 			Noeud *nouveauNoeud = new Noeud(noeudsDansCrochet);
 			nouveauNoeud->m_type = Lexeme::FONCTION;
 			nouveauNoeud->m_donneeChaine = m_enfants[debutCrochet]->m_donneeChaine;
@@ -90,43 +90,51 @@ bool Noeud::MettreEnArbre()
 	if(a == m_enfants.size() && (niveauCrochet != 0))
 		return false;
 	
-	// - Parenthèses
+	// - Parenthèses (de 1er niveau uniquement, les autres niveaux seront traités quand MettreEnArbre()
+	//   sera utilisé de manière récursive sur les noeuds de parenthèse.
 	
 	//On parcourt le noeud pour trouver les parenthèses de 1er niveau
-	int niveauParenthese = 0;
-	int debutParenthese = 0;
-	std::vector<Noeud*> noeudsDansParenthese;
+	int niveauParenthese = 0; //Indique le niveau de parenthèses
+	int debutParenthese = 0; //Indique la position du début de la parenthèse
+	std::vector<Noeud*> noeudsDansParenthese; //Stocke la liste des noeuds entre deux parenthèses
 
 	for(a = 0; a < m_enfants.size(); a++)
 	{
+		//On est sur une parenthèse fermante, on réduit niveauParenthese de 1.
 		if(m_enfants[a]->m_type == Lexeme::PARENTHESE && !m_enfants[a]->m_donneeBooleen)
 			niveauParenthese--;
 		
+		//On est dans une parenthèse
 		if(niveauParenthese > 0)
 		{
-			noeudsDansParenthese.push_back(m_enfants[a]);
+			noeudsDansParenthese.push_back(m_enfants[a]); //On ajoute le noeud actuellement parcouru dans la liste des noeuds dans la parenthèse
 		}
 		else if(noeudsDansParenthese.size() > 0)
 		{
 			//Cela signifie que l'on vient de finir une parenthèse, donc
-			//on crée un nouveau noeud avec ces lexèmes (il devra lui aussi
-			//les traiter)
+			//on crée un nouveau noeud contenant les noeuds à l'intérieur des parenthèses
+			//(il devra lui aussi les traiter)
 			Noeud *nouveauNoeud = new Noeud(noeudsDansParenthese);
 			nouveauNoeud->m_type = Lexeme::PARENTHESE;
 			
-			//On supprime le lexème (noeud) de la parenthèse fermante puis de celle ouvrante
-			//Ainsi que tous les noeuds entre.
+			//On supprime du noeud principal les noeuds contenu dans la parenthèse, ainsi
+			//que la parenthèse ouvrante et fermante.
 			m_enfants.erase(m_enfants.begin() + debutParenthese, m_enfants.begin() + a + 1);
 			a -= a - debutParenthese;
 			
+			//On insère le noeud "parenthèse" qui contient tous les noeuds qui étaient contenus dans
+			//la parenthèse.
 			m_enfants.insert(m_enfants.begin() + debutParenthese, nouveauNoeud);
 			
+			//Il faut aussi mettre en arbre les noeuds contenus dans le noeud "parenthèse"
 			if(!nouveauNoeud->MettreEnArbre())
 				return false;
 			
 			noeudsDansParenthese.clear();
 		}
 		
+		//On est sur une parenthèse ouvrante, on augmente niveauParenthese de 1.
+		//Si c'est une parenthèse de niveau 1, on stocke sa position dans debutParenthese.
 		if(m_enfants[a]->m_type == Lexeme::PARENTHESE && m_enfants[a]->m_donneeBooleen)
 		{
 			if(niveauParenthese == 0)
@@ -135,6 +143,8 @@ bool Noeud::MettreEnArbre()
 		}
 	}
 	
+	//Si on a plus de parenthèses fermante que ouvrante ou inversement, cela signifie qu'il y a une erreur
+	//de syntaxe
 	if(a == m_enfants.size() && (niveauParenthese != 0))
 		return false;
 	
