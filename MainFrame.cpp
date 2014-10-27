@@ -69,9 +69,9 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	parseur::Resultat resultatCommande = cal.Calculer(syn.RecupererArbre());
 	
 	if(resultatCommande.EstUnScalaire())
-		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + " --> " + wxString::FromDouble(resultatCommande.ValeurScalaire()));
+		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n --> " + wxString::FromDouble(resultatCommande.ValeurScalaire()));
 	else if(resultatCommande.EstUneErreur())
-		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + " --> " + resultatCommande.Erreur());
+		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + resultatCommande.Erreur());
 		
 	m_arbreSyntaxe->ExpandAll();
 	m_zoneCommande->SetValue("");

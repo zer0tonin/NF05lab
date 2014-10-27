@@ -1,6 +1,7 @@
 #include "Calculateur.h"
-#include <wx/msgdlg.h>
+
 #include "Calculs.h"
+#include <cmath>
 
 namespace parseur
 {
@@ -193,6 +194,38 @@ Resultat Calculateur::Calculer(const Noeud &noeud)
 		else
 		{
 			return Resultat("Pas assez/trop d'operandes pour la multiplication");
+		}
+	}
+	else if(noeud.Type() == Lexeme::OPERATEUR_PUISSANCE)
+	{
+		if(noeud.NombreEnfants() == 2)
+		{
+			Resultat resultatOperandeGauche = Calculer(noeud.Enfant(0)); //On appelle la fonction Calculer sur les deux opérandes (noeuds) de l'opérateur
+			Resultat resultatOperandeDroit = Calculer(noeud.Enfant(1));
+			
+			//En cas d'erreur, on retourne directement l'erreur.
+			if(resultatOperandeGauche.EstUneErreur())
+				return resultatOperandeGauche;
+			else if(resultatOperandeDroit.EstUneErreur())
+				return resultatOperandeDroit;
+				
+			if(resultatOperandeGauche.EstUnScalaire() && resultatOperandeDroit.EstUnScalaire())
+			{
+				return Resultat(std::pow(resultatOperandeGauche.ValeurScalaire(), resultatOperandeDroit.ValeurScalaire()));
+			}
+			else if(resultatOperandeGauche.EstUneMatrice() && resultatOperandeDroit.EstUnScalaire())
+			{
+				//TODO : opérateur ^ entre une matrice et un scalaire
+				//return Resultat(resultatOperandeGauche.ValeurMatrice() * resultatOperandeDroit.ValeurScalaire());
+			}
+			else
+			{
+				return Resultat("Operateur ^ mal utilisé");
+			}
+		}
+		else
+		{
+			return Resultat("Pas assez/trop d'operandes pour la puissance");
 		}
 	}
 	else if(noeud.Type() == Lexeme::INDEFINI)
