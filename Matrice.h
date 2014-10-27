@@ -24,12 +24,12 @@ public:
 	Matrice Commatrice() const;
 	float Determinant() const;
 	Matrice Inverse() const;
+	bool Inversible() const;
 	Matrice operator-() const;
 	
 private:
 	bool Carree() const;
 	bool CaseExiste(int Ligne, int Colonne) const;
-	bool Inversible() const;
 	Matrice RetraitColonne(int Colonne) const;
 	
 	int m_lignes;

@@ -62,10 +62,14 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer3->SetFlexibleDirection( wxBOTH );
 	fgSizer3->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_textCtrl1 = new wxTextCtrl( m_panneauPrincipal, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
-	fgSizer3->Add( m_textCtrl1, 0, wxALL|wxEXPAND, 5 );
+	m_zoneResultats = new wxTextCtrl( m_panneauPrincipal, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	m_zoneResultats->SetFont( wxFont( 12, 75, 90, 90, false, wxT("Consolas") ) );
+	
+	fgSizer3->Add( m_zoneResultats, 0, wxALL|wxEXPAND, 5 );
 	
 	m_zoneCommande = new wxTextCtrl( m_panneauPrincipal, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+	m_zoneCommande->SetFont( wxFont( 12, 75, 90, 90, false, wxT("Consolas") ) );
+	
 	fgSizer3->Add( m_zoneCommande, 0, wxALL|wxEXPAND, 5 );
 	
 	

@@ -24,9 +24,11 @@ public:
 	const Noeud& Enfant(int index) const {return *(m_enfants.at(index));};
 	
 	Lexeme::LType Type() const {return m_type;}
+	std::string DonneeChaine() const {return m_donneeChaine;};
+	float DonneeNombre() const {return m_donneeNombre;};
+	bool DonneeBooleen() const {return m_donneeBooleen;};
 	
 	bool MettreEnArbre();
-	
 	void AfficherContenu(wxTreeCtrl *arbre, wxTreeItemId parent) const;
 	
 protected:
@@ -51,6 +53,7 @@ public:
 	 */
 	bool CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme);
 	void AfficherContenu(wxTreeCtrl *arbre);
+	const Noeud& RecupererArbre() const {return *m_noeudPrincipal;};
 
 private:
 	Noeud *m_noeudPrincipal;

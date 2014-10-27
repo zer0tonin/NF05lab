@@ -6,6 +6,7 @@
 #include <iostream>
 #include "AnalyseurLexical.h"
 #include "AnalyseurSyntaxique.h"
+#include "Calculateur.h"
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true)
 {
@@ -48,6 +49,7 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	
 	parseur::AnalyseurLexical lex;
 	parseur::AnalyseurSyntaxique syn;
+	parseur::Calculateur cal;
 	
 	std::vector<parseur::Lexeme> listeLexeme = lex.Parse(commande.ToStdString());
 	if(lex.Erreur())
@@ -63,6 +65,11 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 		wxLogError(L"Expression malformée !");
 		return;
 	}
+	
+	parseur::Resultat resultatCommande = cal.Calculer(syn.RecupererArbre());
+	
+	if(resultatCommande.EstUnScalaire())
+		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + " --> " + wxString::FromDouble(resultatCommande.ValeurScalaire()));
 		
 	m_arbreSyntaxe->ExpandAll();
 	m_zoneCommande->SetValue("");

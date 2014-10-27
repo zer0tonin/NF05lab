@@ -47,6 +47,7 @@
     <File Name="AnalyseurSyntaxique.cpp"/>
     <File Name="Calculs.cpp"/>
     <File Name="Conteneur.cpp"/>
+    <File Name="Calculateur.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
@@ -57,6 +58,7 @@
     <File Name="AnalyseurSyntaxique.h"/>
     <File Name="Calculs.h"/>
     <File Name="Conteneur.h"/>
+    <File Name="Calculateur.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>

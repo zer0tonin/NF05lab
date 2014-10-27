@@ -58,7 +58,7 @@ class RibbonFrameBase : public wxFrame
 		wxRibbonPanel* m_ribbonPanel21;
 		wxRibbonButtonBar* m_ribbonButtonBar21;
 		wxPanel* m_panneauPrincipal;
-		wxTextCtrl* m_textCtrl1;
+		wxTextCtrl* m_zoneResultats;
 		wxTextCtrl* m_zoneCommande;
 		wxPanel* m_panneauHistorique;
 		wxTreeCtrl* m_treeCtrl3;
