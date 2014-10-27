@@ -6,7 +6,6 @@ Conteneur::Conteneur()
 
 Conteneur::~Conteneur()
 {
-	
 }
 
 Matrice& Conteneur::Variable(char Nom)
@@ -22,4 +21,17 @@ void Conteneur::AjouterVariable(char Nom, int Lignes, int Colonnes)
 void Conteneur::SupprimerVariable(char Nom)
 {
 	m_conteneur.erase(Nom);
+}
+
+bool Conteneur::Existe(char Nom)
+{
+	auto iterateur = m_conteneur.find(Nom);
+	if (iterateur == m_conteneur.end())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }

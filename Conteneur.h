@@ -13,6 +13,7 @@ public:
 	Matrice& Variable(char nom);
 	void AjouterVariable(char nom, int Lignes, int Colonnes);
 	void SupprimerVariable(char nom);
+	bool Existe(char nom);
 	
 private:
 	std::map<char, Matrice> m_conteneur; 

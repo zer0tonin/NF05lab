@@ -26,9 +26,9 @@ public:
 	Matrice Inverse() const;
 	bool Inversible() const;
 	Matrice operator-() const;
+	bool Carree() const;
 	
 private:
-	bool Carree() const;
 	bool CaseExiste(int Ligne, int Colonne) const;
 	Matrice RetraitColonne(int Colonne) const;
 	

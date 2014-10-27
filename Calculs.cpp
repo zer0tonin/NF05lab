@@ -137,3 +137,24 @@ float ProduitScalaire(Matrice M1, Matrice M2)
 	}
 	return Resultat;
 }
+
+Matrice Puissance(Matrice M1, float Scalaire)
+{
+	Matrice Resultat(M1.ObtenirLignes(), M1.ObtenirColonnes());
+	int i;
+	if (M1.Carree())
+	{
+		if(Scalaire == 0)
+		{
+			for (i=0; i<M1.ObtenirLignes(); i++)
+			{
+				Resultat.FixerValeur(i, i, 1);
+			}
+			return Resultat;
+		}
+		else
+		{
+			return M1 * Puissance(M1, Scalaire-1);
+		}
+	}
+}
