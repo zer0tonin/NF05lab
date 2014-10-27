@@ -10,7 +10,7 @@
  * m_ligne et m_colonnes correspondent donc aux nombres de lignes et de colonnes rentrées par l'utilisateur -1.
  * Au départ, toutes les cases de la matrice contiennent 0
 */
-Matrice::Matrice(int Lignes, int Colonnes): m_lignes(Lignes-1), m_colonnes(Colonnes-1), m_contenu(m_lignes, std::vector<float>(m_colonnes, 0) )
+Matrice::Matrice(int Lignes, int Colonnes): m_lignes(Lignes), m_colonnes(Colonnes), m_contenu(m_lignes, std::vector<float>(m_colonnes, 0) )
 {
 }
 
@@ -48,7 +48,7 @@ float Matrice::ObtenirValeur(int Ligne, int Colonne) const
 {
 	if (Matrice::CaseExiste(Ligne,Colonne))
 	{
-		return m_contenu[Ligne][Colonne];
+		return m_contenu[Ligne-1][Colonne-1];
 	}
 	/*else
 	{
@@ -64,7 +64,7 @@ void Matrice::FixerValeur(int Ligne, int Colonne, float Valeur)
 {
 	if (CaseExiste(Ligne,Colonne))
 	{
-		m_contenu[Ligne][Colonne] = Valeur;
+		m_contenu[Ligne-1][Colonne-1] = Valeur;
 	}
 }
 
@@ -132,9 +132,9 @@ Matrice Matrice::operator-() const
 {
 	int i, j;
 	Matrice Resultat(m_lignes, m_colonnes);
-	for(i=0; i<=m_lignes; i++)
+	for(i=0; i<m_lignes; i++)
 	{
-		for(j=0; j<=m_colonnes; j++)
+		for(j=0; j<m_colonnes; j++)
 		{
 			Resultat.FixerValeur(i, j, (-1)*m_contenu[i][j]);
 		}
@@ -181,7 +181,7 @@ bool Matrice::Inversible() const
 
 bool Matrice::CaseExiste(int Ligne, int Colonne) const
 {
-	if (Ligne <= m_lignes && Colonne <= m_colonnes)
+	if (Ligne-1 < m_lignes && Colonne-1 < m_colonnes)
 	{
 		return true;
 	}
@@ -201,9 +201,9 @@ Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i, j;
 	Matrice Resultat(m_lignes-1, m_colonnes-1);
-	for (i=1; i<=m_lignes; i++)
+	for (i=1; i<m_lignes; i++)
 	{
-		for (j=0; j<=m_colonnes; j++)
+		for (j=0; j<m_colonnes; j++)
 		{
 			if (j < Colonne)
 			{
