@@ -215,8 +215,7 @@ Resultat Calculateur::Calculer(const Noeud &noeud)
 			}
 			else if(resultatOperandeGauche.EstUneMatrice() && resultatOperandeDroit.EstUnScalaire())
 			{
-				//TODO : opérateur ^ entre une matrice et un scalaire
-				//return Resultat(resultatOperandeGauche.ValeurMatrice() * resultatOperandeDroit.ValeurScalaire());
+				return Resultat(Puissance(resultatOperandeGauche.ValeurMatrice(), resultatOperandeDroit.ValeurScalaire()));
 			}
 			else
 			{
