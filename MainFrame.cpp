@@ -17,16 +17,16 @@ MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(
 	m_ribbonBar1->Realize();
 	
 	m_conteneurVariables.AjouterVariable('A', 2, 3);
-	m_conteneurVariables.Variable('A').FixerValeur(1, 1, 1);
-	m_conteneurVariables.Variable('A').FixerValeur(1, 2, 2);
-	m_conteneurVariables.Variable('A').FixerValeur(2, 1, 3);
-	m_conteneurVariables.Variable('A').FixerValeur(2, 2, 4);
+	m_conteneurVariables.Variable('A').FixerValeur(0, 0, 1);
+	m_conteneurVariables.Variable('A').FixerValeur(0, 1, 2);
+	m_conteneurVariables.Variable('A').FixerValeur(1, 0, 3);
+	m_conteneurVariables.Variable('A').FixerValeur(1, 1, 4);
 	
-	m_conteneurVariables.AjouterVariable('B', 4, 3);
-	m_conteneurVariables.Variable('B').FixerValeur(1, 1, 1);
-	m_conteneurVariables.Variable('B').FixerValeur(2, 2, 2);
-	m_conteneurVariables.Variable('B').FixerValeur(3, 3, 3);
-	m_conteneurVariables.Variable('B').FixerValeur(4, 2, 4);
+	m_conteneurVariables.AjouterVariable('B', 3, 4);
+	m_conteneurVariables.Variable('B').FixerValeur(0, 0, 1);
+	m_conteneurVariables.Variable('B').FixerValeur(1, 1, 2);
+	m_conteneurVariables.Variable('B').FixerValeur(2, 2, 3);
+	m_conteneurVariables.Variable('B').FixerValeur(1, 2, 4);
 	
 	
 	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_HISTORIQUE, true);
@@ -87,9 +87,9 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	{
 		//Affichage de la matrice
 		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n");
-		for(int ligne = 1; ligne <= resultatCommande.ValeurMatrice().ObtenirLignes(); ligne++)
+		for(int ligne = 0; ligne < resultatCommande.ValeurMatrice().ObtenirLignes(); ligne++)
 		{
-			for(int colonne = 1; colonne <= resultatCommande.ValeurMatrice().ObtenirColonnes(); colonne++)
+			for(int colonne = 0; colonne < resultatCommande.ValeurMatrice().ObtenirColonnes(); colonne++)
 			{
 				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + wxString::FromDouble(resultatCommande.ValeurMatrice().ObtenirValeur(ligne, colonne)) + "\t");
 			}

@@ -48,7 +48,7 @@ float Matrice::ObtenirValeur(int Ligne, int Colonne) const
 {
 	if (Matrice::CaseExiste(Ligne,Colonne))
 	{
-		return m_contenu[Ligne-1][Colonne-1];
+		return m_contenu[Ligne][Colonne];
 	}
 	/*else
 	{
@@ -64,7 +64,7 @@ void Matrice::FixerValeur(int Ligne, int Colonne, float Valeur)
 {
 	if (CaseExiste(Ligne,Colonne))
 	{
-		m_contenu[Ligne-1][Colonne-1] = Valeur;
+		m_contenu[Ligne][Colonne] = Valeur;
 	}
 }
 
@@ -78,9 +78,9 @@ Matrice Matrice::Transposee() const
 {
 	Matrice Resultat(m_colonnes, m_lignes);
 	int i, j;
-	for (i=0; i<=m_colonnes; i++)
+	for (i=0; i<m_colonnes; i++)
 	{
-		for (j=0; j<=m_lignes; j++)
+		for (j=0; j<m_lignes; j++)
 		{
 			Resultat.FixerValeur(i, j, m_contenu[j][i]);
 		}
@@ -103,13 +103,13 @@ float Matrice::Determinant() const
 	int i, n= 0;
 	if (Carree())
 	{
-		if(m_lignes == 0)
+		if(m_lignes == 1)
 		{
 			return m_contenu[0][0];
 		}
 		else
 		{
-			for(i=0; i<=m_lignes; i++)
+			for(i=0; i<m_lignes; i++)
 			{
 				Resultat += pow(-1, n)*m_contenu[0][i]*RetraitColonne(i).Determinant();
 			}
@@ -181,7 +181,7 @@ bool Matrice::Inversible() const
 
 bool Matrice::CaseExiste(int Ligne, int Colonne) const
 {
-	if (Ligne-1 < m_lignes && Colonne-1 < m_colonnes)
+	if (Ligne < m_lignes && Colonne < m_colonnes)
 	{
 		return true;
 	}
@@ -201,7 +201,7 @@ Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i, j;
 	Matrice Resultat(m_lignes-1, m_colonnes-1);
-	for (i=1; i<m_lignes; i++)
+	for (i=0; i<m_lignes; i++)
 	{
 		for (j=0; j<m_colonnes; j++)
 		{
