@@ -3,6 +3,7 @@
 
 #include "Matrice.h"
 #include <map>
+#include <wx/treectrl.h>
 
 class Conteneur
 {
@@ -14,6 +15,7 @@ public:
 	void AjouterVariable(char nom, int Lignes, int Colonnes);
 	void SupprimerVariable(char nom);
 	bool Existe(char nom);
+	void MAJGUI(wxTreeCtrl* Arbre) const;
 	
 private:
 	std::map<char, Matrice> m_conteneur; 

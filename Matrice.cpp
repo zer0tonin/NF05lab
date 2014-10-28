@@ -139,6 +139,7 @@ Matrice Matrice::operator-() const
 			Resultat.FixerValeur(i, j, (-1)*m_contenu[i][j]);
 		}
 	}
+	return Resultat;
 }
 
 /*
