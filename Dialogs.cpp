@@ -103,8 +103,8 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer1->SetFlexibleDirection( wxBOTH );
 	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_treeCtrl2 = new wxTreeCtrl( m_panneauVariables, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE );
-	fgSizer1->Add( m_treeCtrl2, 0, wxALL|wxEXPAND, 0 );
+	m_arbreVariables = new wxTreeCtrl( m_panneauVariables, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE );
+	fgSizer1->Add( m_arbreVariables, 0, wxALL|wxEXPAND, 0 );
 	
 	
 	m_panneauVariables->SetSizer( fgSizer1 );

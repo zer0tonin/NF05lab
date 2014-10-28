@@ -36,11 +36,15 @@ bool Conteneur::Existe(char Nom)
 	}
 }
 
-void Conteneur::MAJGUI(wxTreeCtrl* Arbre) const
+void Conteneur::MAJGUI(wxTreeCtrl* arbre) const
 {
-	auto Racine = Arbre->AddRoot("Variables :");
-	for (auto iterateur = m_conteneur.begin(); iterateur!=m_conteneur.end(); iterateur++)
+	arbre->DeleteAllItems();
+	
+	wxTreeItemId racine = arbre->AddRoot("Variables");
+	for (auto iterateur = m_conteneur.begin(); iterateur != m_conteneur.end(); iterateur++)
 	{
-		Arbre->AppendItem(Racine, iterateur->first);
+		arbre->AppendItem(racine, iterateur->first);
 	}
+	
+	arbre->ExpandAll();
 }

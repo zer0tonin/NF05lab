@@ -101,6 +101,9 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 		
 	m_arbreSyntaxe->ExpandAll();
 	m_zoneCommande->SetValue("");
+	
+	//Mise à jour de l'arbre qui liste les variables
+	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
 void MainFrame::SurClicAffichageHistorique( wxCommandEvent& event )

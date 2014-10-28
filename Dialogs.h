@@ -63,7 +63,7 @@ class RibbonFrameBase : public wxFrame
 		wxPanel* m_panneauHistorique;
 		wxTreeCtrl* m_treeCtrl3;
 		wxPanel* m_panneauVariables;
-		wxTreeCtrl* m_treeCtrl2;
+		wxTreeCtrl* m_arbreVariables;
 		wxTreeCtrl* m_arbreSyntaxe;
 		
 		// Virtual event handlers, overide them in your derived class
