@@ -8,13 +8,16 @@
 #include "AnalyseurSyntaxique.h"
 #include "Calculateur.h"
 
-MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true)
+MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true), m_conteneurVariables()
 {
 	m_artProvider.SetColourScheme(wxColour(245, 245, 245),
 								  wxColour(196, 203, 255),
 								  wxColour(0, 0, 0));
 	m_ribbonBar1->SetArtProvider(&m_artProvider);
 	m_ribbonBar1->Realize();
+	
+	m_conteneurVariables.AjouterVariable('A', 2, 2);
+	m_conteneurVariables.Variable('A').FixerValeur(1, 1, 1);
 	
 	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_HISTORIQUE, true);
 	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_VARIABLES, true);
@@ -66,10 +69,23 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 		return;
 	}
 	
-	parseur::Resultat resultatCommande = cal.Calculer(syn.RecupererArbre());
+	parseur::Resultat resultatCommande = cal.Calculer(syn.RecupererArbre(), m_conteneurVariables);
 	
 	if(resultatCommande.EstUnScalaire())
 		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n --> " + wxString::FromDouble(resultatCommande.ValeurScalaire()));
+	else if(resultatCommande.EstUneMatrice())
+	{
+		//Affichage de la matrice
+		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n");
+		for(int ligne = 1; ligne <= resultatCommande.ValeurMatrice().ObtenirLignes(); ligne++)
+		{
+			for(int colonne = 1; colonne <= resultatCommande.ValeurMatrice().ObtenirColonnes(); colonne++)
+			{
+				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + wxString::FromDouble(resultatCommande.ValeurMatrice().ObtenirValeur(ligne, colonne)) + "\t");
+			}
+			m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n");
+		}
+	}
 	else if(resultatCommande.EstUneErreur())
 		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + resultatCommande.Erreur());
 		

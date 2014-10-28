@@ -3,6 +3,7 @@
 #include "Dialogs.h"
 
 #include "RibbonMetroArtProvider.h"
+#include "Conteneur.h"
 
 class MainFrame : public RibbonFrameBase
 {
@@ -20,6 +21,7 @@ public:
 protected:
 
 	RibbonMetroArtProvider m_artProvider;
+	Conteneur m_conteneurVariables;
 	
 };
 #endif // MAINFRAME_H
