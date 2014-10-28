@@ -87,7 +87,17 @@ Resultat Calculateur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariabl
 			}
 			else if(resultatOperandeGauche.EstUneMatrice() && resultatOperandeDroit.EstUneMatrice())
 			{
-				return Resultat(resultatOperandeGauche.ValeurMatrice() + resultatOperandeDroit.ValeurMatrice());
+				if(resultatOperandeGauche.ValeurMatrice().ObtenirColonnes() == resultatOperandeDroit.ValeurMatrice().ObtenirColonnes() &&
+				   resultatOperandeGauche.ValeurMatrice().ObtenirLignes()   == resultatOperandeDroit.ValeurMatrice().ObtenirLignes())
+				{
+					//Bonne dimension
+					return Resultat(resultatOperandeGauche.ValeurMatrice() + resultatOperandeDroit.ValeurMatrice());
+				}
+				else
+				{
+					//Dimensions qui ne correspondent pas
+					return Resultat("Impossible d'additionner deux matrices de dimensions differentes");
+				}
 			}
 			else
 			{
@@ -124,7 +134,17 @@ Resultat Calculateur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariabl
 			}
 			else if(resultatOperandeGauche.EstUneMatrice() && resultatOperandeDroit.EstUneMatrice())
 			{
-				return Resultat(resultatOperandeGauche.ValeurMatrice() - resultatOperandeDroit.ValeurMatrice());
+				if(resultatOperandeGauche.ValeurMatrice().ObtenirColonnes() == resultatOperandeDroit.ValeurMatrice().ObtenirColonnes() &&
+				   resultatOperandeGauche.ValeurMatrice().ObtenirLignes()   == resultatOperandeDroit.ValeurMatrice().ObtenirLignes())
+				{
+					//Bonne dimension
+					return Resultat(resultatOperandeGauche.ValeurMatrice() - resultatOperandeDroit.ValeurMatrice());
+				}
+				else
+				{
+					//Dimensions qui ne correspondent pas
+					return Resultat("Impossible de soustraire deux matrices de dimensions différentes");
+				}
 			}
 			else
 			{
