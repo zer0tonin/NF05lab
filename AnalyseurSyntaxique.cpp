@@ -267,6 +267,39 @@ bool Noeud::MettreEnArbre()
 			}
 		}
 	}
+	
+	// - Affectation (=)
+	for(int a = 0; a < m_enfants.size(); a++)
+	{
+		if(m_enfants[a]->m_type == Lexeme::OPERATEUR_EGAL)
+		{
+			//Cherche le nombre/matrice précédant et suivant l'opérateur. 
+			//(pas de possibilité d'avoir une opération unaire cette fois)
+			Noeud *noeudOperateur = m_enfants[a];
+			if(a > 0 && a < m_enfants.size() - 1)
+			{
+				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
+				std::vector<Noeud*> listeNoeudPourOperateur;
+				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
+				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
+				
+				noeudOperateur->m_enfants = listeNoeudPourOperateur;
+				
+				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
+				
+				//On ajoute le noeud généré de l'opérateur
+				m_enfants.insert(m_enfants.begin() + a - 1, noeudOperateur);
+				a--;
+			}
+			else
+			{
+				//L'opérateur est par exemple précédé/suivi d'un autre opérateur/parenthèse ou en est précédé
+				//C'est une erreur de syntaxe
+				return false;
+			}
+		}
+	}
 		
 	return true;
 }
@@ -285,6 +318,8 @@ void Noeud::AfficherContenu(wxTreeCtrl *arbre, wxTreeItemId parent) const
 		contenu += "/";
 	else if(m_type == Lexeme::OPERATEUR_PUISSANCE)
 		contenu += "^";
+	else if(m_type == Lexeme::OPERATEUR_EGAL)
+		contenu += "=";
 	else if(m_type == Lexeme::PARENTHESE)
 		contenu += "()";
 	else if(m_type == Lexeme::CONSTANTE)

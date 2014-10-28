@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AnalyseurSyntaxique.h"
+#include "Conteneur.h"
 #include "Matrice.h"
 
 namespace parseur
@@ -44,7 +45,7 @@ public:
 	Calculateur();
 	~Calculateur();
 	
-	Resultat Calculer(const Noeud &noeud); ///TODO: Ajouter le containeur en argument
+	Resultat Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables);
 
 };
 
