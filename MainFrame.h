@@ -18,7 +18,7 @@ public:
 	
 	virtual void SurClicAffichageHistorique( wxCommandEvent& event );
 	virtual void SurClicAffichageVariables( wxCommandEvent& event );
-	virtual void SurClicAjouterVariable( wxCommandEvent& event);
+	virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event);
 	
 protected:
 

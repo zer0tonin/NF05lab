@@ -38,6 +38,7 @@
 
 #define BOUTON_AFFICHAGE_HISTORIQUE 1000
 #define BOUTON_AFFICHAGE_VARIABLES 1001
+#define AJOUTER_VARIABLE_BUTTON_ID 1002
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase

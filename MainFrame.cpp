@@ -4,14 +4,8 @@
 #include <wx/log.h>
 
 #include <iostream>
-<<<<<<< HEAD
-#include "AnalyseurLexical.h"
-#include "AnalyseurSyntaxique.h"
-#include "Calculateur.h"
 #include "AjoutMatriceDialogue.h"
-=======
 #include "Parseur.h"
->>>>>>> d7d5ac8e111d72533c0a3cab3fe37367db431f89
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true), m_conteneurVariables()
 {
@@ -111,7 +105,7 @@ void MainFrame::SurClicAffichageVariables( wxCommandEvent& event )
 	m_mgr.Update();
 }
 
-void MainFrame::SurClicAjouterVariable( wxCommandEvent& event)
+void MainFrame::SurClicAjouterVariable( wxRibbonButtonBarEvent& event)
 {
 	AjoutMatriceDialogue AjoutMatrice(this);
 	AjoutMatrice.ShowModal();

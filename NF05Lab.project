@@ -45,6 +45,7 @@
     <File Name="Matrice.cpp"/>
     <File Name="Calculs.cpp"/>
     <File Name="Conteneur.cpp"/>
+    <File Name="AjoutMatriceDialogue.cpp"/>
     <File Name="Parseur.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
