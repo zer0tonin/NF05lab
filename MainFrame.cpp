@@ -86,6 +86,7 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + e.what());
 	}
 		
+
 	m_arbreSyntaxe->ExpandAll();
 	m_zoneCommande->SetValue("");
 	

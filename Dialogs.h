@@ -30,15 +30,16 @@
 #include <wx/treectrl.h>
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
-#include <wx/grid.h>
+#include <wx/spinctrl.h>
 #include <wx/button.h>
+#include <wx/grid.h>
 #include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
 #define BOUTON_AFFICHAGE_HISTORIQUE 1000
 #define BOUTON_AFFICHAGE_VARIABLES 1001
-#define AJOUTER_VARIABLE_BUTTON_ID 1002
+#define VALIDER_TAILLE_MATRICE_ID 1002
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -94,10 +95,17 @@ class AjoutMatriceDialogueBase : public wxDialog
 	private:
 	
 	protected:
-		wxGrid* m_grid1;
+		wxSpinCtrl* m_lignesSpin;
+		wxSpinCtrl* m_colonnesSpin;
+		wxButton* BoutonValider;
+		wxGrid* m_tableauMatrice;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		wxButton* m_sdbSizer1Cancel;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void SurClicValiderTailleMatrice( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		

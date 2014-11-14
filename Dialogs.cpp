@@ -43,7 +43,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonBar1->SetActivePage( m_ribbonPage3 ); 
 	m_ribbonPanel2 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Gestion des variables") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar2 = new wxRibbonButtonBar( m_ribbonPanel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_ribbonButtonBar2->AddButton( AJOUTER_VARIABLE_BUTTON_ID, wxT("Ajouter..."), edit_add_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Ajouter..."), edit_add_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Editer..."), edit_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Supprimer"), editdelete_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Supprimer toutes les variables"), edittrash_png_to_wx_bitmap(), wxEmptyString);
@@ -120,7 +120,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	// Connect Events
 	this->Connect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Connect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
-	this->Connect( AJOUTER_VARIABLE_BUTTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
+	this->Connect( wxID_ANY, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
 	m_zoneCommande->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 }
 
@@ -129,7 +129,7 @@ RibbonFrameBase::~RibbonFrameBase()
 	// Disconnect Events
 	this->Disconnect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Disconnect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
-	this->Disconnect( AJOUTER_VARIABLE_BUTTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
 	m_zoneCommande->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 	
 	m_mgr.UnInit();
@@ -143,35 +143,52 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	wxFlexGridSizer* fgSizer4;
 	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer4->AddGrowableCol( 0 );
-	fgSizer4->AddGrowableRow( 0 );
+	fgSizer4->AddGrowableRow( 1 );
 	fgSizer4->SetFlexibleDirection( wxBOTH );
 	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_grid1 = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	wxFlexGridSizer* fgSizer5;
+	fgSizer5 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer5->SetFlexibleDirection( wxBOTH );
+	fgSizer5->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_lignesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	fgSizer5->Add( m_lignesSpin, 0, wxALL, 5 );
+	
+	m_colonnesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	fgSizer5->Add( m_colonnesSpin, 0, wxALL, 5 );
+	
+	BoutonValider = new wxButton( this, VALIDER_TAILLE_MATRICE_ID, wxT("Valider"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer5->Add( BoutonValider, 0, wxALL, 5 );
+	
+	
+	fgSizer4->Add( fgSizer5, 1, wxEXPAND, 5 );
+	
+	m_tableauMatrice = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	
 	// Grid
-	m_grid1->CreateGrid( 2, 2 );
-	m_grid1->EnableEditing( true );
-	m_grid1->EnableGridLines( true );
-	m_grid1->EnableDragGridSize( false );
-	m_grid1->SetMargins( 0, 0 );
+	m_tableauMatrice->CreateGrid( 0, 0 );
+	m_tableauMatrice->EnableEditing( true );
+	m_tableauMatrice->EnableGridLines( true );
+	m_tableauMatrice->EnableDragGridSize( false );
+	m_tableauMatrice->SetMargins( 0, 0 );
 	
 	// Columns
-	m_grid1->EnableDragColMove( false );
-	m_grid1->EnableDragColSize( true );
-	m_grid1->SetColLabelSize( 30 );
-	m_grid1->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	m_tableauMatrice->EnableDragColMove( false );
+	m_tableauMatrice->EnableDragColSize( true );
+	m_tableauMatrice->SetColLabelSize( 30 );
+	m_tableauMatrice->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
 	// Rows
-	m_grid1->EnableDragRowSize( true );
-	m_grid1->SetRowLabelSize( 80 );
-	m_grid1->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	m_tableauMatrice->EnableDragRowSize( true );
+	m_tableauMatrice->SetRowLabelSize( 80 );
+	m_tableauMatrice->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
 	// Label Appearance
 	
 	// Cell Defaults
-	m_grid1->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
-	fgSizer4->Add( m_grid1, 0, wxALL|wxEXPAND, 5 );
+	m_tableauMatrice->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	fgSizer4->Add( m_tableauMatrice, 0, wxALL|wxEXPAND, 5 );
 	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );
@@ -187,8 +204,14 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	this->Layout();
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	BoutonValider->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicValiderTailleMatrice ), NULL, this );
 }
 
 AjoutMatriceDialogueBase::~AjoutMatriceDialogueBase()
 {
+	// Disconnect Events
+	BoutonValider->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicValiderTailleMatrice ), NULL, this );
+	
 }
