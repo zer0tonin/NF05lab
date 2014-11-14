@@ -30,6 +30,9 @@
 #include <wx/treectrl.h>
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
+#include <wx/grid.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -69,6 +72,7 @@ class RibbonFrameBase : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -78,6 +82,26 @@ class RibbonFrameBase : public wxFrame
 		wxAuiManager m_mgr;
 		
 		~RibbonFrameBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class AjoutMatriceDialogueBase
+///////////////////////////////////////////////////////////////////////////////
+class AjoutMatriceDialogueBase : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxGrid* m_grid1;
+		wxStdDialogButtonSizer* m_sdbSizer1;
+		wxButton* m_sdbSizer1OK;
+		wxButton* m_sdbSizer1Cancel;
+	
+	public:
+		
+		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 419,312 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		~AjoutMatriceDialogueBase();
 	
 };
 

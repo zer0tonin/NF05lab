@@ -7,6 +7,7 @@
 #include "AnalyseurLexical.h"
 #include "AnalyseurSyntaxique.h"
 #include "Calculateur.h"
+#include "AjoutMatriceDialogue.h"
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true), m_conteneurVariables()
 {
@@ -116,4 +117,10 @@ void MainFrame::SurClicAffichageVariables( wxCommandEvent& event )
 {
 	m_mgr.GetPane("panneauVariables").Show(event.IsChecked());
 	m_mgr.Update();
+}
+
+void MainFrame::SurClicAjouterVariable( wxCommandEvent& event)
+{
+	AjoutMatriceDialogue AjoutMatrice(this);
+	AjoutMatrice.ShowModal();
 }

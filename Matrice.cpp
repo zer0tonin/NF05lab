@@ -14,6 +14,7 @@ Matrice::Matrice(int Lignes, int Colonnes): m_lignes(Lignes), m_colonnes(Colonne
 {
 }
 
+
 /*
  * Le destructeur de la classe matrice n'effectue pas d'actions particulière.
 */

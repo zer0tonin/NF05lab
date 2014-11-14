@@ -13,7 +13,7 @@
 class Matrice
 {
 public:
-	Matrice(int Lignes, int Colonnes); 
+	Matrice(int Lignes, int Colonnes);
 	~Matrice();
 	
 	int ObtenirLignes() const;
