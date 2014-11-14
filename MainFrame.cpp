@@ -4,9 +4,7 @@
 #include <wx/log.h>
 
 #include <iostream>
-#include "AnalyseurLexical.h"
-#include "AnalyseurSyntaxique.h"
-#include "Calculateur.h"
+#include "Parseur.h"
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true), m_conteneurVariables()
 {
@@ -60,44 +58,32 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	wxString commande = m_zoneCommande->GetValue();
 	m_arbreSyntaxe->DeleteAllItems();
 	
-	parseur::AnalyseurLexical lex;
-	parseur::AnalyseurSyntaxique syn;
-	parseur::Calculateur cal;
-	
-	std::vector<parseur::Lexeme> listeLexeme = lex.Parse(commande.ToStdString());
-	if(lex.Erreur())
+	try
 	{
-		wxLogError(L"Symbole inconnu dans l'expression !");
-		return;
-	}
+		Parseur parseur;
+		Resultat resultatCommande = parseur.CalculerExpression(commande.ToStdString(), m_conteneurVariables, m_arbreSyntaxe);
 		
-	if(syn.CreerArbreSyntaxique(listeLexeme))
-		syn.AfficherContenu(m_arbreSyntaxe);
-	else
-	{
-		wxLogError(L"Expression malformée !");
-		return;
-	}
-	
-	parseur::Resultat resultatCommande = cal.Calculer(syn.RecupererArbre(), m_conteneurVariables);
-	
-	if(resultatCommande.EstUnScalaire())
-		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n --> " + wxString::FromDouble(resultatCommande.ValeurScalaire()));
-	else if(resultatCommande.EstUneMatrice())
-	{
-		//Affichage de la matrice
-		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n");
-		for(int ligne = 0; ligne < resultatCommande.ValeurMatrice().ObtenirLignes(); ligne++)
+		if(resultatCommande.EstUnScalaire())
+			m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n --> " + wxString::FromDouble(resultatCommande.ValeurScalaire()));
+		else if(resultatCommande.EstUneMatrice())
 		{
-			for(int colonne = 0; colonne < resultatCommande.ValeurMatrice().ObtenirColonnes(); colonne++)
+			//Affichage de la matrice
+			m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n");
+			for(int ligne = 0; ligne < resultatCommande.ValeurMatrice().ObtenirLignes(); ligne++)
 			{
-				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + wxString::FromDouble(resultatCommande.ValeurMatrice().ObtenirValeur(ligne, colonne)) + "\t");
+				for(int colonne = 0; colonne < resultatCommande.ValeurMatrice().ObtenirColonnes(); colonne++)
+				{
+					m_zoneResultats->SetValue(m_zoneResultats->GetValue() + wxString::FromDouble(resultatCommande.ValeurMatrice().ObtenirValeur(ligne, colonne)) + "\t");
+				}
+				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n");
 			}
-			m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n");
 		}
+	
 	}
-	else if(resultatCommande.EstUneErreur())
-		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + resultatCommande.Erreur());
+	catch(const std::exception &e)
+	{
+		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + e.what());
+	}
 		
 	m_arbreSyntaxe->ExpandAll();
 	m_zoneCommande->SetValue("");
