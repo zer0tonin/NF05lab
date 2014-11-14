@@ -39,7 +39,8 @@
 
 #define BOUTON_AFFICHAGE_HISTORIQUE 1000
 #define BOUTON_AFFICHAGE_VARIABLES 1001
-#define VALIDER_TAILLE_MATRICE_ID 1002
+#define AJOUTER_VARIABLE_BOUTON_ID 1002
+#define VALIDER_TAILLE_MATRICE_ID 1003
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
