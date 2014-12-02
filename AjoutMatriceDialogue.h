@@ -20,7 +20,7 @@ class AjoutMatriceDialogue : public AjoutMatriceDialogueBase
 	//// end generated class members
 	protected:
 		void SurClicValiderTailleMatrice( wxCommandEvent& event );
-		void SurClicAnnuler( wxCommandEvent& event );
+		//void SurClicAnnuler( wxCommandEvent& event );
 		void SurClicSauver( wxCommandEvent& event );
 	private:
 		Conteneur* m_conteneur;
