@@ -19,6 +19,17 @@ void AjoutMatriceDialogue::SurClicValiderTailleMatrice( wxCommandEvent& event )
 void AjoutMatriceDialogue::SurClicSauver( wxCommandEvent& event )
 {
 	int i,j;
+	if (m_conteneur->Existe((char)m_nomMatrice->GetCurrentSelection()+65))
+	{
+		if (wxMessageBox(L"La variable existe déjà. Etes-vous sûr de vouloir la remplacer?", "Confirmation", wxYES_NO, this) != wxYES)
+		{
+			m_conteneur->SupprimerVariable((char)m_nomMatrice->GetCurrentSelection()+65);
+		}
+		else
+		{
+			return;
+		}
+	}
 	double valeurCase = 0;
 	m_conteneur->AjouterVariable((char)m_nomMatrice->GetCurrentSelection()+65, m_lignesSpin->GetValue(), m_colonnesSpin->GetValue());
 	for (i=0 ; i<m_lignesSpin->GetValue() ; i++)
