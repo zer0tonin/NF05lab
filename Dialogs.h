@@ -30,6 +30,8 @@
 #include <wx/treectrl.h>
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
+#include <wx/stattext.h>
+#include <wx/choice.h>
 #include <wx/spinctrl.h>
 #include <wx/button.h>
 #include <wx/grid.h>
@@ -96,21 +98,25 @@ class AjoutMatriceDialogueBase : public wxDialog
 	private:
 	
 	protected:
+		wxStaticText* m_staticText2;
+		wxChoice* m_nomMatrice;
 		wxSpinCtrl* m_lignesSpin;
 		wxSpinCtrl* m_colonnesSpin;
 		wxButton* BoutonValider;
 		wxGrid* m_tableauMatrice;
 		wxStdDialogButtonSizer* m_sdbSizer1;
-		wxButton* m_sdbSizer1OK;
+		wxButton* m_sdbSizer1Save;
 		wxButton* m_sdbSizer1Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void SurClicValiderTailleMatrice( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurClicAnnuler( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurClicSauver( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 419,312 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~AjoutMatriceDialogueBase();
 	
 };

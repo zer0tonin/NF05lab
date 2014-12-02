@@ -148,9 +148,19 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	wxFlexGridSizer* fgSizer5;
-	fgSizer5 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer5 = new wxFlexGridSizer( 0, 5, 0, 0 );
 	fgSizer5->SetFlexibleDirection( wxBOTH );
 	fgSizer5->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Nom"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2->Wrap( -1 );
+	fgSizer5->Add( m_staticText2, 0, wxALL, 5 );
+	
+	wxString m_nomMatriceChoices[] = { wxT("A"), wxT("B"), wxT("C"), wxT("D"), wxT("E"), wxT("F"), wxT("G"), wxT("H"), wxT("I"), wxT("J"), wxT("K"), wxT("L"), wxT("M"), wxT("N"), wxT("O"), wxT("P"), wxT("Q"), wxT("R"), wxT("S"), wxT("T"), wxT("U"), wxT("V"), wxT("W"), wxT("X"), wxT("Y"), wxT("Z") };
+	int m_nomMatriceNChoices = sizeof( m_nomMatriceChoices ) / sizeof( wxString );
+	m_nomMatrice = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_nomMatriceNChoices, m_nomMatriceChoices, 0 );
+	m_nomMatrice->SetSelection( 26 );
+	fgSizer5->Add( m_nomMatrice, 0, wxALL, 5 );
 	
 	m_lignesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	fgSizer5->Add( m_lignesSpin, 0, wxALL, 5 );
@@ -191,8 +201,8 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	fgSizer4->Add( m_tableauMatrice, 0, wxALL|wxEXPAND, 5 );
 	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
-	m_sdbSizer1OK = new wxButton( this, wxID_OK );
-	m_sdbSizer1->AddButton( m_sdbSizer1OK );
+	m_sdbSizer1Save = new wxButton( this, wxID_SAVE );
+	m_sdbSizer1->AddButton( m_sdbSizer1Save );
 	m_sdbSizer1Cancel = new wxButton( this, wxID_CANCEL );
 	m_sdbSizer1->AddButton( m_sdbSizer1Cancel );
 	m_sdbSizer1->Realize();
@@ -207,11 +217,15 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	
 	// Connect Events
 	BoutonValider->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicValiderTailleMatrice ), NULL, this );
+	m_sdbSizer1Cancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicAnnuler ), NULL, this );
+	m_sdbSizer1Save->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicSauver ), NULL, this );
 }
 
 AjoutMatriceDialogueBase::~AjoutMatriceDialogueBase()
 {
 	// Disconnect Events
 	BoutonValider->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicValiderTailleMatrice ), NULL, this );
+	m_sdbSizer1Cancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicAnnuler ), NULL, this );
+	m_sdbSizer1Save->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AjoutMatriceDialogueBase::SurClicSauver ), NULL, this );
 	
 }

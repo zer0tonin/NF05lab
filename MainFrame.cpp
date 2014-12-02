@@ -108,6 +108,6 @@ void MainFrame::SurClicAffichageVariables( wxCommandEvent& event )
 
 void MainFrame::SurClicAjouterVariable( wxRibbonButtonBarEvent& event)
 {
-	AjoutMatriceDialogue AjoutMatrice(this);
+	AjoutMatriceDialogue AjoutMatrice(this, &m_conteneurVariables);
 	AjoutMatrice.ShowModal();
 }
