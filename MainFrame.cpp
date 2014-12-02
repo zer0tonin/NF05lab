@@ -119,6 +119,6 @@ void MainFrame::SurClicSupprimerVariable( wxRibbonButtonBarEvent& event)
 	if(m_arbreVariables->GetFocusedItem() == m_arbreVariables->GetRootItem())
 		return;
 	
-	m_conteneurVariables.SupprimerVariable(m_arbreVariables->GetItemText(m_arbreVariables->GetFocusedItem()));
+	m_conteneurVariables.SupprimerVariable(m_arbreVariables->GetItemText(m_arbreVariables->GetFocusedItem())[0]);
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
