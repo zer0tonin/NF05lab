@@ -42,7 +42,8 @@
 #define BOUTON_AFFICHAGE_HISTORIQUE 1000
 #define BOUTON_AFFICHAGE_VARIABLES 1001
 #define AJOUTER_VARIABLE_BOUTON_ID 1002
-#define VALIDER_TAILLE_MATRICE_ID 1003
+#define SUPPRIMER_VARIABLE_BOUTON_ID 1003
+#define VALIDER_TAILLE_MATRICE_ID 1004
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -78,6 +79,7 @@ class RibbonFrameBase : public wxFrame
 		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }
 		
 	

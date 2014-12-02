@@ -932,7 +932,7 @@
                                 <property name="font"></property>
                                 <property name="help"></property>
                                 <property name="hidden">0</property>
-                                <property name="id">wxID_ANY</property>
+                                <property name="id">SUPPRIMER_VARIABLE_BOUTON_ID</property>
                                 <property name="label">Supprimer</property>
                                 <property name="maximum_size"></property>
                                 <property name="minimum_size"></property>
@@ -962,7 +962,7 @@
                                 <event name="OnMouseEvents"></event>
                                 <event name="OnMouseWheel"></event>
                                 <event name="OnPaint"></event>
-                                <event name="OnRibbonButtonClicked"></event>
+                                <event name="OnRibbonButtonClicked">SurClicSupprimerVariable</event>
                                 <event name="OnRightDClick"></event>
                                 <event name="OnRightDown"></event>
                                 <event name="OnRightUp"></event>
@@ -1020,7 +1020,7 @@
                             </object>
                         </object>
                     </object>
-                    <object class="wxRibbonPanel" expanded="0">
+                    <object class="wxRibbonPanel" expanded="1">
                         <property name="bg"></property>
                         <property name="bitmap"></property>
                         <property name="context_help"></property>
