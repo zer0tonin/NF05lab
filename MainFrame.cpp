@@ -15,18 +15,6 @@ MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(
 	m_ribbonBar1->SetArtProvider(&m_artProvider);
 	m_ribbonBar1->Realize();
 	
-	m_conteneurVariables.AjouterVariable('A', 2, 3);
-	m_conteneurVariables.Variable('A').FixerValeur(0, 0, 1);
-	m_conteneurVariables.Variable('A').FixerValeur(0, 1, 2);
-	m_conteneurVariables.Variable('A').FixerValeur(1, 0, 3);
-	m_conteneurVariables.Variable('A').FixerValeur(1, 1, 4);
-	
-	m_conteneurVariables.AjouterVariable('B', 3, 4);
-	m_conteneurVariables.Variable('B').FixerValeur(0, 0, 1);
-	m_conteneurVariables.Variable('B').FixerValeur(1, 1, 2);
-	m_conteneurVariables.Variable('B').FixerValeur(2, 2, 3);
-	m_conteneurVariables.Variable('B').FixerValeur(1, 2, 4);
-	
 	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_HISTORIQUE, true);
 	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_VARIABLES, true);
 }
@@ -109,16 +97,19 @@ void MainFrame::SurClicAjouterVariable( wxRibbonButtonBarEvent& event)
 {
 	AjoutMatriceDialogue AjoutMatrice(this, &m_conteneurVariables);
 	AjoutMatrice.ShowModal();
+	
+	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
 void MainFrame::SurClicSupprimerVariable( wxRibbonButtonBarEvent& event)
 {
-	if(wxMessageBox("Etes-vous sûr de vouloir supprimer la variable sélectionnée ?", "Confirmation", wxYES_NO, this) != wxYES)
+	if(wxMessageBox(L"Etes-vous sûr de vouloir supprimer la variable sélectionnée ?", "Confirmation", wxYES_NO, this) != wxYES)
 		return;
 	
 	if(m_arbreVariables->GetFocusedItem() == m_arbreVariables->GetRootItem())
 		return;
 	
 	m_conteneurVariables.SupprimerVariable(m_arbreVariables->GetItemText(m_arbreVariables->GetFocusedItem())[0]);
+	
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
