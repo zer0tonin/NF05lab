@@ -1929,7 +1929,7 @@
             <property name="name">AjoutMatriceDialogueBase</property>
             <property name="pos"></property>
             <property name="size">500,312</property>
-            <property name="style">wxDEFAULT_DIALOG_STYLE</property>
+            <property name="style">wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxRESIZE_BORDER</property>
             <property name="subclass"></property>
             <property name="title"></property>
             <property name="tooltip"></property>

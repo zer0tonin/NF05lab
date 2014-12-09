@@ -29,6 +29,14 @@ m_editeMatriceExistante(matriceAEditer != '\0')
 				m_tableauMatrice->SetCellValue(i, j, wxString::FromDouble(matrice.ObtenirValeur(i, j)));
 			}
 		}
+		
+		//Affichage du titre de la fenêtre (wxString::Format permet de générer une chaîne de caractère en utilisant
+		// les mêmes procédés que pour printf).
+		SetTitle(wxString::Format("Edition de la matrice %c", matriceAEditer));
+	}
+	else
+	{
+		SetTitle("Ajouter une nouvelle variable");
 	}
 }
 
