@@ -18,7 +18,7 @@ public:
 	void MAJGUI(wxTreeCtrl* Arbre) const;
 	
 private:
-	std::map<char, Matrice> m_conteneur; 
+	std::map<char, Matrice> m_conteneur;
 };
 
 #endif // CONTENEUR_H
