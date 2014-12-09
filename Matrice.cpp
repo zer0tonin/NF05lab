@@ -181,7 +181,8 @@ Matrice Matrice::Inverse() const
 			{
 				if (i != r) //i différent de r
 				{
-					for(l=0; l<2*m_colonnes ; l++)
+					for(l=0; l<2*m_colonnes ; l++) //soustraire à la ligne i la ligne r multipliée par A[i,j] (de façon à annuler A[i,j])
+
 					{
 						Resultat.FixerValeur(i,l, Resultat.ObtenirValeur(i,l) - Resultat.ObtenirValeur(r,l)*Resultat.ObtenirValeur(i,j));
 					}
