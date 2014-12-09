@@ -153,7 +153,7 @@ Matrice Matrice::Inverse() const
 	
 	for (j=0; j<2*m_colonnes; j++) //pour j variant de 1 à m (j décrit tous les indices de colonnes) 
 	{
-		for (i=r; j<m_lignes; i++) //chercher le maximum des modules des A[i,j], i variant de r+1 à n et soit k son indice de ligne
+		for (i=r; i<m_lignes; i++) //chercher le maximum des modules des A[i,j], i variant de r+1 à n et soit k son indice de ligne
 		{
 			if(fabs(Resultat.ObtenirValeur(i,j)) > max)
 			{
@@ -270,7 +270,7 @@ Matrice Matrice::RetraitColonne(int Colonne) const
 {
 	int i, j;
 	Matrice Resultat(m_lignes-1, m_colonnes-1);
-	for (i=0; i<m_lignes; i++)
+	for (i=1; i<m_lignes; i++)
 	{
 		for (j=0; j<m_colonnes; j++)
 		{
