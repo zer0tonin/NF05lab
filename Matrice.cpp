@@ -122,7 +122,74 @@ float Matrice::Determinant() const
 
 Matrice Matrice::Inverse() const
 {
+	int r = 0; //initialiser r à 0 (r est l'indice de ligne du dernier pivot trouvé)
+	int i, j, k, l;
+	float max = 0;
+	Matrice Resultat(m_lignes, 2*m_colonnes);
+	Matrice Inverse(m_lignes, m_colonnes);
 	
+	for(j=0; j<m_colonnes; j++)
+	{
+		for(i=0; i<m_lignes; i++)
+		{
+			Resultat.FixerValeur(i, j, m_contenu[i][j]);
+		}
+	}
+	
+	for(j=m_colonnes; j<2*m_colonnes; j++)
+	{
+		for(i=0; i<m_lignes; i++)
+		{
+			if(i==j-m_colonnes)
+			{
+				Resultat.FixerValeur(i, j, 1);
+			}
+			else
+			{
+				Resultat.FixerValeur(i, j, 0);
+			}
+		}
+	}
+	
+	for (j=0; j<2*m_colonnes; j++) //pour j variant de 1 à m (j décrit tous les indices de colonnes) 
+	{
+		for (i=r; j<m_lignes; i++) //chercher le maximum des modules des A[i,j], i variant de r+1 à n et soit k son indice de ligne
+		{
+			if(fabs(Resultat.ObtenirValeur(i,j)) > max)
+			{
+				max = Resultat.ObtenirValeur(i,j);
+				k = i;
+			}
+		}
+		
+		if (max != 0) //si ce max est non nul alors 
+		{
+			r++; //augmenter r de 1
+			for(i=0; i<2*m_colonnes; i++) //échanger les lignes k et r
+			{
+				inter = Resultat.ObtenirValeur(k,i);
+				Resultat.FixerValeur(k,i,Resultat.ObtenirValeur(r,i));
+				Resultat.FixerValeur(r,i,inter);
+			}
+			
+			for(i=0; i<2*m_colonnes; i++)
+			{
+				Resultat.ObtenirValeur(r,i) = Resultat.ObtenirValeur(r,i) / Resultat.ObternirValeur(r,j); //diviser la ligne r par A[r,j] (de sorte que ce coefficient devient un pivot)
+			}
+			
+			for(i=0; i<m_lignes; i++) //pour i variant de 1 à n
+			{
+				if (i != r) //i différent de r
+				{
+					for(l=0; l<2*m_colonnes ; l++)
+					{
+						Resultat.FixerValeur(i,l, Resultat.ObtenirValeur(i,l) - Resultat.ObtenirValeur(r,l)*Resultat.ObtenirValeur(i,j));
+					}
+				}
+			}
+		}
+	}
+	return Resultat;
 }
 
 /*
