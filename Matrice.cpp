@@ -124,7 +124,7 @@ Matrice Matrice::Inverse() const
 {
 	int r = 0; //initialiser r à 0 (r est l'indice de ligne du dernier pivot trouvé)
 	int i, j, k, l;
-	float max = 0;
+	float max = 0, inter;
 	Matrice Resultat(m_lignes, 2*m_colonnes);
 	Matrice Inverse(m_lignes, m_colonnes);
 	
@@ -174,7 +174,7 @@ Matrice Matrice::Inverse() const
 			
 			for(i=0; i<2*m_colonnes; i++)
 			{
-				Resultat.ObtenirValeur(r,i) = Resultat.ObtenirValeur(r,i) / Resultat.ObternirValeur(r,j); //diviser la ligne r par A[r,j] (de sorte que ce coefficient devient un pivot)
+				Resultat.ObtenirValeur(r,i) = Resultat.ObtenirValeur(r,i) / Resultat.ObtenirValeur(r,j); //diviser la ligne r par A[r,j] (de sorte que ce coefficient devient un pivot)
 			}
 			
 			for(i=0; i<m_lignes; i++) //pour i variant de 1 à n
