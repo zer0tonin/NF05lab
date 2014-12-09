@@ -153,6 +153,8 @@ Matrice Matrice::Inverse() const
 	
 	for (j=0; j<2*m_colonnes; j++) //pour j variant de 1 à m (j décrit tous les indices de colonnes) 
 	{
+		max = 0;
+		k = 0;
 		for (i=r; i<m_lignes; i++) //chercher le maximum des modules des A[i,j], i variant de r+1 à n et soit k son indice de ligne
 		{
 			if(fabs(Resultat.ObtenirValeur(i,j)) > max)
@@ -164,7 +166,6 @@ Matrice Matrice::Inverse() const
 		
 		if (max != 0) //si ce max est non nul alors 
 		{
-			r++; //augmenter r de 1
 			for(i=0; i<2*m_colonnes; i++) //échanger les lignes k et r
 			{
 				inter = Resultat.ObtenirValeur(k,i);
@@ -172,21 +173,13 @@ Matrice Matrice::Inverse() const
 				Resultat.FixerValeur(r,i,inter);
 			}
 			
-			for(i=0; i<2*m_colonnes; i++)
+			for(i=r+1; i<m_lignes; i++)
 			{
-				Resultat.FixerValeur(r,i, Resultat.ObtenirValeur(r,i) / Resultat.ObtenirValeur(r,j)); //diviser la ligne r par A[r,j] (de sorte que ce coefficient devient un pivot)
-			}
-			
-			for(i=0; i<m_lignes; i++) //pour i variant de 1 à n
-			{
-				if (i != r) //i différent de r
+				for(l = r+1; l<2*m_colonnes; r++)
 				{
-					for(l=0; l<2*m_colonnes ; l++) //soustraire à la ligne i la ligne r multipliée par A[i,j] (de façon à annuler A[i,j])
-
-					{
-						Resultat.FixerValeur(i,l, Resultat.ObtenirValeur(i,l) - Resultat.ObtenirValeur(r,l)*Resultat.ObtenirValeur(i,j));
-					}
+					Resultat.FixerValeur(i, l, Resultat.ObtenirValeur(i,l) - Resultat.ObtenirValeur(r,l) * (Resultat.ObtenirValeur(i,r) / Resultat.ObtenirValeur(r,r)));
 				}
+				Resultat.FixerValeur(i, r, 0);
 			}
 		}
 	}
