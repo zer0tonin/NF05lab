@@ -174,7 +174,7 @@ Matrice Matrice::Inverse() const
 			
 			for(i=0; i<2*m_colonnes; i++)
 			{
-				Resultat.ObtenirValeur(r,i) = Resultat.ObtenirValeur(r,i) / Resultat.ObtenirValeur(r,j); //diviser la ligne r par A[r,j] (de sorte que ce coefficient devient un pivot)
+				Resultat.FixerValeur(r,i, Resultat.ObtenirValeur(r,i) / Resultat.ObtenirValeur(r,j)); //diviser la ligne r par A[r,j] (de sorte que ce coefficient devient un pivot)
 			}
 			
 			for(i=0; i<m_lignes; i++) //pour i variant de 1 à n
