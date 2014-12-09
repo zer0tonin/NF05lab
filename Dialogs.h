@@ -120,7 +120,7 @@ class AjoutMatriceDialogueBase : public wxDialog
 	
 	public:
 		
-		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxRESIZE_BORDER ); 
 		~AjoutMatriceDialogueBase();
 	
 };

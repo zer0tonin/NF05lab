@@ -660,7 +660,10 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			}
 			else if(resultatOperandeGauche.EstUnScalaire() && resultatOperandeDroit.EstUneMatrice())
 			{
-				return Resultat(resultatOperandeGauche.ValeurScalaire() * resultatOperandeDroit.ValeurMatrice().Inverse());
+				if(resultatOperandeDroit.ValeurMatrice().Inversible())
+					return Resultat(resultatOperandeGauche.ValeurScalaire() * resultatOperandeDroit.ValeurMatrice().Inverse());
+				else 
+					throw ExceptionParseur("Matrice non inversible !");
 			}
 			else if(resultatOperandeGauche.EstUneMatrice() && resultatOperandeDroit.EstUnScalaire())
 			{
