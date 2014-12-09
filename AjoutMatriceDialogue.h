@@ -17,7 +17,7 @@ class AjoutMatriceDialogue : public AjoutMatriceDialogueBase
 {
 	public:
 		/** Constructor */
-		AjoutMatriceDialogue( wxWindow* parent, Conteneur* conteneur );
+		AjoutMatriceDialogue( wxWindow* parent, Conteneur* conteneur, char matriceAEditer = '\0' );
 	//// end generated class members
 	protected:
 		void SurClicValiderTailleMatrice( wxCommandEvent& event );
@@ -25,6 +25,7 @@ class AjoutMatriceDialogue : public AjoutMatriceDialogueBase
 		void SurClicSauver( wxCommandEvent& event );
 	private:
 		Conteneur* m_conteneur;
+		bool m_editeMatriceExistante;
 };
 
 #endif // __AjoutMatriceDialogue__

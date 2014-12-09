@@ -660,7 +660,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			}
 			else if(resultatOperandeGauche.EstUnScalaire() && resultatOperandeDroit.EstUneMatrice())
 			{
-				return Resultat("Ne peut pas diviser un nombre par une matrice");
+				return Resultat(resultatOperandeGauche.ValeurScalaire() * resultatOperandeDroit.ValeurMatrice().Inverse());
 			}
 			else if(resultatOperandeGauche.EstUneMatrice() && resultatOperandeDroit.EstUnScalaire())
 			{

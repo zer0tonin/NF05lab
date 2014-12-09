@@ -44,7 +44,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonPanel2 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Gestion des variables") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar2 = new wxRibbonButtonBar( m_ribbonPanel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_ribbonButtonBar2->AddButton( AJOUTER_VARIABLE_BOUTON_ID, wxT("Ajouter..."), edit_add_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Editer..."), edit_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar2->AddButton( EDITER_VARIABLE_BOUTON_ID, wxT("Editer..."), edit_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( SUPPRIMER_VARIABLE_BOUTON_ID, wxT("Supprimer"), editdelete_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Supprimer toutes les variables"), edittrash_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel21 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Historique") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
@@ -121,6 +121,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Connect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Connect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	this->Connect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
+	this->Connect( EDITER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEditerVariable ) );
 	this->Connect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
 	m_zoneCommande->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 }
@@ -131,6 +132,7 @@ RibbonFrameBase::~RibbonFrameBase()
 	this->Disconnect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Disconnect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	this->Disconnect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
+	this->Disconnect( EDITER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEditerVariable ) );
 	this->Disconnect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
 	m_zoneCommande->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 	
@@ -151,12 +153,14 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	
 	wxFlexGridSizer* fgSizer5;
 	fgSizer5 = new wxFlexGridSizer( 0, 5, 0, 0 );
+	fgSizer5->AddGrowableCol( 4 );
+	fgSizer5->AddGrowableRow( 0 );
 	fgSizer5->SetFlexibleDirection( wxBOTH );
 	fgSizer5->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Nom"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
-	fgSizer5->Add( m_staticText2, 0, wxALL, 5 );
+	fgSizer5->Add( m_staticText2, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxString m_nomMatriceChoices[] = { wxT("A"), wxT("B"), wxT("C"), wxT("D"), wxT("E"), wxT("F"), wxT("G"), wxT("H"), wxT("I"), wxT("J"), wxT("K"), wxT("L"), wxT("M"), wxT("N"), wxT("O"), wxT("P"), wxT("Q"), wxT("R"), wxT("S"), wxT("T"), wxT("U"), wxT("V"), wxT("W"), wxT("X"), wxT("Y"), wxT("Z") };
 	int m_nomMatriceNChoices = sizeof( m_nomMatriceChoices ) / sizeof( wxString );
@@ -170,8 +174,8 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	m_colonnesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	fgSizer5->Add( m_colonnesSpin, 0, wxALL, 5 );
 	
-	BoutonValider = new wxButton( this, VALIDER_TAILLE_MATRICE_ID, wxT("Valider"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer5->Add( BoutonValider, 0, wxALL, 5 );
+	BoutonValider = new wxButton( this, VALIDER_TAILLE_MATRICE_ID, wxT("Changer la taille"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer5->Add( BoutonValider, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	fgSizer4->Add( fgSizer5, 1, wxEXPAND, 5 );

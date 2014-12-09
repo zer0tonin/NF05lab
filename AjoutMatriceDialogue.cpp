@@ -1,19 +1,61 @@
 #include "AjoutMatriceDialogue.h"
 
-AjoutMatriceDialogue::AjoutMatriceDialogue( wxWindow* parent, Conteneur* conteneur )
+AjoutMatriceDialogue::AjoutMatriceDialogue( wxWindow* parent, Conteneur* conteneur, char matriceAEditer )
 :
 AjoutMatriceDialogueBase( parent ),
-m_conteneur(conteneur)
+m_conteneur(conteneur),
+m_editeMatriceExistante(matriceAEditer != '\0')
 {
-
+	//Si on souhaite éditer une matrice existance, il faut :
+	// - sélectionner le nom de la matrice dans le combobox m_nomMatrice
+	// - Charger le contenu de la matrice depuis le conteneur de matrices
+	if(m_editeMatriceExistante)
+	{
+		m_nomMatrice->SetSelection((char)(matriceAEditer - 65));
+		m_nomMatrice->Disable(); //On empêche l'utilisateur de changer le nom de la matrice
+		
+		Matrice &matrice = m_conteneur->Variable(matriceAEditer);
+		
+		//Chargement de la matrice
+		m_tableauMatrice->AppendRows(matrice.ObtenirLignes());
+		m_tableauMatrice->AppendCols(matrice.ObtenirColonnes());
+		m_lignesSpin->SetValue(matrice.ObtenirLignes());
+		m_colonnesSpin->SetValue(matrice.ObtenirColonnes());
+		
+		for(int i = 0; i < matrice.ObtenirLignes(); i++)
+		{
+			for(int j = 0; j < matrice.ObtenirColonnes(); j++)
+			{
+				m_tableauMatrice->SetCellValue(i, j, wxString::FromDouble(matrice.ObtenirValeur(i, j)));
+			}
+		}
+	}
 }
 
 void AjoutMatriceDialogue::SurClicValiderTailleMatrice( wxCommandEvent& event )
 {
-		m_tableauMatrice->DeleteCols(0, m_tableauMatrice->GetNumberCols());
-		m_tableauMatrice->DeleteRows(0, m_tableauMatrice->GetNumberRows());
-		m_tableauMatrice->AppendCols(m_colonnesSpin->GetValue());
-		m_tableauMatrice->AppendRows(m_lignesSpin->GetValue());
+	//On compare la nouvelle taille souhaitée à la taille actuelle du tableau
+	int nombreLignes = m_lignesSpin->GetValue() - m_tableauMatrice->GetNumberRows();
+	int nombreColonnes = m_colonnesSpin->GetValue() - m_tableauMatrice->GetNumberCols();
+	
+	//Si il y a trop de lignes/colonnes, on en retire suffisamment
+	if(nombreLignes < 0)
+	{
+		m_tableauMatrice->DeleteRows(m_tableauMatrice->GetNumberRows() + nombreLignes, -nombreLignes);
+	}
+	if(nombreColonnes < 0)
+	{
+		m_tableauMatrice->DeleteCols(m_tableauMatrice->GetNumberCols() + nombreColonnes, -nombreColonnes);
+	}
+	
+	if(nombreLignes > 0)
+	{
+		m_tableauMatrice->AppendRows(nombreLignes);
+	}
+	if(nombreColonnes > 0)
+	{
+		m_tableauMatrice->AppendCols(nombreColonnes);
+	}
 }
 
 void AjoutMatriceDialogue::SurClicSauver( wxCommandEvent& event )
@@ -21,7 +63,7 @@ void AjoutMatriceDialogue::SurClicSauver( wxCommandEvent& event )
 	int i,j;
 	if (m_conteneur->Existe((char)m_nomMatrice->GetCurrentSelection()+65))
 	{
-		if (wxMessageBox(L"La variable existe déjà. Etes-vous sûr de vouloir la remplacer?", "Confirmation", wxYES_NO, this) != wxYES)
+		if (m_editeMatriceExistante || wxMessageBox(L"La variable existe déjà. Etes-vous sûr de vouloir la remplacer?", "Confirmation", wxYES_NO, this) == wxYES)
 		{
 			m_conteneur->SupprimerVariable((char)m_nomMatrice->GetCurrentSelection()+65);
 		}

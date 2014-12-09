@@ -26,7 +26,7 @@
         <property name="ui_table">UI</property>
         <property name="use_enum">0</property>
         <property name="use_microsoft_bom">0</property>
-        <object class="Frame" expanded="0">
+        <object class="Frame" expanded="1">
             <property name="aui_managed">1</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -88,7 +88,7 @@
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
-            <object class="wxRibbonBar" expanded="0">
+            <object class="wxRibbonBar" expanded="1">
                 <property name="BottomDockable">0</property>
                 <property name="LeftDockable">0</property>
                 <property name="RightDockable">0</property>
@@ -690,7 +690,7 @@
                         </object>
                     </object>
                 </object>
-                <object class="wxRibbonPage" expanded="0">
+                <object class="wxRibbonPage" expanded="1">
                     <property name="bg"></property>
                     <property name="bitmap"></property>
                     <property name="context_help"></property>
@@ -736,7 +736,7 @@
                     <event name="OnSetFocus"></event>
                     <event name="OnSize"></event>
                     <event name="OnUpdateUI"></event>
-                    <object class="wxRibbonPanel" expanded="0">
+                    <object class="wxRibbonPanel" expanded="1">
                         <property name="bg"></property>
                         <property name="bitmap"></property>
                         <property name="context_help"></property>
@@ -783,7 +783,7 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="wxRibbonButtonBar" expanded="0">
+                        <object class="wxRibbonButtonBar" expanded="1">
                             <property name="bg"></property>
                             <property name="context_help"></property>
                             <property name="context_menu">1</property>
@@ -884,7 +884,7 @@
                                 <property name="font"></property>
                                 <property name="help"></property>
                                 <property name="hidden">0</property>
-                                <property name="id">wxID_ANY</property>
+                                <property name="id">EDITER_VARIABLE_BOUTON_ID</property>
                                 <property name="label">Editer...</property>
                                 <property name="maximum_size"></property>
                                 <property name="minimum_size"></property>
@@ -914,7 +914,7 @@
                                 <event name="OnMouseEvents"></event>
                                 <event name="OnMouseWheel"></event>
                                 <event name="OnPaint"></event>
-                                <event name="OnRibbonButtonClicked"></event>
+                                <event name="OnRibbonButtonClicked">SurClicEditerVariable</event>
                                 <event name="OnRightDClick"></event>
                                 <event name="OnRightDown"></event>
                                 <event name="OnRightUp"></event>
@@ -1991,8 +1991,8 @@
                     <object class="wxFlexGridSizer" expanded="1">
                         <property name="cols">5</property>
                         <property name="flexible_direction">wxBOTH</property>
-                        <property name="growablecols"></property>
-                        <property name="growablerows"></property>
+                        <property name="growablecols">4</property>
+                        <property name="growablerows">0</property>
                         <property name="hgap">0</property>
                         <property name="minimum_size"></property>
                         <property name="name">fgSizer5</property>
@@ -2002,7 +2002,7 @@
                         <property name="vgap">0</property>
                         <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
-                            <property name="flag">wxALL</property>
+                            <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                             <property name="proportion">0</property>
                             <object class="wxStaticText" expanded="1">
                                 <property name="BottomDockable">1</property>
@@ -2349,7 +2349,7 @@
                         </object>
                         <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
-                            <property name="flag">wxALL</property>
+                            <property name="flag">wxALL|wxEXPAND</property>
                             <property name="proportion">0</property>
                             <object class="wxButton" expanded="1">
                                 <property name="BottomDockable">1</property>
@@ -2380,7 +2380,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">VALIDER_TAILLE_MATRICE_ID</property>
-                                <property name="label">Valider</property>
+                                <property name="label">Changer la taille</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>

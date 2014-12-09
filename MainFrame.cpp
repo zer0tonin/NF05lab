@@ -95,10 +95,20 @@ void MainFrame::SurClicAffichageVariables( wxCommandEvent& event )
 
 void MainFrame::SurClicAjouterVariable( wxRibbonButtonBarEvent& event)
 {
-	AjoutMatriceDialogue AjoutMatrice(this, &m_conteneurVariables);
-	AjoutMatrice.ShowModal();
+	AjoutMatriceDialogue ajoutMatrice(this, &m_conteneurVariables);
+	ajoutMatrice.ShowModal();
 	
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
+}
+
+void MainFrame::SurClicEditerVariable( wxRibbonButtonBarEvent& event )
+{
+	if(m_arbreVariables->GetFocusedItem() == m_arbreVariables->GetRootItem())
+		return;
+		
+	char nomVariableAEditer = m_arbreVariables->GetItemText(m_arbreVariables->GetFocusedItem())[0];
+	AjoutMatriceDialogue modifierMatrice(this, &m_conteneurVariables, nomVariableAEditer);
+	modifierMatrice.ShowModal();
 }
 
 void MainFrame::SurClicSupprimerVariable( wxRibbonButtonBarEvent& event)
