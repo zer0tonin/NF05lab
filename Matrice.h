@@ -28,6 +28,7 @@ public:
 	Matrice operator-() const;
 	bool Carree() const;
 	Matrice InversionLignes(int Ligne1, int Ligne2) const;
+	float Trace() const;
 	
 	void AfficherMatrice() const;
 	

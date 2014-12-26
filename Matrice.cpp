@@ -53,10 +53,6 @@ float Matrice::ObtenirValeur(int Ligne, int Colonne) const
 	{
 		return m_contenu[Ligne][Colonne];
 	}
-	/*else
-	{
-		return std::numeric_limits<float::max()>;
-	}*/
 }
 
 /*
@@ -94,31 +90,66 @@ Matrice Matrice::Transposee() const
 
 /*
  * La méthode Determinant permet d'obtenir le déterminant d'une matrice carrée.
- * Pour cela on utilise une relation de récurrence :
- * On sait qu'une matrice carrée de taille 1 à pour déterminant la seule valeure qu'elle contient,
- * et que toutes matrice carrée de taille supérieure à pour déterminant la somme des
- * (-1)^n * [Valeur de la première ligne] * [Déterminant de la matrice obtenu en retirant la ligne et la colonne de la valeur précédente]
+ * Pour cela on se sert de l'élimination de Gauss-Jordan afin d'obtenir la matrice échelonnée réduite 
+ * à partir de laquelle on peut obtenir le déterminant en multipliant les coefficients de la diagonales de cette matrice.
 */
 
 float Matrice::Determinant() const
 {
-	float Resultat = 0;
-	int i, n= 0;
-	if (Carree())
+	int i, r = -1; //Attention au indices décalés dans notre logiciel (0 -> -1)
+	float Resultat;
+	Matrice Echelonnee(*this);
+	
+	for(int j = 0; j < m_colonnes; j++)
 	{
-		if(m_lignes == 1)
+		//Recherche du maximum
+		int k = r + 1; //<Position du maximum
+		for(int i = k + 1; i < m_lignes; i++) // pas besoin de comparer la case de la ligne k avec elle-même
 		{
-			return m_contenu[0][0];
+			if(fabs(Echelonnee.ObtenirValeur(i, j)) > fabs(Echelonnee.ObtenirValeur(k, j)))
+				k = i;
 		}
-		else
+		
+		if(Echelonnee.ObtenirValeur(k, j) != 0.f) //Si le max est != de 0
 		{
-			for(i=0; i<m_lignes; i++)
+			//Incrémentation de r
+			r++;
+			
+			//Echange des lignes k et r
+			Echelonnee = Echelonnee.InversionLignes(r, k);
+			
+			//Division de la ligne r par A[r,j]
+			float coeff = Echelonnee.ObtenirValeur(r, j); //< A[r,j]
+			//On stocke la valeur avant dans la variable coeff car elle est susceptible d'être modifiée par la division
+			for(int l = 0; l < m_colonnes; l++)
 			{
-				Resultat += pow(-1, n)*m_contenu[0][i]*RetraitColonne(i).Determinant();
+				Echelonnee.FixerValeur(r, l, Echelonnee.ObtenirValeur(r, l) / coeff);
 			}
-			return Resultat;
+			
+			//On parcourt toutes lignes
+			for(int i = 0; i < m_lignes; i++)
+			{
+				if(i == r) //sauf la ligne r
+					continue;
+				
+				//Soustraction de la ligne i par la ligne r multipliée par le coeff i;j
+				float coeffIJ = Echelonnee.ObtenirValeur(i, j); //< A[i,j]
+				//Pour les mêmes raisons que l'on garde A[r,j] dans coeff, on garde A[i,j] dans coeffIJ.
+				for(int l = 0; l < m_colonnes; l++)
+				{
+					Echelonnee.FixerValeur(i, l, Echelonnee.ObtenirValeur(i, l) - Echelonnee.ObtenirValeur(r, l) * coeffIJ);
+				}
+			}
 		}
 	}
+	
+	//On multiplie les éléments de la diagonale :
+	Resultat = Echelonnee.ObtenirValeur(0,0);
+	for (i=1; i<m_colonnes; i++)
+	{
+		Resultat = Resultat * Echelonnee.ObtenirValeur(i,i);
+	}
+	return Resultat;
 }
 
 /*
@@ -219,6 +250,52 @@ bool Matrice::Carree() const
 }
 
 /*
+ * La fonction InversionLignes renvoie une matrice dont ont a inversé le contenu des deux lignes passé en argument.
+ * Elle est utlisé dans la fonction Inverse.
+ */
+
+Matrice Matrice::InversionLignes(int Ligne1, int Ligne2) const
+{
+	int i;
+	Matrice resultat(*this);
+	std::vector <float> inter;
+	
+	//On rentre les valeurs de la Ligne1 dans un vector
+	for(i=0; i<m_colonnes; i++)
+	{
+		inter.push_back(resultat.ObtenirValeur(Ligne1, i));
+	}
+	
+	//On assigne les valeurs de la ligne2 à la ligne1 
+	for(i=0; i<m_colonnes; i++)
+	{
+		resultat.FixerValeur(Ligne1, i, resultat.ObtenirValeur(Ligne2,i));
+	}
+	
+	//On assigne les valeurs du vector à la ligne 2
+	for(i=0; i<m_colonnes; i++)
+	{
+		resultat.FixerValeur(Ligne2, i, inter[i]);
+	}
+	return resultat;
+}
+
+/*
+ * La fonction Trace() utilise une boucle pour afin d'effectuer la somme des éléments se situant dans la diagonale.
+ */
+
+float Matrice::Trace() const
+{
+	float Resultat = 0;
+	int i;
+	for (i=0 ; i < m_colonnes ;i++)
+	{
+		Resultat += (float) m_contenu[i][i];
+	}
+	return Resultat;
+}
+
+/*
  * La méthode Inversible() renvoie vrai si le déterminant est différent de 0.
 */
 
@@ -304,36 +381,7 @@ Matrice Matrice::Identite() const
 	return Resultat;
 }
 
-/*
- * La fonction InversionLignes renvoie une matrice dont ont a inversé le contenu des deux lignes passé en argument.
- * Elle est utlisé dans la fonction Inverse.
- */
 
-Matrice Matrice::InversionLignes(int Ligne1, int Ligne2) const
-{
-	int i;
-	Matrice resultat(*this);
-	std::vector <float> inter;
-	
-	//On rentre les valeurs de la Ligne1 dans un vector
-	for(i=0; i<m_colonnes; i++)
-	{
-		inter.push_back(resultat.ObtenirValeur(Ligne1, i));
-	}
-	
-	//On assigne les valeurs de la ligne2 à la ligne1 
-	for(i=0; i<m_colonnes; i++)
-	{
-		resultat.FixerValeur(Ligne1, i, resultat.ObtenirValeur(Ligne2,i));
-	}
-	
-	//On assigne les valeurs du vector à la ligne 2
-	for(i=0; i<m_colonnes; i++)
-	{
-		resultat.FixerValeur(Ligne2, i, inter[i]);
-	}
-	return resultat;
-}
 
 void Matrice::AfficherMatrice() const
 {
