@@ -149,11 +149,11 @@ float Matrice::Determinant() const
 	}
 	
 	//On multiplie les éléments de la diagonale :
-	Resultat = Echelonnee.ObtenirValeur(0,0);
+	/*Resultat = Echelonnee.ObtenirValeur(0,0);
 	for (i=1; i<m_colonnes; i++)
 	{
 		Resultat = Resultat * Echelonnee.ObtenirValeur(i,i);
-	}
+	}*/
 	return Resultat;
 }
 
