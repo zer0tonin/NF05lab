@@ -128,8 +128,21 @@ float Matrice::Determinant() const
  */ 
 Matrice Matrice::Inverse() const
 {
-	int i = 0, j = 0, k, l, max;
+	int i, j, k, l, max;
+	Matrice Inversible(m_lignes, m_colonnes);
 	Matrice Resultat = Identite();
+	
+	//On copie le contenu de la matrice de départ dans Inversible:
+	for (i=0; i<m_lignes; i++)
+	{
+		for(j=0; j<m_colonnes; j++)
+		{
+			Resultat.FixerValeur(i, j, m_contenu[i][j]);
+		}
+	}
+	
+	i = 0;
+	j = 0;
 	
 	while (i <= m_lignes && j <= m_colonnes)
 	{
@@ -138,17 +151,17 @@ Matrice Matrice::Inverse() const
 		for (k = i+1; k< m_lignes ; k++)
 		{
 			//recherche du maximum de la colonne :
-			if (fabs(m_contenu[k][j]) > fabs(m_contenu[max][j]))
+			if (fabs(Inversible.ObtenirValeur(k, j)) > fabs(Inversible.ObtenirValeur(max, j)))
 			{
 				max = k;
 			}
 			
 		}
 		
-		if (m_contenu[max][j] != 0)
+		if (Inversible.ObtenirValeur(max, j) != 0)
 		{
 			//echange des lignes i et max :
-			InversionLignes(max,i);
+			Inversible = Inversible.InversionLignes(max,i);
 			//on effectue la même opération sur la matrice résultat :
 			Resultat = Resultat.InversionLignes(max, i);
 			//m_contenu[i][j] devrait désormais contenir la même valeur que l'ancien m_contenu[max][j]
@@ -156,9 +169,9 @@ Matrice Matrice::Inverse() const
 			//on divise chaque valeur de la ligne i par m_contenu[i][j]
 			for (k=0; k<m_colonnes; k++)
 			{
-				m_contenu[i][j] = m_contenu[i][k] / m_contenu[i][j]);
+				Inversible.FixerValeur(i, k, Inversible.ObtenirValeur(i,k) / Inversible.ObtenirValeur(i,j));
 				
-				Resultat.FixerValeur(i, k, Resultat.ObtenirValeur(i,k) / Resultat.ObtenirValeur(i,k));
+				Resultat.FixerValeur(i, k, Resultat.ObtenirValeur(i,k) / Resultat.ObtenirValeur(i,j));
 			}
 			//Désormais m_contenu[i][j] doit être égal à 1
 			
@@ -167,7 +180,7 @@ Matrice Matrice::Inverse() const
 				//on soustrait m_contenu[k][j] * m_contenu[i][l] à la colonne k
 				for (l = 0; l<m_colonnes ; l++)
 				{
-					m_contenu[k][l] -= m_contenu[k][j] * m_contenu[i][l];
+					Inversible.FixerValeur(k, l, Inversible.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Inversible.ObtenirValeur(i,l));
 					
 					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Resultat.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l));
 				}
