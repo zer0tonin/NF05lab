@@ -125,10 +125,10 @@ float Matrice::Determinant() const
 			//Division de la ligne r par A[r,j]
 			float coeff = Echelonnee.ObtenirValeur(r, j); //< A[r,j]
 			//On stocke la valeur avant dans la variable coeff car elle est susceptible d'être modifiée par la division
+			Resultat /=coeff;
 			for(int l = 0; l < m_colonnes; l++)
 			{
 				Echelonnee.FixerValeur(r, l, Echelonnee.ObtenirValeur(r, l) / coeff);
-				Resultat /=coeff;
 			}
 			
 			//On parcourt toutes lignes
