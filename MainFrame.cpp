@@ -65,6 +65,10 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 				}
 				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n");
 			}
+			
+			//AFFICHAGE TEMPORAIRE DU DETERMINANT
+			if(resultatCommande.ValeurMatrice().Carree())
+				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "det = " + wxString::FromDouble(resultatCommande.ValeurMatrice().Determinant()) + "\n");
 		}
 	
 	}
