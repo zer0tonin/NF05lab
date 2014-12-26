@@ -148,7 +148,7 @@ Matrice Matrice::Inverse() const
 		if (m_contenu[max][j] != 0)
 		{
 			//echange des lignes i et max :
-			this->InversionLignes(max,i);
+			InversionLignes(max,i);
 			//on effectue la même opération sur la matrice résultat :
 			Resultat = Resultat.InversionLignes(max, i);
 			//m_contenu[i][j] devrait désormais contenir la même valeur que l'ancien m_contenu[max][j]
