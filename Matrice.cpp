@@ -1,4 +1,6 @@
 #include "Matrice.h"
+#include "Calculs.h"
+#include <wx/msgdlg.h> 
 #include <limits>
 #include <math.h>
 
@@ -128,56 +130,57 @@ float Matrice::Determinant() const
  */ 
 Matrice Matrice::Inverse() const
 {
-	int i = 0, j = 0, k, l, max;
-	Matrice Inversible(*this);
-	Matrice Resultat = Identite();
+	int r = -1; //Attention au indices décalés dans notre logiciel (0 -> -1)
+	Matrice inversible(*this);
+	Matrice resultat = Identite();
 	
-	while (i <= m_lignes && j <= m_colonnes)
+	for(int j = 0; j < m_colonnes; j++)
 	{
-		max = i;
-		
-		for (k = i+1; k< m_lignes ; k++)
+		//Recherche du maximum
+		int k = r + 1; //<Position du maximum
+		for(int i = k + 1; i < m_lignes; i++) // pas besoin de comparer la case de la ligne k avec elle-même
 		{
-			//recherche du maximum de la colonne :
-			if (fabs(Inversible.ObtenirValeur(k, j)) > fabs(Inversible.ObtenirValeur(max, j)))
-			{
-				max = k;
-			}
-			
+			if(fabs(inversible.ObtenirValeur(i, j)) > fabs(inversible.ObtenirValeur(k, j)))
+				k = i;
 		}
 		
-		if (Inversible.ObtenirValeur(max, j) != 0)
+		if(inversible.ObtenirValeur(k, j) != 0.f) //Si le max est != de 0
 		{
-			//echange des lignes i et max :
-			Inversible = Inversible.InversionLignes(max,i);
-			//on effectue la même opération sur la matrice résultat :
-			Resultat = Resultat.InversionLignes(max, i);
-			//m_contenu[i][j] devrait désormais contenir la même valeur que l'ancien m_contenu[max][j]
+			//Incrémentation de r
+			r++;
 			
-			//on divise chaque valeur de la ligne i par m_contenu[i][j]
-			for (k=0; k<m_colonnes; k++)
+			//Echange des lignes k et r
+			inversible = inversible.InversionLignes(r, k);
+			resultat = resultat.InversionLignes(r, k);
+			
+			//Division de la ligne r par A[r,j]
+			float coeff = inversible.ObtenirValeur(r, j); //< A[r,j]
+			//On stocke la valeur avant dans la variable coeff car elle est susceptible d'être modifiée par la division
+			for(int l = 0; l < m_colonnes; l++)
 			{
-				Resultat.FixerValeur(i, k, Resultat.ObtenirValeur(i,k) / Inversible.ObtenirValeur(i,j));
-				Inversible.FixerValeur(i, k, Inversible.ObtenirValeur(i,k) / Inversible.ObtenirValeur(i,j));
+				inversible.FixerValeur(r, l, inversible.ObtenirValeur(r, l) / coeff);
+				resultat.FixerValeur(r, l, resultat.ObtenirValeur(r, l) / coeff);
 			}
-			//Désormais m_contenu[i][j] doit être égal à 1
 			
-			for (k = i+1; k<m_lignes ; k++)
+			//On parcourt toutes lignes
+			for(int i = 0; i < m_lignes; i++)
 			{
-				//on soustrait m_contenu[k][j] * m_contenu[i][l] à la colonne k
-				for (l = 0; l<m_colonnes ; l++)
+				if(i == r) //sauf la ligne r
+					continue;
+				
+				//Soustraction de la ligne i par la ligne r multipliée par le coeff i;j
+				float coeffIJ = inversible.ObtenirValeur(i, j); //< A[i,j]
+				//Pour les mêmes raisons que l'on garde A[r,j] dans coeff, on garde A[i,j] dans coeffIJ.
+				for(int l = 0; l < m_colonnes; l++)
 				{
-					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l)); //Très probablement la ligne qui pose problème.
-					Inversible.FixerValeur(k, l, Inversible.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Inversible.ObtenirValeur(i,l));
+					inversible.FixerValeur(i, l, inversible.ObtenirValeur(i, l) - inversible.ObtenirValeur(r, l) * coeffIJ);
+					resultat.FixerValeur(i, l, resultat.ObtenirValeur(i, l) - resultat.ObtenirValeur(r, l) * coeffIJ);
 				}
-				//m_coneneur[k][j] est désomrais égal à 0 car m_conteneur[k][j] -= m_conteneur[k][j] * m_conteneur[i][j] revient à faire m_conteneur[k][j] -= m_conteneur[k][j] 
 			}
-			i++;
 		}
-		j++;
 	}
 	
-	return Resultat;
+	return resultat;
 }
 
 /*
@@ -309,25 +312,40 @@ Matrice Matrice::Identite() const
 Matrice Matrice::InversionLignes(int Ligne1, int Ligne2) const
 {
 	int i;
-	Matrice Resultat(*this);
+	Matrice resultat(*this);
 	std::vector <float> inter;
 	
 	//On rentre les valeurs de la Ligne1 dans un vector
 	for(i=0; i<m_colonnes; i++)
 	{
-		inter.push_back(Resultat.ObtenirValeur(Ligne1, i));
+		inter.push_back(resultat.ObtenirValeur(Ligne1, i));
 	}
 	
 	//On assigne les valeurs de la ligne2 à la ligne1 
 	for(i=0; i<m_colonnes; i++)
 	{
-		Resultat.FixerValeur(Ligne1, i, Resultat.ObtenirValeur(Ligne2,i));
+		resultat.FixerValeur(Ligne1, i, resultat.ObtenirValeur(Ligne2,i));
 	}
 	
 	//On assigne les valeurs du vector à la ligne 2
 	for(i=0; i<m_colonnes; i++)
 	{
-		Resultat.FixerValeur(Ligne2, i, inter[i]);
+		resultat.FixerValeur(Ligne2, i, inter[i]);
 	}
-	return Resultat;
+	return resultat;
+}
+
+void Matrice::AfficherMatrice() const
+{
+	wxString matriceStr;
+	for(int ligne = 0; ligne < ObtenirLignes(); ligne++)
+	{
+		for(int colonne = 0; colonne < ObtenirColonnes(); colonne++)
+		{
+			matriceStr += wxString::FromDouble(ObtenirValeur(ligne, colonne)) + "\t";
+		}
+		matriceStr += "\n";
+	}
+	
+	wxMessageBox(matriceStr);
 }

@@ -29,6 +29,8 @@ public:
 	bool Carree() const;
 	Matrice InversionLignes(int Ligne1, int Ligne2) const;
 	
+	void AfficherMatrice() const;
+	
 private:
 	bool CaseExiste(int Ligne, int Colonne) const;
 	Matrice RetraitColonne(int Colonne) const;
