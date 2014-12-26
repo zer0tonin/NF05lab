@@ -167,7 +167,7 @@ Matrice Matrice::Inverse() const
 				//on soustrait m_contenu[k][j] * m_contenu[i][l] à la colonne k
 				for (l = 0; l<m_colonnes ; l++)
 				{
-					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l));
+					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l)); //Très probablement la ligne qui pose problème.
 					Inversible.FixerValeur(k, l, Inversible.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Inversible.ObtenirValeur(i,l));
 				}
 				//m_coneneur[k][j] est désomrais égal à 0 car m_conteneur[k][j] -= m_conteneur[k][j] * m_conteneur[i][j] revient à faire m_conteneur[k][j] -= m_conteneur[k][j] 
