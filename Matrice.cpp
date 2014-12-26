@@ -119,70 +119,65 @@ float Matrice::Determinant() const
 	}
 }
 
-
+/*
+ * La fonction inverse utilise l'élimination de Gauss-Jordan pour générer une matrice inverse :
+ * pour cela on utilise le pseudo-code trouver à cette adresse : http://stackoverflow.com/a/1684801 
+ * On effectue les opérations sur la matrice à inverser et sur une matrice identité de même dimension.
+ * Lorsque l'algorithme est terminé, la matrice identité à pris les valeurs de la matrice inverse.
+ * La matrice à inversr a pris les valeurs de sa matrice échelonnée réduite.
+ */ 
 Matrice Matrice::Inverse() const
 {
-	int r = 0; //initialiser r à 0 (r est l'indice de ligne du dernier pivot trouvé)
-	int i, j, k, l;
-	float max = 0, inter;
-	Matrice Resultat(m_lignes, 2*m_colonnes);
-	Matrice Inverse(m_lignes, m_colonnes);
+	int i = 0, j = 0, k, l, max;
+	Matrice Resultat = Identite();
 	
-	for(j=0; j<m_colonnes; j++)
+	while (i <= m_lignes && j <= m_colonnes)
 	{
-		for(i=0; i<m_lignes; i++)
-		{
-			Resultat.FixerValeur(i, j, m_contenu[i][j]);
-		}
-	}
-	
-	for(j=m_colonnes; j<2*m_colonnes; j++)
-	{
-		for(i=0; i<m_lignes; i++)
-		{
-			if(i==j-m_colonnes)
-			{
-				Resultat.FixerValeur(i, j, 1);
-			}
-			else
-			{
-				Resultat.FixerValeur(i, j, 0);
-			}
-		}
-	}
-	
-	for (j=0; j<2*m_colonnes; j++) //pour j variant de 1 à m (j décrit tous les indices de colonnes) 
-	{
-		max = 0;
-		k = 0;
-		for (i=r; i<m_lignes; i++) //chercher le maximum des modules des A[i,j], i variant de r+1 à n et soit k son indice de ligne
-		{
-			if(fabs(Resultat.ObtenirValeur(i,j)) > max)
-			{
-				max = Resultat.ObtenirValeur(i,j);
-				k = i;
-			}
-		}
+		max = i;
 		
-		if (max != 0) //si ce max est non nul alors 
+		for (k = i+1; k< m_lignes ; k++)
 		{
-			for(i=0; i<2*m_colonnes; i++) //échanger les lignes k et r
+			//recherche du maximum de la colonne :
+			if (fabs(m_contenu[k][j]) > fabs(m_contenu[max][j]))
 			{
-				inter = Resultat.ObtenirValeur(k,i);
-				Resultat.FixerValeur(k,i,Resultat.ObtenirValeur(r,i));
-				Resultat.FixerValeur(r,i,inter);
+				max = k;
 			}
 			
-			for(i=r+1; i<m_lignes; i++)
-			{
-				for(l = r+1; l<2*m_colonnes; r++)
-				{
-					Resultat.FixerValeur(i, l, Resultat.ObtenirValeur(i,l) - Resultat.ObtenirValeur(r,l) * (Resultat.ObtenirValeur(i,r) / Resultat.ObtenirValeur(r,r)));
-				}
-				Resultat.FixerValeur(i, r, 0);
-			}
 		}
+		
+		if (m_contenu[max][j] != 0)
+		{
+			//echange des lignes i et max :
+			this->InversionLignes(max,i);
+			//on effectue la même opération sur la matrice résultat :
+			Resultat = Resultat.InversionLignes(max, i);
+			//m_contenu[i][j] devrait désormais contenir la même valeur que l'ancien m_contenu[max][j]
+			
+			//on divise chaque valeur de la ligne i par m_contenu[i][j]
+			for (k=0; k<m_colonnes; k++)
+			{
+				m_contenu[i][j] = m_contenu[i][k] / m_contenu[i][j]);
+				
+				Resultat.FixerValeur(i, k, Resultat.ObtenirValeur(i,k) / Resultat.ObtenirValeur(i,k));
+			}
+			//Désormais m_contenu[i][j] doit être égal à 1
+			
+			for (k = i+1; k<m_lignes ; k++)
+			{
+				//on soustrait m_contenu[k][j] * m_contenu[i][l] à la colonne k
+				for (l = 0; l<m_colonnes ; l++)
+				{
+					m_contenu[k][l] -= m_contenu[k][j] * m_contenu[i][l];
+					
+					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Resultat.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l));
+				}
+				//m_coneneur[k][j] est désomrais égal à 0 car m_conteneur[k][j] -= m_conteneur[k][j] * m_conteneur[i][j] revient à faire m_conteneur[k][j] -= m_conteneur[k][j] 
+			}
+			i++;
+		}
+		j++;
 	}
+	
 	return Resultat;
 }
 
@@ -277,6 +272,72 @@ Matrice Matrice::RetraitColonne(int Colonne) const
 				Resultat.FixerValeur(i-1, j-1, m_contenu[i][j]);
 			}
 		}
+	}
+	return Resultat;
+}
+
+/*
+ * La fonction Identite permet de génrérer une matrice identité de taille égale à la matrice d'origine..
+ * Elle est utiliser dans la fonction inverse pour initialiser la matrice Resultat.
+ */
+
+Matrice Matrice::Identite() const
+{
+	int i, j;
+	Matrice Resultat(m_lignes, m_colonnes);
+	for (i = 0; i<m_lignes; i++)
+	{
+		for (j = 0; j<m_colonnes; j++)
+		{
+			if (i==j)
+			{
+				Resultat.FixerValeur(i,j, 1);
+			}
+			else
+			{
+				Resultat.FixerValeur(i,j,0);
+			}
+		}
+	}
+	return Resultat;
+}
+
+/*
+ * La fonction InversionLignes renvoie une matrice dont ont a inversé le contenu des deux lignes passé en argument.
+ * Elle est utlisé dans la fonction Inverse.
+ */
+
+Matrice Matrice::InversionLignes(int Ligne1, int Ligne2) const
+{
+	int i, j;
+	Matrice Resultat(m_lignes, m_colonnes);
+	std::vector<float> inter;
+	
+	//On initialise la matrice en lui donnant les valeurs de la matrice de départ.
+	for (i=0; i<m_lignes; i++)
+	{
+		for(j=0; j<m_colonnes; j++)
+		{
+			Resultat.FixerValeur(i, j, m_contenu[i][j]);
+		}
+	}
+	
+	//On rentre les valeurs de la Ligne1 dans un vector
+	for(i=0; i<m_colonnes; i++)
+	{
+		inter[i] = Resultat.ObtenirValeur(Ligne1, i);
+	}
+	
+	//On assigne les valeurs de la ligne2 à la ligne1 
+	for(i=0; i<m_colonnes; i++)
+	{
+		Resultat.FixerValeur(Ligne1, i, Resultat.ObtenirValeur(Ligne2,i));
+	}
+	
+	//On assigne les valeurs du vector à la ligne 2
+	for(i=0; i<m_colonnes; i++)
+	{
+		Resultat.FixerValeur(Ligne2, i, inter[i]);
 	}
 	return Resultat;
 }

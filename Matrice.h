@@ -27,10 +27,13 @@ public:
 	bool Inversible() const;
 	Matrice operator-() const;
 	bool Carree() const;
+	Matrice InversionLignes(int Ligne1, int Ligne2) const;
 	
 private:
 	bool CaseExiste(int Ligne, int Colonne) const;
 	Matrice RetraitColonne(int Colonne) const;
+	Matrice Identite() const;
+	
 	
 	int m_lignes;
 	int m_colonnes;
