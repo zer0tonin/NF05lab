@@ -128,21 +128,9 @@ float Matrice::Determinant() const
  */ 
 Matrice Matrice::Inverse() const
 {
-	int i, j, k, l, max;
-	Matrice Inversible(m_lignes, m_colonnes);
+	int i = 0, j = 0, k, l, max;
+	Matrice Inversible(*this);
 	Matrice Resultat = Identite();
-	
-	//On copie le contenu de la matrice de départ dans Inversible:
-	for (i=0; i<m_lignes; i++)
-	{
-		for(j=0; j<m_colonnes; j++)
-		{
-			Resultat.FixerValeur(i, j, m_contenu[i][j]);
-		}
-	}
-	
-	i = 0;
-	j = 0;
 	
 	while (i <= m_lignes && j <= m_colonnes)
 	{
@@ -169,9 +157,8 @@ Matrice Matrice::Inverse() const
 			//on divise chaque valeur de la ligne i par m_contenu[i][j]
 			for (k=0; k<m_colonnes; k++)
 			{
+				Resultat.FixerValeur(i, k, Resultat.ObtenirValeur(i,k) / Inversible.ObtenirValeur(i,j));
 				Inversible.FixerValeur(i, k, Inversible.ObtenirValeur(i,k) / Inversible.ObtenirValeur(i,j));
-				
-				Resultat.FixerValeur(i, k, Resultat.ObtenirValeur(i,k) / Resultat.ObtenirValeur(i,j));
 			}
 			//Désormais m_contenu[i][j] doit être égal à 1
 			
@@ -180,9 +167,8 @@ Matrice Matrice::Inverse() const
 				//on soustrait m_contenu[k][j] * m_contenu[i][l] à la colonne k
 				for (l = 0; l<m_colonnes ; l++)
 				{
+					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l));
 					Inversible.FixerValeur(k, l, Inversible.ObtenirValeur(k, l) - Inversible.ObtenirValeur(k,j) * Inversible.ObtenirValeur(i,l));
-					
-					Resultat.FixerValeur(k, l, Resultat.ObtenirValeur(k, l) - Resultat.ObtenirValeur(k,j) * Resultat.ObtenirValeur(i,l));
 				}
 				//m_coneneur[k][j] est désomrais égal à 0 car m_conteneur[k][j] -= m_conteneur[k][j] * m_conteneur[i][j] revient à faire m_conteneur[k][j] -= m_conteneur[k][j] 
 			}
@@ -322,23 +308,14 @@ Matrice Matrice::Identite() const
 
 Matrice Matrice::InversionLignes(int Ligne1, int Ligne2) const
 {
-	int i, j;
-	Matrice Resultat(m_lignes, m_colonnes);
-	std::vector<float> inter;
-	
-	//On initialise la matrice en lui donnant les valeurs de la matrice de départ.
-	for (i=0; i<m_lignes; i++)
-	{
-		for(j=0; j<m_colonnes; j++)
-		{
-			Resultat.FixerValeur(i, j, m_contenu[i][j]);
-		}
-	}
+	int i;
+	Matrice Resultat(*this);
+	std::vector <float> inter;
 	
 	//On rentre les valeurs de la Ligne1 dans un vector
 	for(i=0; i<m_colonnes; i++)
 	{
-		inter[i] = Resultat.ObtenirValeur(Ligne1, i);
+		inter.push_back(Resultat.ObtenirValeur(Ligne1, i));
 	}
 	
 	//On assigne les valeurs de la ligne2 à la ligne1 
