@@ -117,7 +117,10 @@ float Matrice::Determinant() const
 			
 			//Echange des lignes k et r
 			Echelonnee = Echelonnee.InversionLignes(r, k);
-			Resultat = -Resultat;
+			if (k!=r)
+			{
+				Resultat = -Resultat;
+			}
 			
 			//Division de la ligne r par A[r,j]
 			float coeff = Echelonnee.ObtenirValeur(r, j); //< A[r,j]
