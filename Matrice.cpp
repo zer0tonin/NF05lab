@@ -128,7 +128,7 @@ float Matrice::Determinant() const
 			for(int l = 0; l < m_colonnes; l++)
 			{
 				Echelonnee.FixerValeur(r, l, Echelonnee.ObtenirValeur(r, l) / coeff);
-				Resultat/coeff;
+				Resultat /=coeff;
 			}
 			
 			//On parcourt toutes lignes
