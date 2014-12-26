@@ -97,7 +97,7 @@ Matrice Matrice::Transposee() const
 float Matrice::Determinant() const
 {
 	int i, r = -1; //Attention au indices décalés dans notre logiciel (0 -> -1)
-	float Resultat;
+	float Resultat = 1;
 	Matrice Echelonnee(*this);
 	
 	for(int j = 0; j < m_colonnes; j++)
@@ -117,6 +117,7 @@ float Matrice::Determinant() const
 			
 			//Echange des lignes k et r
 			Echelonnee = Echelonnee.InversionLignes(r, k);
+			Resultat = -Resultat;
 			
 			//Division de la ligne r par A[r,j]
 			float coeff = Echelonnee.ObtenirValeur(r, j); //< A[r,j]
@@ -124,6 +125,7 @@ float Matrice::Determinant() const
 			for(int l = 0; l < m_colonnes; l++)
 			{
 				Echelonnee.FixerValeur(r, l, Echelonnee.ObtenirValeur(r, l) / coeff);
+				Resultat/coeff;
 			}
 			
 			//On parcourt toutes lignes
