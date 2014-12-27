@@ -47,6 +47,7 @@
     <File Name="Conteneur.cpp"/>
     <File Name="AjoutMatriceDialogue.cpp"/>
     <File Name="Parseur.cpp"/>
+    <File Name="ResolutionSystemeDialogue.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainFrame.h"/>
@@ -57,6 +58,7 @@
     <File Name="Conteneur.h"/>
     <File Name="AjoutMatriceDialogue.h"/>
     <File Name="Parseur.h"/>
+    <File Name="ResolutionSystemeDialogue.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="resources">
     <File Name="win_resources.rc"/>

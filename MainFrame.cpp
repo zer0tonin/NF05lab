@@ -8,6 +8,7 @@
 #include <iostream>
 #include "AjoutMatriceDialogue.h"
 #include "Parseur.h"
+#include "ResolutionSystemeDialogue.h"
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true), m_conteneurVariables()
 {
@@ -156,4 +157,10 @@ void MainFrame::SurClicSupprimerVariable( wxRibbonButtonBarEvent& event)
 	m_conteneurVariables.SupprimerVariable(m_arbreVariables->GetItemText(m_arbreVariables->GetFocusedItem())[0]);
 	
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
+}
+
+void MainFrame::SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event)
+{
+	ResolutionSystemeDialogue systeme(this);
+	systeme.ShowModal();
 }

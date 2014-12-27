@@ -130,6 +130,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Connect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
 	this->Connect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Connect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
+	this->Connect( RESOUDRE_SYTEME, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicBouttonResoudreSysteme ) );
 	m_zoneCommande->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 }
 
@@ -144,6 +145,7 @@ RibbonFrameBase::~RibbonFrameBase()
 	this->Disconnect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
 	this->Disconnect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Disconnect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
+	this->Disconnect( RESOUDRE_SYTEME, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicBouttonResoudreSysteme ) );
 	m_zoneCommande->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 	
 	m_mgr.UnInit();
@@ -156,6 +158,8 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	
 	wxFlexGridSizer* fgSizer6;
 	fgSizer6 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer6->AddGrowableCol( 0 );
+	fgSizer6->AddGrowableRow( 1 );
 	fgSizer6->SetFlexibleDirection( wxBOTH );
 	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -171,11 +175,82 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	m_equationsSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	fgSizer7->Add( m_equationsSpin, 0, wxALL, 5 );
 	
-	m_button2 = new wxButton( this, wxID_ANY, wxT("Valider"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_button2, 0, wxALL, 5 );
+	BoutonValiderSysteme = new wxButton( this, BOUTON_VALIDER_SYSTEME, wxT("Valider"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer7->Add( BoutonValiderSysteme, 0, wxALL, 5 );
 	
 	
 	fgSizer6->Add( fgSizer7, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer8;
+	fgSizer8 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer8->SetFlexibleDirection( wxBOTH );
+	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_tableauMatriceSysteme = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	
+	// Grid
+	m_tableauMatriceSysteme->CreateGrid( 0, 0 );
+	m_tableauMatriceSysteme->EnableEditing( true );
+	m_tableauMatriceSysteme->EnableGridLines( true );
+	m_tableauMatriceSysteme->EnableDragGridSize( false );
+	m_tableauMatriceSysteme->SetMargins( 0, 0 );
+	
+	// Columns
+	m_tableauMatriceSysteme->EnableDragColMove( false );
+	m_tableauMatriceSysteme->EnableDragColSize( true );
+	m_tableauMatriceSysteme->SetColLabelSize( 30 );
+	m_tableauMatriceSysteme->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Rows
+	m_tableauMatriceSysteme->EnableDragRowSize( true );
+	m_tableauMatriceSysteme->SetRowLabelSize( 80 );
+	m_tableauMatriceSysteme->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Label Appearance
+	
+	// Cell Defaults
+	m_tableauMatriceSysteme->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	fgSizer8->Add( m_tableauMatriceSysteme, 0, wxALL, 5 );
+	
+	m_tableauVecteurSysteme = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	
+	// Grid
+	m_tableauVecteurSysteme->CreateGrid( 0, 0 );
+	m_tableauVecteurSysteme->EnableEditing( true );
+	m_tableauVecteurSysteme->EnableGridLines( true );
+	m_tableauVecteurSysteme->EnableDragGridSize( false );
+	m_tableauVecteurSysteme->SetMargins( 0, 0 );
+	
+	// Columns
+	m_tableauVecteurSysteme->EnableDragColMove( false );
+	m_tableauVecteurSysteme->EnableDragColSize( true );
+	m_tableauVecteurSysteme->SetColLabelSize( 30 );
+	m_tableauVecteurSysteme->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Rows
+	m_tableauVecteurSysteme->EnableDragRowSize( true );
+	m_tableauVecteurSysteme->SetRowLabelSize( 80 );
+	m_tableauVecteurSysteme->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Label Appearance
+	
+	// Cell Defaults
+	m_tableauVecteurSysteme->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	fgSizer8->Add( m_tableauVecteurSysteme, 0, wxALL, 5 );
+	
+	
+	fgSizer6->Add( fgSizer8, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer9;
+	fgSizer9 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer9->SetFlexibleDirection( wxBOTH );
+	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_bouttonResoudre = new wxButton( this, wxID_ANY, wxT("Résoudre"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer9->Add( m_bouttonResoudre, 0, wxALL, 5 );
+	
+	
+	fgSizer6->Add( fgSizer9, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer6 );
@@ -183,10 +258,18 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	fgSizer6->Fit( this );
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	BoutonValiderSysteme->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ResolutionSystemeDialogueBase::SurClicBoutonValiderSysteme ), NULL, this );
+	m_bouttonResoudre->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ResolutionSystemeDialogueBase::SurCLicBouttonResoudre ), NULL, this );
 }
 
 ResolutionSystemeDialogueBase::~ResolutionSystemeDialogueBase()
 {
+	// Disconnect Events
+	BoutonValiderSysteme->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ResolutionSystemeDialogueBase::SurClicBoutonValiderSysteme ), NULL, this );
+	m_bouttonResoudre->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ResolutionSystemeDialogueBase::SurCLicBouttonResoudre ), NULL, this );
+	
 }
 
 AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )

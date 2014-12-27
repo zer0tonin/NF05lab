@@ -33,9 +33,9 @@
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 #include <wx/button.h>
+#include <wx/grid.h>
 #include <wx/dialog.h>
 #include <wx/choice.h>
-#include <wx/grid.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,8 @@
 #define BOUTON_AFFICHAGE_HISTORIQUE 1005
 #define BOUTON_AFFICHAGE_VARIABLES 1006
 #define RESOUDRE_SYTEME 1007
-#define VALIDER_TAILLE_MATRICE_ID 1008
+#define BOUTON_VALIDER_SYSTEME 1008
+#define VALIDER_TAILLE_MATRICE_ID 1009
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -88,6 +89,7 @@ class RibbonFrameBase : public wxFrame
 		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -110,7 +112,15 @@ class ResolutionSystemeDialogueBase : public wxDialog
 	protected:
 		wxStaticText* m_staticText2;
 		wxSpinCtrl* m_equationsSpin;
-		wxButton* m_button2;
+		wxButton* BoutonValiderSysteme;
+		wxGrid* m_tableauMatriceSysteme;
+		wxGrid* m_tableauVecteurSysteme;
+		wxButton* m_bouttonResoudre;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void SurClicBoutonValiderSysteme( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurCLicBouttonResoudre( wxCommandEvent& event ) { event.Skip(); }
+		
 	
 	public:
 		
