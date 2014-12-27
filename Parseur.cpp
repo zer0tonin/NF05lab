@@ -42,7 +42,7 @@ bool Noeud::MettreEnArbre()
 {
 	int a; //Sera utile pour itérer dans la liste des noeuds
 	
-	// - Fonctions
+	// - Fonctions (on cherche les crochets)
 	
 	//On parcourt le noeud pour trouver les crochets (et donc les fonctions) de premier niveau
 	int niveauCrochet = 0;
@@ -54,10 +54,13 @@ bool Noeud::MettreEnArbre()
 		if(m_enfants[a]->m_type == Lexeme::FONCTION && m_enfants[a]->m_enfants.size() == 0 && !m_enfants[a]->m_donneeBooleen)
 			niveauCrochet--;
 		
+		//Si on est entre des crochets, on stocke tous les noeuds rencontrés dans noeudsDansCrochet
 		if(niveauCrochet > 0)
 		{
 			noeudsDansCrochet.push_back(m_enfants[a]);
 		}
+		//Si on n'est plus entre des crochets (niveauCrochet == 0) et que l'on a eu des noeuds à l'intérieur des crochets,
+		//on génère un nouveau noeud avec les noeuds entre les crochets en tant qu'enfants
 		else if(noeudsDansCrochet.size() > 0)
 		{
 			//Cela signifie que l'on vient de finir une fonction, donc
@@ -67,22 +70,26 @@ bool Noeud::MettreEnArbre()
 			nouveauNoeud->m_type = Lexeme::FONCTION;
 			nouveauNoeud->m_donneeChaine = m_enfants[debutCrochet]->m_donneeChaine;
 			
-			//On supprime le lexème (noeud) de la parenthèse fermante puis de celle ouvrante
+			//On supprime le lexème (noeud) des crochets fermant et ouvrant
 			//Ainsi que tous les noeuds entre.
 			m_enfants.erase(m_enfants.begin() + debutCrochet, m_enfants.begin() + a + 1);
-			a -= a - debutCrochet;
 			
+			a -= a - debutCrochet; //On vient de supprimer des noeuds, il faut bien replacer a pour repartir du bon endroit dans l'itération
+			
+			//On ajoute le noeud FONCTION généré
 			m_enfants.insert(m_enfants.begin() + debutCrochet, nouveauNoeud);
 			
+			//On appelle MettreEnArbre() sur sur noeud (récursivité)
 			nouveauNoeud->MettreEnArbre();
 			
 			noeudsDansCrochet.clear();
 		}
 		
+		//Si on tombe sur un crochet, on incrémente niveauCrochet (qui décrit le niveau de crochet dans lequel on se trouve)
 		if(m_enfants[a]->m_type == Lexeme::FONCTION && m_enfants[a]->m_enfants.size() == 0 && m_enfants[a]->m_donneeBooleen)
 		{
 			if(niveauCrochet == 0)
-				debutCrochet = a;
+				debutCrochet = a; //On stocke la position du début des crochets
 			niveauCrochet++;
 		}
 	}
@@ -92,6 +99,7 @@ bool Noeud::MettreEnArbre()
 	
 	// - Parenthèses (de 1er niveau uniquement, les autres niveaux seront traités quand MettreEnArbre()
 	//   sera utilisé de manière récursive sur les noeuds de parenthèse.
+	// NOTE : Cette partie fonctionne de la même manière que pour les fonctions (excepté que l'on n'a pas besoin de stocker le nom de la fonction dans le noeud généré)
 	
 	//On parcourt le noeud pour trouver les parenthèses de 1er niveau
 	int niveauParenthese = 0; //Indique le niveau de parenthèses
@@ -196,14 +204,14 @@ bool Noeud::MettreEnArbre()
 			Noeud *noeudOperateur = m_enfants[a];
 			if(a > 0 && a < m_enfants.size() - 1)
 			{
-				//L'opérateur n'est pas au début de la liste, donc ce sera un opérateur binaire
+				//On récupère le noeud avant et celui après l'opérateur, ce sont les opérandes de la multiplication/division
 				std::vector<Noeud*> listeNoeudPourOperateur;
 				listeNoeudPourOperateur.push_back(m_enfants[a - 1]);
 				listeNoeudPourOperateur.push_back(m_enfants[a + 1]);
 				
-				noeudOperateur->m_enfants = listeNoeudPourOperateur;
+				noeudOperateur->m_enfants = listeNoeudPourOperateur; //On les ajoute en noeuds enfants de l'opérateur
 				
-				//On supprime l'ancien noeud de l'opérateur et le lexème qui le suit
+				//On supprime l'ancien noeud de l'opérateur et les anciens noeuds des opérandes
 				m_enfants.erase(m_enfants.begin() + a - 1, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur
@@ -252,7 +260,7 @@ bool Noeud::MettreEnArbre()
 				
 				noeudOperateur->m_enfants = listeNoeudPourOperateur;
 				
-				//On supprime l'ancien noeud de l'opérateur et le noeud de l'opérande
+				//On supprime l'ancien noeud de l'opérateur et le noeud des l'opérandes
 				m_enfants.erase(m_enfants.begin() + a, m_enfants.begin() + a + 2);
 				
 				//On ajoute le noeud généré de l'opérateur
@@ -747,6 +755,28 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 		else
 		{
 			throw ExceptionParseur("Pas assez/trop d'operandes pour l'affectation");
+		}
+	}
+	else if(noeud.Type() == Lexeme::FONCTION)
+	{
+		if(noeud.DonneeChaine() == "det")
+		{
+			if(noeud.NombreEnfants() == 1)
+			{
+				Resultat resultatArgument = Calculer(noeud.Enfant(0), conteneurDeVariables);
+				if(resultatArgument.EstUneMatrice())
+				{
+					return Resultat(resultatArgument.ValeurMatrice().Determinant());
+				}
+				else
+				{
+					throw ExceptionParseur("La fonction det a besoin d'une matrice uniquement");
+				}
+			}
+			else
+			{
+				throw ExceptionParseur("La fonction det a besoin d'un seul argument");
+			}
 		}
 	}
 	else if(noeud.Type() == Lexeme::INDEFINI)

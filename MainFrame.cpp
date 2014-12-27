@@ -46,6 +46,8 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	wxString commande = m_zoneCommande->GetValue();
 	m_arbreSyntaxe->DeleteAllItems();
 	
+	//On essaie de calculer l'expression.
+	//Si l'opération échoue (symbole inconnu, opération impossible...), on exécute ce qu'il y a dans catch{ ... }
 	try
 	{
 		Parseur parseur;
@@ -65,15 +67,11 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 				}
 				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n");
 			}
-			
-			//AFFICHAGE TEMPORAIRE DU DETERMINANT
-			if(resultatCommande.ValeurMatrice().Carree())
-				m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "det = " + wxString::FromDouble(resultatCommande.ValeurMatrice().Determinant()) + "\n");
 		}
-	
 	}
 	catch(const std::exception &e)
 	{
+		//Affichage de l'erreur si échec
 		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + e.what());
 	}
 		
