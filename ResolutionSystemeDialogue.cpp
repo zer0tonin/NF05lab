@@ -40,4 +40,5 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 	
 	Solution = Application.Inverse() * Vecteur;
 	Solution.AfficherMatrice();
+	EndModal(0);
 }
