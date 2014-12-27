@@ -138,23 +138,28 @@ float ProduitScalaire(Matrice M1, Matrice M2)
 	return Resultat;
 }
 
-Matrice Puissance(Matrice M1, float Scalaire)
+Matrice Puissance(Matrice matrice, float scalaire)
 {
-	Matrice Resultat(M1.ObtenirLignes(), M1.ObtenirColonnes());
+	Matrice resultat(matrice.ObtenirLignes(), matrice.ObtenirColonnes());
 	int i;
-	if (M1.Carree())
+	if (matrice.Carree())
 	{
-		if(Scalaire == 0)
+		if(scalaire == 0)
 		{
-			for (i=0; i<M1.ObtenirLignes(); i++)
+			for (i=0; i<matrice.ObtenirLignes(); i++)
 			{
-				Resultat.FixerValeur(i, i, 1);
+				resultat.FixerValeur(i, i, 1);
 			}
-			return Resultat;
+			return resultat;
 		}
-		else
+		else if(scalaire > 0)
 		{
-			return M1 * Puissance(M1, Scalaire-1);
+			return matrice * Puissance(matrice, scalaire-1);
+		}
+		else //scalaire < 0
+		{
+			//TODO : Gérer le cas des matrices non inversibles
+			return matrice.Inverse() * Puissance(matrice.Inverse(), -scalaire - 1); //Evite de recalculer l'inverse à chaque étape
 		}
 	}
 }
