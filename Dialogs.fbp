@@ -159,7 +159,7 @@
                 <event name="OnMouseWheel"></event>
                 <event name="OnPaint"></event>
                 <event name="OnRibbonBarHelpClick"></event>
-                <event name="OnRibbonBarPageChanged"></event>
+                <event name="OnRibbonBarPageChanged">SurChangementOngletRuban</event>
                 <event name="OnRibbonBarPageChanging"></event>
                 <event name="OnRibbonBarTabLeftDClick"></event>
                 <event name="OnRibbonBarTabMiddleDown"></event>

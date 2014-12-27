@@ -75,6 +75,7 @@ class RibbonFrameBase : public wxFrame
 		wxTreeCtrl* m_arbreSyntaxe;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void SurChangementOngletRuban( wxRibbonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }

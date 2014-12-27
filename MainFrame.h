@@ -16,6 +16,8 @@ public:
 	
 	virtual void SurValidationCommande(wxCommandEvent& event);
 	
+	virtual void SurChangementOngletRuban( wxRibbonBarEvent& event );
+	
 	virtual void SurClicAffichageHistorique( wxCommandEvent& event );
 	virtual void SurClicAffichageVariables( wxCommandEvent& event );
 	virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event);

@@ -2,6 +2,8 @@
 #include <wx/aboutdlg.h>
 #include <wx/msgdlg.h> 
 #include <wx/log.h>
+#include <wx/stdpaths.h>
+#include <wx/utils.h>
 
 #include <iostream>
 #include "AjoutMatriceDialogue.h"
@@ -81,6 +83,18 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	
 	//Mise à jour de l'arbre qui liste les variables
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
+}
+
+void MainFrame::SurChangementOngletRuban( wxRibbonBarEvent& event )
+{
+	if(m_ribbonBar1->GetActivePage() == 1)
+	{
+		//On remet immédiatement le 1er onglet
+		m_ribbonBar1->SetActivePage((std::size_t)0);
+		//Lancement de l'aide
+		wxFileName exeFileName(wxStandardPaths::Get().GetExecutablePath());
+		wxLaunchDefaultBrowser("file:///" + exeFileName.GetPath() + "/aide.html");
+	}
 }
 
 void MainFrame::SurClicAffichageHistorique( wxCommandEvent& event )
