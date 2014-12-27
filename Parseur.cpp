@@ -797,6 +797,25 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 				throw ExceptionParseur("La fonction trac a besoin d'un seul argument");
 			}
 		}
+		else if(noeud.DonneeChaine() == "t" || noeud.DonneeChaine() == "transposee") //La transposée
+		{
+			if(noeud.NombreEnfants() == 1)
+			{
+				Resultat resultatArgument = Calculer(noeud.Enfant(0), conteneurDeVariables);
+				if(resultatArgument.EstUneMatrice())
+				{
+					return Resultat(resultatArgument.ValeurMatrice().Transposee());
+				}
+				else
+				{
+					throw ExceptionParseur("La fonction transposee a besoin d'une matrice uniquement");
+				}
+			}
+			else
+			{
+				throw ExceptionParseur("La fonction transposee a besoin d'un seul argument");
+			}
+		}
 		else
 		{
 			//Fonction inconnue
