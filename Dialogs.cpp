@@ -7,14 +7,15 @@
 
 #include "Dialogs.h"
 
-#include "res/advanced.png.h"
-#include "res/edit.png.h"
-#include "res/edit_add.png.h"
-#include "res/editclear.png.h"
-#include "res/editdelete.png.h"
-#include "res/edittrash.png.h"
-#include "res/month.png.h"
-#include "res/toggle_log.png.h"
+#include "res/add196.png.h"
+#include "res/delete99.png.h"
+#include "res/edit45.png.h"
+#include "res/history2.png.h"
+#include "res/left37.png.h"
+#include "res/list1.png.h"
+#include "res/right133.png.h"
+#include "res/settings48.png.h"
+#include "res/trash30.png.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -32,21 +33,24 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonBar1->SetActivePage( m_ribbonPage3 ); 
 	m_ribbonPanel3 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Exécution") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar3 = new wxRibbonButtonBar( m_ribbonPanel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_ribbonButtonBar3->AddButton( wxID_ANY, wxT("Exécuter la commande"), advanced_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonButtonBar3->AddButton( wxID_ANY, wxT("Effacer les résultats"), editclear_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar3->AddButton( wxID_ANY, wxT("Exécuter la commande"), right133_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar3->AddButton( wxID_ANY, wxT("Effacer les résultats"), left37_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel2 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Gestion des variables") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar2 = new wxRibbonButtonBar( m_ribbonPanel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_ribbonButtonBar2->AddButton( AJOUTER_VARIABLE_BOUTON_ID, wxT("Ajouter..."), edit_add_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonButtonBar2->AddButton( EDITER_VARIABLE_BOUTON_ID, wxT("Editer..."), edit_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonButtonBar2->AddButton( SUPPRIMER_VARIABLE_BOUTON_ID, wxT("Supprimer"), editdelete_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Supprimer toutes les variables"), edittrash_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar2->AddButton( AJOUTER_VARIABLE_BOUTON_ID, wxT("Ajouter..."), add196_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar2->AddButton( EDITER_VARIABLE_BOUTON_ID, wxT("Editer..."), edit45_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar2->AddButton( SUPPRIMER_VARIABLE_BOUTON_ID, wxT("Supprimer"), delete99_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar2->AddButton( wxID_ANY, wxT("Supprimer toutes les variables"), trash30_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel21 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Historique") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar21 = new wxRibbonButtonBar( m_ribbonPanel21, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_ribbonButtonBar21->AddButton( wxID_ANY, wxT("Vider l'historique"), edittrash_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar21->AddButton( wxID_ANY, wxT("Vider l'historique"), trash30_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel6 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Fenêtres") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_barreBoutonsAffichage = new wxRibbonButtonBar( m_ribbonPanel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_HISTORIQUE, wxT("Afficher l'historique des commandes"), toggle_log_png_to_wx_bitmap(), wxEmptyString);
-	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_VARIABLES, wxT("Afficher la liste des variables"), month_png_to_wx_bitmap(), wxEmptyString);
+	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_HISTORIQUE, wxT("Afficher l'historique des commandes"), history2_png_to_wx_bitmap(), wxEmptyString);
+	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_VARIABLES, wxT("Afficher la liste des variables"), list1_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonPanel5 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Systèmes") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
+	m_ribbonButtonBar5 = new wxRibbonButtonBar( m_ribbonPanel5, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_ribbonButtonBar5->AddButton( RESOUDRE_SYTEME, wxT("Résoudre système"), settings48_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPage5 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("?") , wxNullBitmap , 0 );
 	m_ribbonPage5->Hide();
 	

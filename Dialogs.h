@@ -44,7 +44,8 @@
 #define SUPPRIMER_VARIABLE_BOUTON_ID 1002
 #define BOUTON_AFFICHAGE_HISTORIQUE 1003
 #define BOUTON_AFFICHAGE_VARIABLES 1004
-#define VALIDER_TAILLE_MATRICE_ID 1005
+#define RESOUDRE_SYTEME 1005
+#define VALIDER_TAILLE_MATRICE_ID 1006
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -64,6 +65,8 @@ class RibbonFrameBase : public wxFrame
 		wxRibbonButtonBar* m_ribbonButtonBar21;
 		wxRibbonPanel* m_ribbonPanel6;
 		wxRibbonButtonBar* m_barreBoutonsAffichage;
+		wxRibbonPanel* m_ribbonPanel5;
+		wxRibbonButtonBar* m_ribbonButtonBar5;
 		wxRibbonPage* m_ribbonPage5;
 		wxPanel* m_panneauPrincipal;
 		wxTextCtrl* m_zoneResultats;
