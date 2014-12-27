@@ -14,13 +14,13 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/ribbon/page.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/ribbon/buttonbar.h>
 #include <wx/ribbon/panel.h>
+#include <wx/ribbon/page.h>
 #include <wx/ribbon/control.h>
 #include <wx/ribbon/art.h>
 #include <wx/ribbon/bar.h>
@@ -39,11 +39,11 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define BOUTON_AFFICHAGE_HISTORIQUE 1000
-#define BOUTON_AFFICHAGE_VARIABLES 1001
-#define AJOUTER_VARIABLE_BOUTON_ID 1002
-#define EDITER_VARIABLE_BOUTON_ID 1003
-#define SUPPRIMER_VARIABLE_BOUTON_ID 1004
+#define AJOUTER_VARIABLE_BOUTON_ID 1000
+#define EDITER_VARIABLE_BOUTON_ID 1001
+#define SUPPRIMER_VARIABLE_BOUTON_ID 1002
+#define BOUTON_AFFICHAGE_HISTORIQUE 1003
+#define BOUTON_AFFICHAGE_VARIABLES 1004
 #define VALIDER_TAILLE_MATRICE_ID 1005
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,18 +55,16 @@ class RibbonFrameBase : public wxFrame
 	
 	protected:
 		wxRibbonBar* m_ribbonBar1;
-		wxRibbonPage* m_ribbonPage1;
-		wxRibbonPage* m_ribbonPage2;
-		wxRibbonPanel* m_ribbonPanel6;
-		wxRibbonButtonBar* m_barreBoutonsAffichage;
-		wxRibbonPage* m_ribbonPage5;
+		wxRibbonPage* m_ribbonPage3;
 		wxRibbonPanel* m_ribbonPanel3;
 		wxRibbonButtonBar* m_ribbonButtonBar3;
-		wxRibbonPage* m_ribbonPage3;
 		wxRibbonPanel* m_ribbonPanel2;
 		wxRibbonButtonBar* m_ribbonButtonBar2;
 		wxRibbonPanel* m_ribbonPanel21;
 		wxRibbonButtonBar* m_ribbonButtonBar21;
+		wxRibbonPanel* m_ribbonPanel6;
+		wxRibbonButtonBar* m_barreBoutonsAffichage;
+		wxRibbonPage* m_ribbonPage5;
 		wxPanel* m_panneauPrincipal;
 		wxTextCtrl* m_zoneResultats;
 		wxTextCtrl* m_zoneCommande;
@@ -77,17 +75,17 @@ class RibbonFrameBase : public wxFrame
 		wxTreeCtrl* m_arbreSyntaxe;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
-		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
+		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		RibbonFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		RibbonFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1000,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		wxAuiManager m_mgr;
 		
 		~RibbonFrameBase();

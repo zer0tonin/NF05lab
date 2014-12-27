@@ -28,19 +28,12 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonBar1->SetArtProvider(new wxRibbonDefaultArtProvider); 
 	m_mgr.AddPane( m_ribbonBar1, wxAuiPaneInfo() .Top() .CaptionVisible( false ).CloseButton( false ).PaneBorder( false ).Movable( false ).Dock().Fixed().DockFixed( false ).BottomDockable( false ).LeftDockable( false ).RightDockable( false ).Floatable( false ).BestSize( wxSize( -1,130 ) ).MinSize( wxSize( -1,130 ) ).Layer( 1000 ) );
 	
-	m_ribbonPage1 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("Fichiers") , wxNullBitmap , 0 );
-	m_ribbonPage2 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("Affichage") , wxNullBitmap , 0 );
-	m_ribbonPanel6 = new wxRibbonPanel( m_ribbonPage2, wxID_ANY, wxT("Fenêtres") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
-	m_barreBoutonsAffichage = new wxRibbonButtonBar( m_ribbonPanel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_HISTORIQUE, wxT("Afficher l'historique des commandes"), toggle_log_png_to_wx_bitmap(), wxEmptyString);
-	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_VARIABLES, wxT("Afficher la liste des variables"), month_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonPage5 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("Commandes") , wxNullBitmap , 0 );
-	m_ribbonPanel3 = new wxRibbonPanel( m_ribbonPage5, wxID_ANY, wxT("Exécution") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
+	m_ribbonPage3 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("NF05Lab") , wxNullBitmap , 0 );
+	m_ribbonBar1->SetActivePage( m_ribbonPage3 ); 
+	m_ribbonPanel3 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Exécution") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar3 = new wxRibbonButtonBar( m_ribbonPanel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_ribbonButtonBar3->AddButton( wxID_ANY, wxT("Exécuter la commande"), advanced_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar3->AddButton( wxID_ANY, wxT("Effacer les résultats"), editclear_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonPage3 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("Variables et historique") , wxNullBitmap , 0 );
-	m_ribbonBar1->SetActivePage( m_ribbonPage3 ); 
 	m_ribbonPanel2 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Gestion des variables") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar2 = new wxRibbonButtonBar( m_ribbonPanel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_ribbonButtonBar2->AddButton( AJOUTER_VARIABLE_BOUTON_ID, wxT("Ajouter..."), edit_add_png_to_wx_bitmap(), wxEmptyString);
@@ -50,6 +43,13 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonPanel21 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Historique") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar21 = new wxRibbonButtonBar( m_ribbonPanel21, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_ribbonButtonBar21->AddButton( wxID_ANY, wxT("Vider l'historique"), edittrash_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonPanel6 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Fenêtres") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
+	m_barreBoutonsAffichage = new wxRibbonButtonBar( m_ribbonPanel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_HISTORIQUE, wxT("Afficher l'historique des commandes"), toggle_log_png_to_wx_bitmap(), wxEmptyString);
+	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_VARIABLES, wxT("Afficher la liste des variables"), month_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonPage5 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("?") , wxNullBitmap , 0 );
+	m_ribbonPage5->Hide();
+	
 	m_ribbonBar1->Realize();
 	
 	m_panneauPrincipal = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -118,22 +118,22 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	this->Connect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
-	this->Connect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	this->Connect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
 	this->Connect( EDITER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEditerVariable ) );
 	this->Connect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
+	this->Connect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
+	this->Connect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	m_zoneCommande->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 }
 
 RibbonFrameBase::~RibbonFrameBase()
 {
 	// Disconnect Events
-	this->Disconnect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
-	this->Disconnect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	this->Disconnect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
 	this->Disconnect( EDITER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEditerVariable ) );
 	this->Disconnect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
+	this->Disconnect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
+	this->Disconnect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	m_zoneCommande->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
 	
 	m_mgr.UnInit();
