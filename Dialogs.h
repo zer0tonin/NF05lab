@@ -39,13 +39,15 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define AJOUTER_VARIABLE_BOUTON_ID 1000
-#define EDITER_VARIABLE_BOUTON_ID 1001
-#define SUPPRIMER_VARIABLE_BOUTON_ID 1002
-#define BOUTON_AFFICHAGE_HISTORIQUE 1003
-#define BOUTON_AFFICHAGE_VARIABLES 1004
-#define RESOUDRE_SYTEME 1005
-#define VALIDER_TAILLE_MATRICE_ID 1006
+#define EXECUTER_COMMANDE_BOUTON_ID 1000
+#define EFFACER_RESULTAT_BOUTON_ID 1001
+#define AJOUTER_VARIABLE_BOUTON_ID 1002
+#define EDITER_VARIABLE_BOUTON_ID 1003
+#define SUPPRIMER_VARIABLE_BOUTON_ID 1004
+#define BOUTON_AFFICHAGE_HISTORIQUE 1005
+#define BOUTON_AFFICHAGE_VARIABLES 1006
+#define RESOUDRE_SYTEME 1007
+#define VALIDER_TAILLE_MATRICE_ID 1008
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -79,6 +81,8 @@ class RibbonFrameBase : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void SurChangementOngletRuban( wxRibbonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicExecuterCommande( wxRibbonButtonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicEffacerResultats( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }

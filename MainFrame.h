@@ -10,11 +10,14 @@ class MainFrame : public RibbonFrameBase
 public:
     MainFrame(wxWindow* parent);
     virtual ~MainFrame();
+	
+protected:
 
-    void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
+	void ExecuterCommande();
 	
 	virtual void SurValidationCommande(wxCommandEvent& event);
+	virtual void SurClicExecuterCommande( wxRibbonButtonBarEvent& event );
+	virtual void SurClicEffacerResultats( wxRibbonButtonBarEvent& event );
 	
 	virtual void SurChangementOngletRuban( wxRibbonBarEvent& event );
 	
@@ -24,7 +27,8 @@ public:
 	virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event );
 	virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event);
 	
-protected:
+	void OnExit(wxCommandEvent& event);
+    void OnAbout(wxCommandEvent& event);
 
 	RibbonMetroArtProvider m_artProvider;
 	Conteneur m_conteneurVariables;

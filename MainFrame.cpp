@@ -25,28 +25,13 @@ MainFrame::~MainFrame()
 {
 }
 
-void MainFrame::OnExit(wxCommandEvent& event)
-{
-    wxUnusedVar(event);
-	
-    Close();
-}
-
-void MainFrame::OnAbout(wxCommandEvent& event)
-{
-    wxUnusedVar(event);
-	
-    wxAboutDialogInfo info;
-    info.SetCopyright(_("My MainFrame"));
-    info.SetLicence(_("GPL v2 or later"));
-    info.SetDescription(_("Short description goes here"));
-    ::wxAboutBox(info);
-}
-
-void MainFrame::SurValidationCommande(wxCommandEvent& event)
+void MainFrame::ExecuterCommande()
 {
 	wxString commande = m_zoneCommande->GetValue();
 	m_arbreSyntaxe->DeleteAllItems();
+	
+	if(commande.IsEmpty()) //Si la commande est vide, on fait rien
+		return;
 	
 	//On essaie de calculer l'expression.
 	//Si l'opération échoue (symbole inconnu, opération impossible...), on exécute ce qu'il y a dans catch{ ... }
@@ -83,6 +68,39 @@ void MainFrame::SurValidationCommande(wxCommandEvent& event)
 	
 	//Mise à jour de l'arbre qui liste les variables
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
+}
+
+void MainFrame::OnExit(wxCommandEvent& event)
+{
+    wxUnusedVar(event);
+	
+    Close();
+}
+
+void MainFrame::OnAbout(wxCommandEvent& event)
+{
+    wxUnusedVar(event);
+	
+    wxAboutDialogInfo info;
+    info.SetCopyright(_("My MainFrame"));
+    info.SetLicence(_("GPL v2 or later"));
+    info.SetDescription(_("Short description goes here"));
+    ::wxAboutBox(info);
+}
+
+void MainFrame::SurValidationCommande(wxCommandEvent& event)
+{
+	ExecuterCommande();
+}
+
+void MainFrame::SurClicExecuterCommande( wxRibbonButtonBarEvent& event )
+{
+	ExecuterCommande();
+}
+
+void MainFrame::SurClicEffacerResultats( wxRibbonButtonBarEvent& event )
+{
+	m_zoneResultats->SetValue("");
 }
 
 void MainFrame::SurChangementOngletRuban( wxRibbonBarEvent& event )
