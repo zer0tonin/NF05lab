@@ -759,7 +759,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 	}
 	else if(noeud.Type() == Lexeme::FONCTION)
 	{
-		if(noeud.DonneeChaine() == "det")
+		if(noeud.DonneeChaine() == "det" || noeud.DonneeChaine() == "determinant") //Le déterminant
 		{
 			if(noeud.NombreEnfants() == 1)
 			{
@@ -777,6 +777,30 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			{
 				throw ExceptionParseur("La fonction det a besoin d'un seul argument");
 			}
+		}
+		else if(noeud.DonneeChaine() == "trac" || noeud.DonneeChaine() == "trace") //La trace
+		{
+			if(noeud.NombreEnfants() == 1)
+			{
+				Resultat resultatArgument = Calculer(noeud.Enfant(0), conteneurDeVariables);
+				if(resultatArgument.EstUneMatrice())
+				{
+					return Resultat(resultatArgument.ValeurMatrice().Trace());
+				}
+				else
+				{
+					throw ExceptionParseur("La fonction trac a besoin d'une matrice uniquement");
+				}
+			}
+			else
+			{
+				throw ExceptionParseur("La fonction trac a besoin d'un seul argument");
+			}
+		}
+		else
+		{
+			//Fonction inconnue
+			throw ExceptionParseur("La fonction " + noeud.DonneeChaine() + "[...] est inconnue");
 		}
 	}
 	else if(noeud.Type() == Lexeme::INDEFINI)

@@ -160,8 +160,8 @@ float Matrice::Determinant() const
  * La fonction inverse utilise l'élimination de Gauss-Jordan pour générer une matrice inverse :
  * pour cela on utilise le pseudo-code trouver à cette adresse : http://stackoverflow.com/a/1684801 
  * On effectue les opérations sur la matrice à inverser et sur une matrice identité de même dimension.
- * Lorsque l'algorithme est terminé, la matrice identité à pris les valeurs de la matrice inverse.
- * La matrice à inversr a pris les valeurs de sa matrice échelonnée réduite.
+ * Lorsque l'algorithme est terminé, la matrice identité a pris les valeurs de la matrice inverse.
+ * La matrice à inverser a pris les valeurs de sa matrice échelonnée réduite.
  */ 
 Matrice Matrice::Inverse() const
 {
