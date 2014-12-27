@@ -146,6 +146,45 @@ RibbonFrameBase::~RibbonFrameBase()
 	
 }
 
+ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxFlexGridSizer* fgSizer6;
+	fgSizer6 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer6->SetFlexibleDirection( wxBOTH );
+	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	wxFlexGridSizer* fgSizer7;
+	fgSizer7 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer7->SetFlexibleDirection( wxBOTH );
+	fgSizer7->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Nombre d'équations :"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2->Wrap( -1 );
+	fgSizer7->Add( m_staticText2, 0, wxALL, 5 );
+	
+	m_equationsSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	fgSizer7->Add( m_equationsSpin, 0, wxALL, 5 );
+	
+	m_button2 = new wxButton( this, wxID_ANY, wxT("Valider"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer7->Add( m_button2, 0, wxALL, 5 );
+	
+	
+	fgSizer6->Add( fgSizer7, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( fgSizer6 );
+	this->Layout();
+	fgSizer6->Fit( this );
+	
+	this->Centre( wxBOTH );
+}
+
+ResolutionSystemeDialogueBase::~ResolutionSystemeDialogueBase()
+{
+}
+
 AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );

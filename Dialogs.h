@@ -31,11 +31,11 @@
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
 #include <wx/stattext.h>
-#include <wx/choice.h>
 #include <wx/spinctrl.h>
 #include <wx/button.h>
-#include <wx/grid.h>
 #include <wx/dialog.h>
+#include <wx/choice.h>
+#include <wx/grid.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -97,6 +97,25 @@ class RibbonFrameBase : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class ResolutionSystemeDialogueBase
+///////////////////////////////////////////////////////////////////////////////
+class ResolutionSystemeDialogueBase : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText2;
+		wxSpinCtrl* m_equationsSpin;
+		wxButton* m_button2;
+	
+	public:
+		
+		ResolutionSystemeDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab - Résolution de système"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~ResolutionSystemeDialogueBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class AjoutMatriceDialogueBase
 ///////////////////////////////////////////////////////////////////////////////
 class AjoutMatriceDialogueBase : public wxDialog 
@@ -122,7 +141,7 @@ class AjoutMatriceDialogueBase : public wxDialog
 	
 	public:
 		
-		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxRESIZE_BORDER ); 
+		AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab - Ajout de matice"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE|wxMAXIMIZE_BOX|wxRESIZE_BORDER ); 
 		~AjoutMatriceDialogueBase();
 	
 };
