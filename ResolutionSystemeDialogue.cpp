@@ -38,7 +38,14 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 		Vecteur.FixerValeur(i,j, (float)valeurCellule);
 	}
 	
-	Solution = Application.Inverse() * Vecteur;
-	Solution.AfficherMatrice();
+	if (Application.Inversible())
+	{
+		Solution = Application.Inverse() * Vecteur;
+		Solution.AfficherMatrice();
+	}
+	else
+	{
+		wxMessageBox( wxT("Il n'y a aucune solution.") );
+	}
 	EndModal(0);
 }

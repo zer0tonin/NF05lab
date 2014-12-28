@@ -29,4 +29,4 @@ class ResolutionSystemeDialogue : public ResolutionSystemeDialogueBase
 		Matrice Solution;
 };
 
-#endif // __MyProject1ResolutionSystemeDialogueBase__
+#endif // __ResolutionSystemeDialogue__
