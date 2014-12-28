@@ -27,6 +27,10 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 	int nombreEquations = m_equationsSpin->GetValue(), i ,j;
 	double valeurCellule;
 	
+	Matrice Application(nombreEquations-1, nombreEquations-1);
+	Matrice Vecteur(nombreEquations-1, 0);
+	Matrice Solution(nombreEquations-1, 0);
+	
 	for (i=0; i<nombreEquations; i++)
 	{
 		for (j=0; j<nombreEquations; j++)

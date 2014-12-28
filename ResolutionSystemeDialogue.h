@@ -24,9 +24,6 @@ class ResolutionSystemeDialogue : public ResolutionSystemeDialogueBase
 		void SurClicBoutonValiderSysteme(wxCommandEvent& event);
 		void SurCLicBouttonResoudre(wxCommandEvent& event);
 	private:
-		Matrice Application;
-		Matrice Vecteur;
-		Matrice Solution;
 };
 
 #endif // __ResolutionSystemeDialogue__
