@@ -161,6 +161,6 @@ void MainFrame::SurClicSupprimerVariable( wxRibbonButtonBarEvent& event)
 
 void MainFrame::SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event)
 {
-	ResolutionSystemeDialogueBase systeme(this);
+	ResolutionSystemeDialogue systeme(this);
 	systeme.ShowModal();
 }

@@ -2,7 +2,7 @@
 
 ResolutionSystemeDialogue::ResolutionSystemeDialogue( wxWindow* parent)
 :
-ResolutionSystemeDialogue( parent )
+ResolutionSystemeDialogueBase( parent )
 {
 
 }
