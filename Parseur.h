@@ -187,11 +187,29 @@ public:
 	Parseur();
 	~Parseur();
 	
+	/**
+	 * Méthode utilisée par le reste du logiciel pour calculer le résultat d'une expression.
+	 */
 	Resultat CalculerExpression(const std::string &str, Conteneur &conteneurDeVariables, wxTreeCtrl *arbreSyn = NULL);
 	
 private:
+	///Les différentes étape du calcul sont séparées dans différentes méthodes
+	/**
+	 * Analyse lexicale : on sépare tous les petits éléments de l'expression lexèmes.
+	 */
 	std::vector<Lexeme> Parse(std::string expression);
+	
+	/**
+	 * Analyse syntaxique : on utilise les lexème pour former un arbre syntaxique 
+	 * qui contient toutes les opérations imbriquée et qui sera représentatif de l'ordre 
+	 * des opérations à effectuer.
+	 */
 	Noeud* CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme);
+	
+	/**
+	 * Evaluation : on utilise l'arbre syntaxique pour réaliser les opérations dans le
+	 * bon ordre et on retourne le résultat.
+	 */
 	Resultat Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables);
 };
 
