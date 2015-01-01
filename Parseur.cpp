@@ -350,11 +350,6 @@ void Noeud::AfficherContenu(wxTreeCtrl *arbre, wxTreeItemId parent) const
 //*************************** RESULTAT **********************************************************//
 //***********************************************************************************************//
 
-Resultat::Resultat(const std::string msgErreur) : m_type(ERREUR), m_erreur(msgErreur), m_matrice(0,0)
-{
-	
-}
-
 Resultat::Resultat(const Matrice &matrice) : m_type(MATRICE), m_matrice(matrice)
 {
 	
