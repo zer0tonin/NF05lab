@@ -39,16 +39,18 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define EXECUTER_COMMANDE_BOUTON_ID 1000
-#define EFFACER_RESULTAT_BOUTON_ID 1001
-#define AJOUTER_VARIABLE_BOUTON_ID 1002
-#define EDITER_VARIABLE_BOUTON_ID 1003
-#define SUPPRIMER_VARIABLE_BOUTON_ID 1004
-#define BOUTON_AFFICHAGE_HISTORIQUE 1005
-#define BOUTON_AFFICHAGE_VARIABLES 1006
-#define RESOUDRE_SYTEME 1007
-#define BOUTON_VALIDER_SYSTEME 1008
-#define VALIDER_TAILLE_MATRICE_ID 1009
+#define ENREGISTRER_BOUTTON 1000
+#define OUVRIR_BOUTTON 1001
+#define EXECUTER_COMMANDE_BOUTON_ID 1002
+#define EFFACER_RESULTAT_BOUTON_ID 1003
+#define AJOUTER_VARIABLE_BOUTON_ID 1004
+#define EDITER_VARIABLE_BOUTON_ID 1005
+#define SUPPRIMER_VARIABLE_BOUTON_ID 1006
+#define BOUTON_AFFICHAGE_HISTORIQUE 1007
+#define BOUTON_AFFICHAGE_VARIABLES 1008
+#define RESOUDRE_SYTEME 1009
+#define BOUTON_VALIDER_SYSTEME 1010
+#define VALIDER_TAILLE_MATRICE_ID 1011
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -60,6 +62,8 @@ class RibbonFrameBase : public wxFrame
 	protected:
 		wxRibbonBar* m_ribbonBar1;
 		wxRibbonPage* m_ribbonPage3;
+		wxRibbonPanel* m_ribbonPanel7;
+		wxRibbonButtonBar* m_ribbonButtonBar6;
 		wxRibbonPanel* m_ribbonPanel3;
 		wxRibbonButtonBar* m_ribbonButtonBar3;
 		wxRibbonPanel* m_ribbonPanel2;
@@ -82,6 +86,8 @@ class RibbonFrameBase : public wxFrame
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void SurChangementOngletRuban( wxRibbonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicEnregistrer( wxRibbonButtonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicOuvrir( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicExecuterCommande( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEffacerResultats( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
@@ -124,7 +130,7 @@ class ResolutionSystemeDialogueBase : public wxDialog
 	
 	public:
 		
-		ResolutionSystemeDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab - Résolution de système"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		ResolutionSystemeDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab - Résolution de système"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~ResolutionSystemeDialogueBase();
 	
 };

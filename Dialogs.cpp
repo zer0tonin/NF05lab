@@ -13,7 +13,9 @@
 #include "res/history2.png.h"
 #include "res/left37.png.h"
 #include "res/list1.png.h"
+#include "res/open127.png.h"
 #include "res/right133.png.h"
+#include "res/save15.png.h"
 #include "res/settings48.png.h"
 #include "res/trash30.png.h"
 
@@ -31,6 +33,10 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	m_ribbonPage3 = new wxRibbonPage( m_ribbonBar1, wxID_ANY, wxT("NF05Lab") , wxNullBitmap , 0 );
 	m_ribbonBar1->SetActivePage( m_ribbonPage3 ); 
+	m_ribbonPanel7 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Fichier") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
+	m_ribbonButtonBar6 = new wxRibbonButtonBar( m_ribbonPanel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_ribbonButtonBar6->AddButton( ENREGISTRER_BOUTTON, wxT("Enregistrer"), save15_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar6->AddButton( OUVRIR_BOUTTON, wxT("Ouvrir"), open127_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel3 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Exécution") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar3 = new wxRibbonButtonBar( m_ribbonPanel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_ribbonButtonBar3->AddButton( EXECUTER_COMMANDE_BOUTON_ID, wxT("Exécuter la commande"), right133_png_to_wx_bitmap(), wxEmptyString);
@@ -123,6 +129,8 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	
 	// Connect Events
 	this->Connect( wxID_ANY, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, wxRibbonBarEventHandler( RibbonFrameBase::SurChangementOngletRuban ) );
+	this->Connect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
+	this->Connect( OUVRIR_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicOuvrir ) );
 	this->Connect( EXECUTER_COMMANDE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicExecuterCommande ) );
 	this->Connect( EFFACER_RESULTAT_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEffacerResultats ) );
 	this->Connect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
@@ -138,6 +146,8 @@ RibbonFrameBase::~RibbonFrameBase()
 {
 	// Disconnect Events
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, wxRibbonBarEventHandler( RibbonFrameBase::SurChangementOngletRuban ) );
+	this->Disconnect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
+	this->Disconnect( OUVRIR_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicOuvrir ) );
 	this->Disconnect( EXECUTER_COMMANDE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicExecuterCommande ) );
 	this->Disconnect( EFFACER_RESULTAT_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEffacerResultats ) );
 	this->Disconnect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
@@ -183,6 +193,9 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	
 	wxFlexGridSizer* fgSizer8;
 	fgSizer8 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer8->AddGrowableCol( 0 );
+	fgSizer8->AddGrowableCol( 1 );
+	fgSizer8->AddGrowableRow( 0 );
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -255,7 +268,6 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	
 	this->SetSizer( fgSizer6 );
 	this->Layout();
-	fgSizer6->Fit( this );
 	
 	this->Centre( wxBOTH );
 	

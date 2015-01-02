@@ -14,6 +14,10 @@ public:
 protected:
 
 	void ExecuterCommande();
+	void Enregistrer();
+	
+	virtual void SurClicEnregistrer(wxRibbonButtonBarEvent& event);
+	virtual void SurClicOuvrir(wxRibbonButtonBarEvent& event);
 	
 	virtual void SurValidationCommande(wxCommandEvent& event);
 	virtual void SurClicExecuterCommande( wxRibbonButtonBarEvent& event );

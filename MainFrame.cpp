@@ -4,11 +4,14 @@
 #include <wx/log.h>
 #include <wx/stdpaths.h>
 #include <wx/utils.h>
+#include <wx/filedlg.h>
+#include <wx/wfstream.h>
 
 #include <iostream>
 #include "AjoutMatriceDialogue.h"
 #include "Parseur.h"
 #include "ResolutionSystemeDialogue.h"
+#include "tinyxml2.h"
 
 MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(true), m_conteneurVariables()
 {
@@ -71,11 +74,79 @@ void MainFrame::ExecuterCommande()
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
+void MainFrame::Enregistrer()
+{
+	
+	int i, j, k;
+	tinyxml2::XMLDocument fichier;
+	tinyxml2::XMLNode *racine;
+	tinyxml2::XMLNode *elementMatrice;
+	tinyxml2::XMLElement *elementLignes;
+	tinyxml2::XMLElement *elementColonnes;
+	tinyxml2::XMLElement *elementNom;
+	tinyxml2::XMLElement *elementValeur;
+	wxFileDialog dialogueOuverture(this, _("Enregistrer dans un fichier XML : "), "", "","XML files (*.XML)|*.XML", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);;
+	
+	if (dialogueOuverture.ShowModal() ==  wxID_CANCEL)
+	{
+		return;
+	}
+	wxFileOutputStream sortie(dialogueOuverture.GetPath());
+	if (!sortie.IsOk())
+	{
+		wxLogError("Impossible d'ouvrir le fichier. '%s'", dialogueOuverture.GetPath());
+		return;
+	}
+	
+	fichier.NewDeclaration();
+	racine = fichier.NewElement("variable");
+	fichier.InsertFirstChild(racine);
+	for(i=0; i<26; i++)
+	{
+		if (m_conteneurVariables.Existe(65+i))
+		{
+			elementMatrice = fichier.NewElement("matrice");
+			racine->InsertEndChild(elementMatrice);
+			
+			elementNom = fichier.NewElement("nom");
+			elementNom->SetText(65+i);
+			elementMatrice->InsertEndChild(elementNom);
+			
+			elementLignes = fichier.NewElement("lignes");
+			elementLignes->SetText(m_conteneurVariables.Variable(65+i).ObtenirLignes());
+			elementMatrice->InsertEndChild(elementLignes);
+			
+			elementColonnes = fichier.NewElement("colonnes");
+			elementColonnes->SetText(m_conteneurVariables.Variable(65+i).ObtenirLignes());
+			elementMatrice->InsertEndChild(elementColonnes);
+			
+			for (j=0 ; j<m_conteneurVariables.Variable(65+i).ObtenirLignes(); j++)
+			{
+				for (k=0; k<m_conteneurVariables.Variable(65+i).ObtenirColonnes(); k++)
+				{
+					elementValeur = fichier.NewElement("valeur");
+					elementValeur->SetText(m_conteneurVariables.Variable(65+i).ObtenirValeur(j,k));
+					elementMatrice->InsertEndChild(elementValeur);
+				}
+			}
+		}
+	}
+	fichier.SaveFile(dialogueOuverture.GetPath());
+}
+
 void MainFrame::OnExit(wxCommandEvent& event)
 {
     wxUnusedVar(event);
-	
-    Close();
+	int confirmation;
+	confirmation = wxMessageBox("Souhiatez vous enregistrer avant de quitter?", "Confirm",wxYES_NO | wxCANCEL,this);
+	if (confirmation == wxYES)
+	{
+		Enregistrer();
+	}
+	else if (confirmation == wxNO)
+	{
+		Close();
+	}
 }
 
 void MainFrame::OnAbout(wxCommandEvent& event)
@@ -83,11 +154,36 @@ void MainFrame::OnAbout(wxCommandEvent& event)
     wxUnusedVar(event);
 	
     wxAboutDialogInfo info;
-    info.SetCopyright(_("My MainFrame"));
-    info.SetLicence(_("GPL v2 or later"));
-    info.SetDescription(_("Short description goes here"));
+    info.SetCopyright(_("Copyright © 2015 Antoine Girard Guittard <antoine.girard_guittard@utt.fr> & Victor Levasseur <victor.levasseur@utt.fr>"));
+    info.SetLicence(_("This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See the COPYING file for more details."));
+    info.SetDescription(_("Logiciel de calcul matricel."));
     ::wxAboutBox(info);
 }
+
+void MainFrame::SurClicEnregistrer(wxRibbonButtonBarEvent& event)
+{
+	Enregistrer();
+}
+
+void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
+{
+	tinyxml2::XMLDocument fichier;
+	wxFileDialog dialogueOuverture(this, _("Ouvrez un fichier XML"), "", "","XML files (*.XML)|*.XML", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+	
+	if (dialogueOuverture.ShowModal() ==  wxID_CANCEL)
+	{
+		return;
+	}
+	wxFileInputStream entree(dialogueOuverture.GetPath());
+	if (!entree.IsOk())
+	{
+		wxLogError("Impossible d'ouvrir le fichier. '%s'", dialogueOuverture.GetPath());
+		return;
+	}
+	
+	fichier.LoadFile(dialogueOuverture.GetPath());
+}
+
 
 void MainFrame::SurValidationCommande(wxCommandEvent& event)
 {
