@@ -46,11 +46,12 @@
 #define AJOUTER_VARIABLE_BOUTON_ID 1004
 #define EDITER_VARIABLE_BOUTON_ID 1005
 #define SUPPRIMER_VARIABLE_BOUTON_ID 1006
-#define BOUTON_AFFICHAGE_HISTORIQUE 1007
-#define BOUTON_AFFICHAGE_VARIABLES 1008
-#define RESOUDRE_SYTEME 1009
-#define BOUTON_VALIDER_SYSTEME 1010
-#define VALIDER_TAILLE_MATRICE_ID 1011
+#define BOUTTON_VIDER_VARIABLES 1007
+#define BOUTON_AFFICHAGE_HISTORIQUE 1008
+#define BOUTON_AFFICHAGE_VARIABLES 1009
+#define RESOUDRE_SYTEME 1010
+#define BOUTON_VALIDER_SYSTEME 1011
+#define VALIDER_TAILLE_MATRICE_ID 1012
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -94,6 +95,7 @@ class RibbonFrameBase : public wxFrame
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicViderVariables( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event ) { event.Skip(); }

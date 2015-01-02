@@ -138,7 +138,7 @@ void MainFrame::OnExit(wxCommandEvent& event)
 {
     wxUnusedVar(event);
 	int confirmation;
-	confirmation = wxMessageBox("Souhiatez vous enregistrer avant de quitter?", "Confirmation",wxYES_NO | wxCANCEL,this);
+	confirmation = wxMessageBox("Souhaitez vous enregistrer avant de quitter?", "Confirmation",wxYES_NO | wxCANCEL,this);
 	if (confirmation == wxYES)
 	{
 		Enregistrer();
@@ -172,7 +172,7 @@ void MainFrame::SurClicEnregistrer(wxRibbonButtonBarEvent& event)
 void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 {
 	int confirmation;
-	confirmation = wxMessageBox("Souhiatez vous enregistrer avant d'ouvrir un nouveau fichier?", "Confirmation",wxYES_NO | wxCANCEL,this);
+	confirmation = wxMessageBox("Souhaitez vous enregistrer avant d'ouvrir un nouveau fichier?", "Confirmation",wxYES_NO | wxCANCEL,this);
 	if (confirmation == wxYES)
 	{
 		Enregistrer();
@@ -240,6 +240,7 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 		}
 		noeudMatrice = noeudMatrice->NextSibling();
 	}
+	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
 
@@ -317,4 +318,29 @@ void MainFrame::SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event)
 {
 	ResolutionSystemeDialogue systeme(this);
 	systeme.ShowModal();
+}
+
+void MainFrame::SurClicViderVariables( wxRibbonButtonBarEvent& event)
+{
+	int i, confirmation;
+	
+	confirmation = wxMessageBox("Souhaitez vous enregistrer avant d'effacer les variables?", "Confirmation",wxYES_NO | wxCANCEL,this);
+	
+	if (confirmation == wxYES)
+	{
+		Enregistrer();
+	}
+	else if(confirmation == wxCANCEL)
+	{
+		return;
+	}
+	
+	for(i=65; i<91; i++)
+	{
+		if (m_conteneurVariables.Existe(i))
+		{
+			m_conteneurVariables.SupprimerVariable(i);
+		}
+	}
+	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }

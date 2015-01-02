@@ -31,6 +31,7 @@ protected:
 	virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event );
 	virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event);
 	virtual void SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event);
+	virtual void SurClicViderVariables( wxRibbonButtonBarEvent& event);
 
 	
 	void OnExit(wxCommandEvent& event);
