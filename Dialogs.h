@@ -85,6 +85,7 @@ class RibbonFrameBase : public wxFrame
 		wxTreeCtrl* m_arbreSyntaxe;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
 		virtual void SurChangementOngletRuban( wxRibbonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEnregistrer( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicOuvrir( wxRibbonButtonBarEvent& event ) { event.Skip(); }
@@ -119,7 +120,9 @@ class ResolutionSystemeDialogueBase : public wxDialog
 		wxStaticText* m_staticText2;
 		wxSpinCtrl* m_equationsSpin;
 		wxButton* BoutonValiderSysteme;
+		wxStaticText* m_staticText3;
 		wxGrid* m_tableauMatriceSysteme;
+		wxStaticText* m_staticText4;
 		wxGrid* m_tableauVecteurSysteme;
 		wxButton* m_bouttonResoudre;
 		
@@ -130,7 +133,7 @@ class ResolutionSystemeDialogueBase : public wxDialog
 	
 	public:
 		
-		ResolutionSystemeDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab - Résolution de système"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,312 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		ResolutionSystemeDialogueBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("NF05Lab - Résolution de système"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~ResolutionSystemeDialogueBase();
 	
 };

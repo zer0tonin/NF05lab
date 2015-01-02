@@ -128,6 +128,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( RibbonFrameBase::OnExit ) );
 	this->Connect( wxID_ANY, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, wxRibbonBarEventHandler( RibbonFrameBase::SurChangementOngletRuban ) );
 	this->Connect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
 	this->Connect( OUVRIR_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicOuvrir ) );
@@ -145,6 +146,7 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 RibbonFrameBase::~RibbonFrameBase()
 {
 	// Disconnect Events
+	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( RibbonFrameBase::OnExit ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, wxRibbonBarEventHandler( RibbonFrameBase::SurChangementOngletRuban ) );
 	this->Disconnect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
 	this->Disconnect( OUVRIR_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicOuvrir ) );
@@ -169,7 +171,8 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	wxFlexGridSizer* fgSizer6;
 	fgSizer6 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer6->AddGrowableCol( 0 );
-	fgSizer6->AddGrowableRow( 1 );
+	fgSizer6->AddGrowableRow( 2 );
+	fgSizer6->AddGrowableRow( 4 );
 	fgSizer6->SetFlexibleDirection( wxBOTH );
 	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -191,13 +194,9 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	
 	fgSizer6->Add( fgSizer7, 1, wxEXPAND, 5 );
 	
-	wxFlexGridSizer* fgSizer8;
-	fgSizer8 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer8->AddGrowableCol( 0 );
-	fgSizer8->AddGrowableCol( 1 );
-	fgSizer8->AddGrowableRow( 0 );
-	fgSizer8->SetFlexibleDirection( wxBOTH );
-	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	m_staticText3 = new wxStaticText( this, wxID_ANY, wxT("Application :"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3->Wrap( -1 );
+	fgSizer6->Add( m_staticText3, 0, wxALL, 5 );
 	
 	m_tableauMatriceSysteme = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	
@@ -223,7 +222,11 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	
 	// Cell Defaults
 	m_tableauMatriceSysteme->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
-	fgSizer8->Add( m_tableauMatriceSysteme, 0, wxALL, 5 );
+	fgSizer6->Add( m_tableauMatriceSysteme, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticText4 = new wxStaticText( this, wxID_ANY, wxT("Vecteur"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4->Wrap( -1 );
+	fgSizer6->Add( m_staticText4, 0, wxALL, 5 );
 	
 	m_tableauVecteurSysteme = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	
@@ -249,10 +252,7 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	
 	// Cell Defaults
 	m_tableauVecteurSysteme->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
-	fgSizer8->Add( m_tableauVecteurSysteme, 0, wxALL, 5 );
-	
-	
-	fgSizer6->Add( fgSizer8, 1, wxEXPAND, 5 );
+	fgSizer6->Add( m_tableauVecteurSysteme, 0, wxALL|wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer9;
 	fgSizer9 = new wxFlexGridSizer( 0, 2, 0, 0 );

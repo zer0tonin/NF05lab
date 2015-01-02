@@ -17,7 +17,7 @@ void ResolutionSystemeDialogue::SurClicBoutonValiderSysteme(wxCommandEvent& even
 	{
 		m_tableauMatriceSysteme->AppendRows(nombreEquations);
 		m_tableauMatriceSysteme->AppendCols(nombreEquations);
-		m_tableauVecteurSysteme->AppendRows(1);
+		m_tableauVecteurSysteme->AppendCols(1);
 		m_tableauVecteurSysteme->AppendRows(nombreEquations);
 	}
 }
@@ -38,8 +38,8 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 			m_tableauMatriceSysteme->GetCellValue(i,j).ToDouble(&valeurCellule);
 			Application.FixerValeur(i,j, (float)valeurCellule);
 		}
-		m_tableauVecteurSysteme->GetCellValue(i,j).ToDouble(&valeurCellule);
-		Vecteur.FixerValeur(i,j, (float)valeurCellule);
+		m_tableauVecteurSysteme->GetCellValue(i,0).ToDouble(&valeurCellule);
+		Vecteur.FixerValeur(i,0, (float)valeurCellule);
 	}
 	
 	if (Application.Inversible())
@@ -49,7 +49,7 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 	}
 	else
 	{
-		wxMessageBox( wxT("Il n'y a aucune solution.") );
+		wxMessageBox( wxT("Il n'y a aucune solution ou une infinité de solution.") );
 	}
 	EndModal(0);
 }

@@ -159,7 +159,7 @@ void MainFrame::OnAbout(wxCommandEvent& event)
 	
     wxAboutDialogInfo info;
     info.SetCopyright(_("Copyright © 2015 Antoine Girard Guittard <antoine.girard_guittard@utt.fr> & Victor Levasseur <victor.levasseur@utt.fr>"));
-    info.SetLicence(_("This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See the COPYING file for more details."));
+    info.SetLicence(_("WTFPL."));
     info.SetDescription(_("Logiciel de calcul matricel."));
     ::wxAboutBox(info);
 }
@@ -218,7 +218,7 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 		elementNom = noeudNom->ToElement();
 		if (atoi(elementNom->GetText()) == i)
 		{
-			noeudLignes = noeudNom->NextSiblingElement();
+			noeudLignes = noeudNom->NextSibling();
 			elementLignes = noeudLignes->ToElement();
 			lignes = atoi(elementLignes->GetText());
 			noeudColonnes = noeudLignes->NextSibling();
