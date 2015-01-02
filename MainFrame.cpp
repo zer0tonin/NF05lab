@@ -138,7 +138,7 @@ void MainFrame::OnExit(wxCommandEvent& event)
 {
     wxUnusedVar(event);
 	int confirmation;
-	confirmation = wxMessageBox("Souhiatez vous enregistrer avant de quitter?", "Confirm",wxYES_NO | wxCANCEL,this);
+	confirmation = wxMessageBox("Souhiatez vous enregistrer avant de quitter?", "Confirmation",wxYES_NO | wxCANCEL,this);
 	if (confirmation == wxYES)
 	{
 		Enregistrer();
@@ -146,6 +146,10 @@ void MainFrame::OnExit(wxCommandEvent& event)
 	else if (confirmation == wxNO)
 	{
 		Close();
+	}
+	else
+	{
+		return;
 	}
 }
 
@@ -167,8 +171,32 @@ void MainFrame::SurClicEnregistrer(wxRibbonButtonBarEvent& event)
 
 void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 {
+	int confirmation;
+	confirmation = wxMessageBox("Souhiatez vous enregistrer avant d'ouvrir un nouveau fichier?", "Confirmation",wxYES_NO | wxCANCEL,this);
+	if (confirmation == wxYES)
+	{
+		Enregistrer();
+		return;
+	}
+	else if (confirmation == wxCANCEL)
+	{
+		return;
+	}
+	
 	tinyxml2::XMLDocument fichier;
+	tinyxml2::XMLNode *racine;
+	tinyxml2::XMLNode *noeudMatrice;
+	tinyxml2::XMLNode *noeudLignes;
+	tinyxml2::XMLElement *elementLignes;
+	tinyxml2::XMLNode *noeudColonnes;
+	tinyxml2::XMLElement *elementColonnes;
+	tinyxml2::XMLNode *noeudNom;
+	tinyxml2::XMLElement *elementNom;
+	tinyxml2::XMLNode *noeudValeur;
+	tinyxml2::XMLElement *elementValeur;
 	wxFileDialog dialogueOuverture(this, _("Ouvrez un fichier XML"), "", "","XML files (*.XML)|*.XML", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+	int lignes, colonnes, i, j, k;
+	float valeur;
 	
 	if (dialogueOuverture.ShowModal() ==  wxID_CANCEL)
 	{
@@ -182,6 +210,36 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 	}
 	
 	fichier.LoadFile(dialogueOuverture.GetPath());
+	racine = fichier.FirstChild();
+	noeudMatrice = racine->FirstChild();
+	for (i=65;i<91;i++)
+	{
+		noeudNom = noeudMatrice->FirstChild(); //SIGSEGV
+		elementNom = noeudNom->ToElement();
+		if (atoi(elementNom->GetText()) == i)
+		{
+			noeudLignes = noeudNom->NextSiblingElement();
+			elementLignes = noeudLignes->ToElement();
+			lignes = atoi(elementLignes->GetText());
+			noeudColonnes = noeudLignes->NextSibling();
+			elementColonnes = noeudColonnes->ToElement();
+			colonnes = atoi(elementColonnes->GetText());
+			
+			m_conteneurVariables.AjouterVariable(i, lignes, colonnes);
+			noeudValeur = noeudColonnes->NextSibling();
+			for (j=0; j<lignes; j++)
+			{
+				for (k=0; k<colonnes; k++)
+				{
+					elementValeur = noeudValeur->ToElement();
+					valeur = atof(elementValeur->GetText());
+					m_conteneurVariables.Variable(i).FixerValeur(j, k, valeur);
+					noeudValeur = noeudValeur->NextSibling();
+				}
+			}
+		}
+		noeudMatrice = noeudMatrice->NextSibling();
+	}
 }
 
 
