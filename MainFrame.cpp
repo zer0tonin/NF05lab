@@ -186,17 +186,12 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 	tinyxml2::XMLDocument fichier;
 	tinyxml2::XMLNode *racine;
 	tinyxml2::XMLNode *noeudMatrice;
-	tinyxml2::XMLNode *noeudLignes;
-	tinyxml2::XMLElement *elementLignes;
-	tinyxml2::XMLNode *noeudColonnes;
-	tinyxml2::XMLElement *elementColonnes;
-	tinyxml2::XMLNode *noeudNom;
-	tinyxml2::XMLElement *elementNom;
-	tinyxml2::XMLNode *noeudValeur;
-	tinyxml2::XMLElement *elementValeur;
+	tinyxml2::XMLElement* curseur;
 	wxFileDialog dialogueOuverture(this, _("Ouvrez un fichier XML"), "", "","XML files (*.XML)|*.XML", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
-	int lignes, colonnes, i, j, k;
+	int lignes, colonnes, i,j;
+	char nom;
 	float valeur;
+	
 	
 	if (dialogueOuverture.ShowModal() ==  wxID_CANCEL)
 	{
@@ -211,35 +206,26 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 	
 	fichier.LoadFile(dialogueOuverture.GetPath());
 	racine = fichier.FirstChild();
-	noeudMatrice = racine->FirstChild();
-	for (i=65;i<91;i++)
+	for(noeudMatrice = racine->FirstChild(); noeudMatrice != NULL; noeudMatrice = noeudMatrice->NextSibling())
 	{
-		noeudNom = noeudMatrice->FirstChild(); //SIGSEGV
-		elementNom = noeudNom->ToElement();
-		if (atoi(elementNom->GetText()) == i)
+		curseur = noeudMatrice->FirstChildElement();
+		nom = (char)atoi(curseur->GetText());
+		curseur = curseur->NextSiblingElement();
+		lignes = atoi(curseur->GetText());
+		curseur = curseur->NextSiblingElement();
+		colonnes = atoi(curseur->GetText());
+		m_conteneurVariables.AjouterVariable(nom, lignes, colonnes);
+		for(i=0; i<lignes;i++)
 		{
-			noeudLignes = noeudNom->NextSibling();
-			elementLignes = noeudLignes->ToElement();
-			lignes = atoi(elementLignes->GetText());
-			noeudColonnes = noeudLignes->NextSibling();
-			elementColonnes = noeudColonnes->ToElement();
-			colonnes = atoi(elementColonnes->GetText());
-			
-			m_conteneurVariables.AjouterVariable(i, lignes, colonnes);
-			noeudValeur = noeudColonnes->NextSibling();
-			for (j=0; j<lignes; j++)
+			for(j=0;j<colonnes;j++)
 			{
-				for (k=0; k<colonnes; k++)
-				{
-					elementValeur = noeudValeur->ToElement();
-					valeur = atof(elementValeur->GetText());
-					m_conteneurVariables.Variable(i).FixerValeur(j, k, valeur);
-					noeudValeur = noeudValeur->NextSibling();
-				}
+				curseur=curseur->NextSiblingElement();
+				valeur = atof(curseur->GetText());
+				m_conteneurVariables.Variable(nom).FixerValeur(i,j,valeur);
 			}
 		}
-		noeudMatrice = noeudMatrice->NextSibling();
 	}
+	
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
