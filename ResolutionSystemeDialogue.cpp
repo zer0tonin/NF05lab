@@ -7,16 +7,21 @@ ResolutionSystemeDialogueBase( parent )
 
 }
 
+/*
+ * La méthode ResolutionSystemeDialogue prend le nombre d'équation (nombreEquations) indiqué par l'utilisateur et s'en sert pour générer:
+ * - une grille nombreEquations * nombreEquations pour l'application
+ * - une grille nombreEquations * 1 pour le vecteur
+ * (Le système étant : Application * Solution = Vecteur).
+ */
 void ResolutionSystemeDialogue::SurClicBoutonValiderSysteme(wxCommandEvent& event)
 {
-	//On compare la nouvelle taille souhaitée à la taille actuelle du tableau
 	int nombreEquations = m_equationsSpin->GetValue();
 	
-	//Si il y a trop de lignes/colonnes, on en retire suffisamment
 	if(nombreEquations > 0)
 	{
 		m_tableauMatriceSysteme->AppendRows(nombreEquations);
 		m_tableauMatriceSysteme->AppendCols(nombreEquations);
+		
 		m_tableauVecteurSysteme->AppendCols(1);
 		m_tableauVecteurSysteme->AppendRows(nombreEquations);
 	}

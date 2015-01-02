@@ -158,7 +158,7 @@ float Matrice::Determinant() const
 
 /*
  * La fonction inverse utilise l'élimination de Gauss-Jordan pour générer une matrice inverse :
- * pour cela on utilise le pseudo-code trouver à cette adresse : http://stackoverflow.com/a/1684801 
+ * pour cela on utilise le pseudo-code trouver à cette adresse : http://fr.wikipedia.org/wiki/%C3%89limination_de_Gauss-Jordan#Pseudocode
  * On effectue les opérations sur la matrice à inverser et sur une matrice identité de même dimension.
  * Lorsque l'algorithme est terminé, la matrice identité a pris les valeurs de la matrice inverse.
  * La matrice à inverser a pris les valeurs de sa matrice échelonnée réduite.
@@ -385,7 +385,11 @@ Matrice Matrice::Identite() const
 	return Resultat;
 }
 
-
+/*
+ * La méthode AfficherMatice() converti la matrice en une chaine de caractère (wxString)
+ * en séprarant les colonnes par des tabulations (\t) et les lignes par des sauts de lignes (\n).
+ * Cette chaîne de caractère est ensuite affichée dans une boîte de dialogue (wxMessageBox)
+ */
 
 void Matrice::AfficherMatrice() const
 {

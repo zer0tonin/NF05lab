@@ -74,6 +74,25 @@ void MainFrame::ExecuterCommande()
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
+/*
+ * La méthode Enregistrer() stocke le contenu des variables dans un fichier XML ayant la structure:
+<?xml version="1.0" encoding="UTF-8"?>
+<variable>
+    <matrice>
+        <nom>numéro ASCII correspondant au nom de la matrice</nom>
+        <lignes>nombre de ligne de la matrice</lignes>
+        <colonnes>nombre de colonens de la matrice</colonnes>
+        <valeur>valeur en 1,1</valeur>
+		<valeur>valeur en 1,2</valeur>
+		<valeur>...</valeur>
+    </matrice>
+	<matrice>
+	...
+	</matrice>
+	...
+</variable>
+ */ 
+
 void MainFrame::Enregistrer()
 {
 	
@@ -85,25 +104,27 @@ void MainFrame::Enregistrer()
 	tinyxml2::XMLElement *elementColonnes;
 	tinyxml2::XMLElement *elementNom;
 	tinyxml2::XMLElement *elementValeur;
-	wxFileDialog dialogueOuverture(this, _("Enregistrer dans un fichier XML : "), "", "","XML files (*.XML)|*.XML", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);;
+	tinyxml2::XMLDeclaration *declaration;
+	wxFileDialog dialogueOuverture(this, _("Enregistrer dans un fichier XML : "), "", "","XML files (*.XML)|*.XML", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);; //On demande à l'utilisateur d'indiquer un fichier.
 	
 	if (dialogueOuverture.ShowModal() ==  wxID_CANCEL)
 	{
-		return;
+		return; //Si l'utilisateur annule, on sort de la fonction
 	}
 	wxFileOutputStream sortie(dialogueOuverture.GetPath());
 	if (!sortie.IsOk())
 	{
 		wxLogError("Impossible d'ouvrir le fichier. '%s'", dialogueOuverture.GetPath());
-		return;
+		return; //Si le fichier ne s'ouvre pas on sort de la fonction
 	}
 	
-	fichier.NewDeclaration();
+	declaration = fichier.NewDeclaration();
+	fichier.InsertFirstChild(declaration); //on ajoute une déclaration au début du fichier (<?xml version="1.0" encoding="UTF-8"?>)
 	racine = fichier.NewElement("variable");
-	fichier.InsertFirstChild(racine);
+	fichier.InsertEndChild(racine); //on ajoute ensuite le premier noeud (<variable></variable>)
 	for(i=0; i<26; i++)
 	{
-		if (m_conteneurVariables.Existe(65+i))
+		if (m_conteneurVariables.Existe(65+i)) //pour chaque matrice existante, on ajoute les données correspondantes :
 		{
 			elementMatrice = fichier.NewElement("matrice");
 			racine->InsertEndChild(elementMatrice);
@@ -120,6 +141,7 @@ void MainFrame::Enregistrer()
 			elementColonnes->SetText(m_conteneurVariables.Variable(65+i).ObtenirLignes());
 			elementMatrice->InsertEndChild(elementColonnes);
 			
+			//On utilise deux boucles pour ajouter toutes les valeurs de la matrice au fichier.
 			for (j=0 ; j<m_conteneurVariables.Variable(65+i).ObtenirLignes(); j++)
 			{
 				for (k=0; k<m_conteneurVariables.Variable(65+i).ObtenirColonnes(); k++)
@@ -164,19 +186,26 @@ void MainFrame::OnAbout(wxCommandEvent& event)
     ::wxAboutBox(info);
 }
 
+/*
+ * Lorsqu'un utilisateur clic sur le boutton enregistrer, cela déclenche la méthode enregistrer()
+ */
+
 void MainFrame::SurClicEnregistrer(wxRibbonButtonBarEvent& event)
 {
 	Enregistrer();
 }
 
+/*
+ * Lorsqu'un utilisateur clic sur Ouvrir on charge un fichier XML contenant l'ensemble des variables.
+ */
+
 void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 {
 	int confirmation;
-	confirmation = wxMessageBox("Souhaitez vous enregistrer avant d'ouvrir un nouveau fichier?", "Confirmation",wxYES_NO | wxCANCEL,this);
+	confirmation = wxMessageBox("Souhaitez vous enregistrer avant d'ouvrir un nouveau fichier?", "Confirmation",wxYES_NO | wxCANCEL,this); //On demande d'abord si l'utilisateur veut enregistrer son trabail en cours
 	if (confirmation == wxYES)
 	{
-		Enregistrer();
-		return;
+		Enregistrer(); 
 	}
 	else if (confirmation == wxCANCEL)
 	{
@@ -203,18 +232,21 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 		wxLogError("Impossible d'ouvrir le fichier. '%s'", dialogueOuverture.GetPath());
 		return;
 	}
+	//Si le fichier s'est bien ouvert et l'utilisateur n'a pas enregistrer :
 	
-	fichier.LoadFile(dialogueOuverture.GetPath());
-	racine = fichier.FirstChild();
-	for(noeudMatrice = racine->FirstChild(); noeudMatrice != NULL; noeudMatrice = noeudMatrice->NextSibling())
+	fichier.LoadFile(dialogueOuverture.GetPath()); //on charge le fichier
+	racine = fichier.FirstChild(); 
+	racine = racine.NextSibling(); //On passe la déclaration
+	for(noeudMatrice = racine->FirstChild(); noeudMatrice != NULL; noeudMatrice = noeudMatrice->NextSibling()) // Pour chaque <matrice></matrice>
 	{
 		curseur = noeudMatrice->FirstChildElement();
-		nom = (char)atoi(curseur->GetText());
+		nom = (char)atoi(curseur->GetText()); 
 		curseur = curseur->NextSiblingElement();
 		lignes = atoi(curseur->GetText());
 		curseur = curseur->NextSiblingElement();
 		colonnes = atoi(curseur->GetText());
-		m_conteneurVariables.AjouterVariable(nom, lignes, colonnes);
+		m_conteneurVariables.AjouterVariable(nom, lignes, colonnes); //On ajotue une matrice au conteneur avec le nom et le nombre de lignes/colonnes stocké dans le fichier.
+		//On se sert de deux boucles pour inscrire toutes les valeurs dans le fichier :
 		for(i=0; i<lignes;i++)
 		{
 			for(j=0;j<colonnes;j++)
@@ -226,7 +258,7 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 		}
 	}
 	
-	m_conteneurVariables.MAJGUI(m_arbreVariables);
+	m_conteneurVariables.MAJGUI(m_arbreVariables); //Lorsque le fichier est fini on met à jour l'arbre.
 }
 
 
@@ -257,6 +289,10 @@ void MainFrame::SurChangementOngletRuban( wxRibbonBarEvent& event )
 	}
 }
 
+/* 
+ * Les méthodes SurClicAffichageHistorique et SurClicAffichageVariables permettent d'afficher les panneau contenant l'historique des commandes et la liste des variables.
+ */
+
 void MainFrame::SurClicAffichageHistorique( wxCommandEvent& event )
 {
 	m_mgr.GetPane("panneauHistorique").Show(event.IsChecked());
@@ -269,6 +305,10 @@ void MainFrame::SurClicAffichageVariables( wxCommandEvent& event )
 	m_mgr.Update();
 }
 
+/*
+ * Lorsqu'un utilisateur clique sur "Ajouter variable" on ouvre le dialogue d'ajoout d'une matrice.
+ */
+
 void MainFrame::SurClicAjouterVariable( wxRibbonButtonBarEvent& event)
 {
 	AjoutMatriceDialogue ajoutMatrice(this, &m_conteneurVariables);
@@ -276,6 +316,10 @@ void MainFrame::SurClicAjouterVariable( wxRibbonButtonBarEvent& event)
 	
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
+
+/*
+ * Lorsqu'un utilisateur clique sur éditer une variable, on ouvre le dialogue permettant d'ajouter une variable en lui passant la variable existanteen argument.
+ */
 
 void MainFrame::SurClicEditerVariable( wxRibbonButtonBarEvent& event )
 {
@@ -287,24 +331,36 @@ void MainFrame::SurClicEditerVariable( wxRibbonButtonBarEvent& event )
 	modifierMatrice.ShowModal();
 }
 
+/*
+ * Si un utilisateur veut supprimer une variable, on demande confirmation et on supprime la variable sélectionné dans l'arbre.
+ */
+
 void MainFrame::SurClicSupprimerVariable( wxRibbonButtonBarEvent& event)
 {
 	if(wxMessageBox(L"Etes-vous sûr de vouloir supprimer la variable sélectionnée ?", "Confirmation", wxYES_NO, this) != wxYES)
 		return;
 	
 	if(m_arbreVariables->GetFocusedItem() == m_arbreVariables->GetRootItem())
-		return;
+		return; //On quitte la focntion si il n'y a pas de variable sélectionnée.
 	
 	m_conteneurVariables.SupprimerVariable(m_arbreVariables->GetItemText(m_arbreVariables->GetFocusedItem())[0]);
 	
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
 
+/*
+ * Un clic sur le boutton résoudre un système ouvre le dialogue approprié.
+ */
+
 void MainFrame::SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event)
 {
 	ResolutionSystemeDialogue systeme(this);
 	systeme.ShowModal();
 }
+
+/*
+ * La méthode SurClicViderVariables supprime toutes les matrices existantes dans le conteneur et met à jour l'arbre.
+ */
 
 void MainFrame::SurClicViderVariables( wxRibbonButtonBarEvent& event)
 {
