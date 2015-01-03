@@ -163,7 +163,7 @@ ResolutionSystemeDialogueBase::ResolutionSystemeDialogueBase( wxWindow* parent, 
 	m_staticText2->Wrap( -1 );
 	fgSizer7->Add( m_staticText2, 0, wxALL, 5 );
 	
-	m_equationsSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100000000000, 1 );
+	m_equationsSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000000, 1 );
 	fgSizer7->Add( m_equationsSpin, 0, wxALL, 5 );
 	
 	BoutonValiderSysteme = new wxButton( this, BOUTON_VALIDER_SYSTEME, wxT("Valider"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -290,10 +290,10 @@ AjoutMatriceDialogueBase::AjoutMatriceDialogueBase( wxWindow* parent, wxWindowID
 	m_nomMatrice->SetSelection( 26 );
 	fgSizer5->Add( m_nomMatrice, 0, wxALL, 5 );
 	
-	m_lignesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000000000000000, 1 );
+	m_lignesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000000, 1 );
 	fgSizer5->Add( m_lignesSpin, 0, wxALL, 5 );
 	
-	m_colonnesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000000000000000, 1 );
+	m_colonnesSpin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000000, 1 );
 	fgSizer5->Add( m_colonnesSpin, 0, wxALL, 5 );
 	
 	BoutonValider = new wxButton( this, VALIDER_TAILLE_MATRICE_ID, wxT("Changer la taille"), wxDefaultPosition, wxDefaultSize, 0 );

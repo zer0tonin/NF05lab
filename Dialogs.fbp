@@ -26,7 +26,7 @@
         <property name="ui_table">UI</property>
         <property name="use_enum">0</property>
         <property name="use_microsoft_bom">0</property>
-        <object class="Frame" expanded="1">
+        <object class="Frame" expanded="0">
             <property name="aui_managed">1</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -88,7 +88,7 @@
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
-            <object class="wxRibbonBar" expanded="1">
+            <object class="wxRibbonBar" expanded="0">
                 <property name="BottomDockable">0</property>
                 <property name="LeftDockable">0</property>
                 <property name="RightDockable">0</property>
@@ -173,7 +173,7 @@
                 <event name="OnSetFocus"></event>
                 <event name="OnSize"></event>
                 <event name="OnUpdateUI"></event>
-                <object class="wxRibbonPage" expanded="1">
+                <object class="wxRibbonPage" expanded="0">
                     <property name="bg"></property>
                     <property name="bitmap"></property>
                     <property name="context_help"></property>
@@ -219,7 +219,7 @@
                     <event name="OnSetFocus"></event>
                     <event name="OnSize"></event>
                     <event name="OnUpdateUI"></event>
-                    <object class="wxRibbonPanel" expanded="1">
+                    <object class="wxRibbonPanel" expanded="0">
                         <property name="bg"></property>
                         <property name="bitmap"></property>
                         <property name="context_help"></property>
@@ -266,7 +266,7 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="wxRibbonButtonBar" expanded="1">
+                        <object class="wxRibbonButtonBar" expanded="0">
                             <property name="bg"></property>
                             <property name="context_help"></property>
                             <property name="context_menu">1</property>
@@ -595,7 +595,7 @@
                             </object>
                         </object>
                     </object>
-                    <object class="wxRibbonPanel" expanded="1">
+                    <object class="wxRibbonPanel" expanded="0">
                         <property name="bg"></property>
                         <property name="bitmap"></property>
                         <property name="context_help"></property>
@@ -642,7 +642,7 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="wxRibbonButtonBar" expanded="1">
+                        <object class="wxRibbonButtonBar" expanded="0">
                             <property name="bg"></property>
                             <property name="context_help"></property>
                             <property name="context_menu">1</property>
@@ -879,7 +879,7 @@
                             </object>
                         </object>
                     </object>
-                    <object class="wxRibbonPanel" expanded="1">
+                    <object class="wxRibbonPanel" expanded="0">
                         <property name="bg"></property>
                         <property name="bitmap"></property>
                         <property name="context_help"></property>
@@ -926,7 +926,7 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="wxRibbonButtonBar" expanded="1">
+                        <object class="wxRibbonButtonBar" expanded="0">
                             <property name="bg"></property>
                             <property name="context_help"></property>
                             <property name="context_menu">1</property>
@@ -1972,7 +1972,7 @@
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
                                 <property name="initial">1</property>
-                                <property name="max">100000000000</property>
+                                <property name="max">10000000</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -2971,7 +2971,7 @@
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
                                 <property name="initial">1</property>
-                                <property name="max">1000000000000000</property>
+                                <property name="max">10000000</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -3059,7 +3059,7 @@
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
                                 <property name="initial">1</property>
-                                <property name="max">1000000000000000</property>
+                                <property name="max">10000000</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
