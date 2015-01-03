@@ -10,7 +10,6 @@
 #include "res/add196.png.h"
 #include "res/delete99.png.h"
 #include "res/edit45.png.h"
-#include "res/history2.png.h"
 #include "res/left37.png.h"
 #include "res/list1.png.h"
 #include "res/open127.png.h"
@@ -35,8 +34,8 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonBar1->SetActivePage( m_ribbonPage3 ); 
 	m_ribbonPanel7 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Fichier") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar6 = new wxRibbonButtonBar( m_ribbonPanel7, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_ribbonButtonBar6->AddButton( ENREGISTRER_BOUTTON, wxT("Enregistrer"), save15_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar6->AddButton( OUVRIR_BOUTTON, wxT("Ouvrir"), open127_png_to_wx_bitmap(), wxEmptyString);
+	m_ribbonButtonBar6->AddButton( ENREGISTRER_BOUTTON, wxT("Enregistrer"), save15_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel3 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Exécution") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar3 = new wxRibbonButtonBar( m_ribbonPanel3, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_ribbonButtonBar3->AddButton( EXECUTER_COMMANDE_BOUTON_ID, wxT("Exécuter la commande"), right133_png_to_wx_bitmap(), wxEmptyString);
@@ -47,12 +46,8 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_ribbonButtonBar2->AddButton( EDITER_VARIABLE_BOUTON_ID, wxT("Editer..."), edit45_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( SUPPRIMER_VARIABLE_BOUTON_ID, wxT("Supprimer"), delete99_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonButtonBar2->AddButton( BOUTTON_VIDER_VARIABLES, wxT("Supprimer toutes les variables"), trash30_png_to_wx_bitmap(), wxEmptyString);
-	m_ribbonPanel21 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Historique") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
-	m_ribbonButtonBar21 = new wxRibbonButtonBar( m_ribbonPanel21, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_ribbonButtonBar21->AddButton( wxID_ANY, wxT("Vider l'historique"), trash30_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel6 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Fenêtres") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_barreBoutonsAffichage = new wxRibbonButtonBar( m_ribbonPanel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_HISTORIQUE, wxT("Afficher l'historique des commandes"), history2_png_to_wx_bitmap(), wxEmptyString);
 	m_barreBoutonsAffichage->AddToggleButton( BOUTON_AFFICHAGE_VARIABLES, wxT("Afficher la liste des variables"), list1_png_to_wx_bitmap(), wxEmptyString);
 	m_ribbonPanel5 = new wxRibbonPanel( m_ribbonPage3, wxID_ANY, wxT("Systèmes") , wxNullBitmap , wxDefaultPosition, wxDefaultSize, wxRIBBON_PANEL_DEFAULT_STYLE );
 	m_ribbonButtonBar5 = new wxRibbonButtonBar( m_ribbonPanel5, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
@@ -86,23 +81,6 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	m_panneauPrincipal->SetSizer( fgSizer3 );
 	m_panneauPrincipal->Layout();
 	fgSizer3->Fit( m_panneauPrincipal );
-	m_panneauHistorique = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_mgr.AddPane( m_panneauHistorique, wxAuiPaneInfo() .Name( wxT("panneauHistorique") ).Left() .Caption( wxT("Historique des commandes") ).PinButton( true ).Dock().Resizable().FloatingSize( wxDefaultSize ).DockFixed( false ).BestSize( wxSize( 200,100 ) ).MinSize( wxSize( 200,100 ) ) );
-	
-	wxFlexGridSizer* fgSizer2;
-	fgSizer2 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer2->AddGrowableCol( 0 );
-	fgSizer2->AddGrowableRow( 0 );
-	fgSizer2->SetFlexibleDirection( wxBOTH );
-	fgSizer2->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_treeCtrl3 = new wxTreeCtrl( m_panneauHistorique, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE );
-	fgSizer2->Add( m_treeCtrl3, 0, wxALL|wxEXPAND, 0 );
-	
-	
-	m_panneauHistorique->SetSizer( fgSizer2 );
-	m_panneauHistorique->Layout();
-	fgSizer2->Fit( m_panneauHistorique );
 	m_panneauVariables = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	m_mgr.AddPane( m_panneauVariables, wxAuiPaneInfo() .Name( wxT("panneauVariables") ).Left() .Caption( wxT("Variables") ).PinButton( true ).Dock().Resizable().FloatingSize( wxSize( 400,250 ) ).DockFixed( false ).BestSize( wxSize( 200,100 ) ).MinSize( wxSize( 200,100 ) ) );
 	
@@ -130,15 +108,14 @@ RibbonFrameBase::RibbonFrameBase( wxWindow* parent, wxWindowID id, const wxStrin
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( RibbonFrameBase::OnExit ) );
 	this->Connect( wxID_ANY, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, wxRibbonBarEventHandler( RibbonFrameBase::SurChangementOngletRuban ) );
-	this->Connect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
 	this->Connect( OUVRIR_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicOuvrir ) );
+	this->Connect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
 	this->Connect( EXECUTER_COMMANDE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicExecuterCommande ) );
 	this->Connect( EFFACER_RESULTAT_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEffacerResultats ) );
 	this->Connect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
 	this->Connect( EDITER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEditerVariable ) );
 	this->Connect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
 	this->Connect( BOUTTON_VIDER_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicViderVariables ) );
-	this->Connect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Connect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	this->Connect( RESOUDRE_SYTEME, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicBouttonResoudreSysteme ) );
 	m_zoneCommande->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );
@@ -149,15 +126,14 @@ RibbonFrameBase::~RibbonFrameBase()
 	// Disconnect Events
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( RibbonFrameBase::OnExit ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, wxRibbonBarEventHandler( RibbonFrameBase::SurChangementOngletRuban ) );
-	this->Disconnect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
 	this->Disconnect( OUVRIR_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicOuvrir ) );
+	this->Disconnect( ENREGISTRER_BOUTTON, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEnregistrer ) );
 	this->Disconnect( EXECUTER_COMMANDE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicExecuterCommande ) );
 	this->Disconnect( EFFACER_RESULTAT_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEffacerResultats ) );
 	this->Disconnect( AJOUTER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicAjouterVariable ) );
 	this->Disconnect( EDITER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicEditerVariable ) );
 	this->Disconnect( SUPPRIMER_VARIABLE_BOUTON_ID, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicSupprimerVariable ) );
 	this->Disconnect( BOUTTON_VIDER_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicViderVariables ) );
-	this->Disconnect( BOUTON_AFFICHAGE_HISTORIQUE, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageHistorique ) );
 	this->Disconnect( BOUTON_AFFICHAGE_VARIABLES, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxCommandEventHandler( RibbonFrameBase::SurClicAffichageVariables ) );
 	this->Disconnect( RESOUDRE_SYTEME, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, wxRibbonButtonBarEventHandler( RibbonFrameBase::SurClicBouttonResoudreSysteme ) );
 	m_zoneCommande->Disconnect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( RibbonFrameBase::SurValidationCommande ), NULL, this );

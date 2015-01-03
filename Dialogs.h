@@ -39,19 +39,18 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define ENREGISTRER_BOUTTON 1000
-#define OUVRIR_BOUTTON 1001
+#define OUVRIR_BOUTTON 1000
+#define ENREGISTRER_BOUTTON 1001
 #define EXECUTER_COMMANDE_BOUTON_ID 1002
 #define EFFACER_RESULTAT_BOUTON_ID 1003
 #define AJOUTER_VARIABLE_BOUTON_ID 1004
 #define EDITER_VARIABLE_BOUTON_ID 1005
 #define SUPPRIMER_VARIABLE_BOUTON_ID 1006
 #define BOUTTON_VIDER_VARIABLES 1007
-#define BOUTON_AFFICHAGE_HISTORIQUE 1008
-#define BOUTON_AFFICHAGE_VARIABLES 1009
-#define RESOUDRE_SYTEME 1010
-#define BOUTON_VALIDER_SYSTEME 1011
-#define VALIDER_TAILLE_MATRICE_ID 1012
+#define BOUTON_AFFICHAGE_VARIABLES 1008
+#define RESOUDRE_SYTEME 1009
+#define BOUTON_VALIDER_SYSTEME 1010
+#define VALIDER_TAILLE_MATRICE_ID 1011
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class RibbonFrameBase
@@ -69,8 +68,6 @@ class RibbonFrameBase : public wxFrame
 		wxRibbonButtonBar* m_ribbonButtonBar3;
 		wxRibbonPanel* m_ribbonPanel2;
 		wxRibbonButtonBar* m_ribbonButtonBar2;
-		wxRibbonPanel* m_ribbonPanel21;
-		wxRibbonButtonBar* m_ribbonButtonBar21;
 		wxRibbonPanel* m_ribbonPanel6;
 		wxRibbonButtonBar* m_barreBoutonsAffichage;
 		wxRibbonPanel* m_ribbonPanel5;
@@ -79,8 +76,6 @@ class RibbonFrameBase : public wxFrame
 		wxPanel* m_panneauPrincipal;
 		wxTextCtrl* m_zoneResultats;
 		wxTextCtrl* m_zoneCommande;
-		wxPanel* m_panneauHistorique;
-		wxTreeCtrl* m_treeCtrl3;
 		wxPanel* m_panneauVariables;
 		wxTreeCtrl* m_arbreVariables;
 		wxTreeCtrl* m_arbreSyntaxe;
@@ -88,15 +83,14 @@ class RibbonFrameBase : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnExit( wxCloseEvent& event ) { event.Skip(); }
 		virtual void SurChangementOngletRuban( wxRibbonBarEvent& event ) { event.Skip(); }
-		virtual void SurClicEnregistrer( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicOuvrir( wxRibbonButtonBarEvent& event ) { event.Skip(); }
+		virtual void SurClicEnregistrer( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicExecuterCommande( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEffacerResultats( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicSupprimerVariable( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurClicViderVariables( wxRibbonButtonBarEvent& event ) { event.Skip(); }
-		virtual void SurClicAffichageHistorique( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicAffichageVariables( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SurClicBouttonResoudreSysteme( wxRibbonButtonBarEvent& event ) { event.Skip(); }
 		virtual void SurValidationCommande( wxCommandEvent& event ) { event.Skip(); }

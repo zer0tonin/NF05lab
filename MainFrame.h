@@ -25,7 +25,6 @@ protected:
 	
 	virtual void SurChangementOngletRuban( wxRibbonBarEvent& event );
 	
-	virtual void SurClicAffichageHistorique( wxCommandEvent& event );
 	virtual void SurClicAffichageVariables( wxCommandEvent& event );
 	virtual void SurClicAjouterVariable( wxRibbonButtonBarEvent& event);
 	virtual void SurClicEditerVariable( wxRibbonButtonBarEvent& event );
@@ -34,8 +33,8 @@ protected:
 	virtual void SurClicViderVariables( wxRibbonButtonBarEvent& event);
 
 	
-	void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
+	virtual void OnExit( wxCloseEvent& event );
+    virtual void OnAbout(wxCommandEvent& event);
 
 	RibbonMetroArtProvider m_artProvider;
 	Conteneur m_conteneurVariables;

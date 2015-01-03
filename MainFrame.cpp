@@ -20,8 +20,6 @@ MainFrame::MainFrame(wxWindow* parent) : RibbonFrameBase(parent), m_artProvider(
 								  wxColour(0, 0, 0));
 	m_ribbonBar1->SetArtProvider(&m_artProvider);
 	m_ribbonBar1->Realize();
-	
-	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_HISTORIQUE, true);
 	m_barreBoutonsAffichage->ToggleButton(BOUTON_AFFICHAGE_VARIABLES, true);
 }
 
@@ -156,23 +154,22 @@ void MainFrame::Enregistrer()
 	fichier.SaveFile(dialogueOuverture.GetPath());
 }
 
-void MainFrame::OnExit(wxCommandEvent& event)
+/**
+ * Gère la fermeture du logiciel pendant laquelle on propose à l'utilisateur de sauvegarder ses matrices.
+ */
+void MainFrame::OnExit( wxCloseEvent& event )
 {
-    wxUnusedVar(event);
 	int confirmation;
 	confirmation = wxMessageBox("Souhaitez vous enregistrer avant de quitter?", "Confirmation",wxYES_NO | wxCANCEL,this);
 	if (confirmation == wxYES)
-	{
 		Enregistrer();
-	}
-	else if (confirmation == wxNO)
-	{
-		Close();
-	}
-	else
-	{
+	else if(confirmation == wxCANCEL)
+	{	
+		event.Veto();
 		return;
 	}
+	
+	Destroy();
 }
 
 void MainFrame::OnAbout(wxCommandEvent& event)
@@ -290,14 +287,8 @@ void MainFrame::SurChangementOngletRuban( wxRibbonBarEvent& event )
 }
 
 /* 
- * Les méthodes SurClicAffichageHistorique et SurClicAffichageVariables permettent d'afficher les panneau contenant l'historique des commandes et la liste des variables.
+ * La méthode SurClicAffichageVariables permet d'afficher/masquer le panneau contenant la liste des variables.
  */
-
-void MainFrame::SurClicAffichageHistorique( wxCommandEvent& event )
-{
-	m_mgr.GetPane("panneauHistorique").Show(event.IsChecked());
-	m_mgr.Update();
-}
 
 void MainFrame::SurClicAffichageVariables( wxCommandEvent& event )
 {
