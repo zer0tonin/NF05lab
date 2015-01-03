@@ -509,11 +509,11 @@ Noeud* Parseur::CreerArbreSyntaxique(std::vector<Lexeme> listeLexeme)
 
 Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 {
-	if(noeud.Type() == Lexeme::CONSTANTE)
+	if(noeud.Type() == Lexeme::CONSTANTE) //On traite un noeud de type CONSTANTE (un scalaire)
 	{
 		return Resultat(noeud.DonneeNombre());
 	}
-	else if(noeud.Type() == Lexeme::VARIABLE_MATRICE)
+	else if(noeud.Type() == Lexeme::VARIABLE_MATRICE) //On traite un noeud de type VARIABLE_MATRICE (ex : A, B, ...)
 	{
 		if(conteneurDeVariables.Existe(noeud.DonneeChaine()[0]))
 		{
@@ -528,7 +528,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			throw ExceptionParseur("La variable " + noeud.DonneeChaine() + " n'est pas definie");
 		}
 	}
-	else if(noeud.Type() == Lexeme::PARENTHESE)
+	else if(noeud.Type() == Lexeme::PARENTHESE) //On traite un noeud de type PARENTHESE
 	{
 		if(noeud.NombreEnfants() == 1)
 		{
@@ -577,7 +577,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			}
 		}
 	}
-	else if(noeud.Type() == Lexeme::OPERATEUR_MOINS) //Opérateur +
+	else if(noeud.Type() == Lexeme::OPERATEUR_MOINS) //Opérateur -
 	{
 		if(noeud.NombreEnfants() == 1) //Unaire
 		{
@@ -617,7 +617,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			}
 		}
 	}
-	else if(noeud.Type() == Lexeme::OPERATEUR_MULTIPLIE)
+	else if(noeud.Type() == Lexeme::OPERATEUR_MULTIPLIE) //On traite un noeud de type OPERATEUR_MULTIPLIE (*)
 	{
 		if(noeud.NombreEnfants() == 2)
 		{
@@ -650,7 +650,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			throw ExceptionParseur("Pas assez/trop d'operandes pour la multiplication");
 		}
 	}
-	else if(noeud.Type() == Lexeme::OPERATEUR_DIVISE)
+	else if(noeud.Type() == Lexeme::OPERATEUR_DIVISE) //On traite un noeud de type OPERATEUR_DIVISE (/)
 	{
 		if(noeud.NombreEnfants() == 2)
 		{
@@ -687,7 +687,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			throw ExceptionParseur("Pas assez/trop d'operandes pour la multiplication");
 		}
 	}
-	else if(noeud.Type() == Lexeme::OPERATEUR_PUISSANCE)
+	else if(noeud.Type() == Lexeme::OPERATEUR_PUISSANCE) //On traite un noeud de type OPERATEUR_PUISSANCE (^)
 	{
 		if(noeud.NombreEnfants() == 2)
 		{
@@ -712,7 +712,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			throw ExceptionParseur("Pas assez/trop d'operandes pour la puissance");
 		}
 	}
-	else if(noeud.Type() == Lexeme::OPERATEUR_EGAL)
+	else if(noeud.Type() == Lexeme::OPERATEUR_EGAL) //On traite un noeud de type OPERATEUR_EGAL (=)
 	{
 		//On est sur un opérateur d'affectation (=)
 		//Il y a forcément deux opérandes, sinon c'est une erreur
@@ -752,7 +752,7 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			throw ExceptionParseur("Pas assez/trop d'operandes pour l'affectation");
 		}
 	}
-	else if(noeud.Type() == Lexeme::FONCTION)
+	else if(noeud.Type() == Lexeme::FONCTION) //On traite un noeud de type FONCTION
 	{
 		if(noeud.DonneeChaine() == "det" || noeud.DonneeChaine() == "determinant") //Le déterminant
 		{
@@ -809,6 +809,25 @@ Resultat Parseur::Calculer(const Noeud &noeud, Conteneur &conteneurDeVariables)
 			else
 			{
 				throw ExceptionParseur("La fonction transposee a besoin d'un seul argument");
+			}
+		}
+		else if(noeud.DonneeChaine() == "norm" || noeud.DonneeChaine() == "norme") //La norme
+		{
+			if(noeud.NombreEnfants() == 1)
+			{
+				Resultat resultatArgument = Calculer(noeud.Enfant(0), conteneurDeVariables);
+				if(resultatArgument.EstUneMatrice())
+				{
+					return Resultat(Norme(resultatArgument.ValeurMatrice()));
+				}
+				else
+				{
+					throw ExceptionParseur("La fonction norme a besoin d'une matrice uniquement");
+				}
+			}
+			else
+			{
+				throw ExceptionParseur("La fonction norme a besoin d'un seul argument");
 			}
 		}
 		else
