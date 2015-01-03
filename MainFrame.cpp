@@ -236,7 +236,7 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 	
 	fichier.LoadFile(dialogueOuverture.GetPath()); //on charge le fichier
 	racine = fichier.FirstChild(); 
-	racine = racine.NextSibling(); //On passe la déclaration
+	racine = racine->NextSibling(); //On passe la déclaration
 	for(noeudMatrice = racine->FirstChild(); noeudMatrice != NULL; noeudMatrice = noeudMatrice->NextSibling()) // Pour chaque <matrice></matrice>
 	{
 		curseur = noeudMatrice->FirstChildElement();

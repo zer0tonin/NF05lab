@@ -21,7 +21,6 @@ public:
 	float ObtenirValeur(int Ligne, int Colonne) const;
 	void FixerValeur(int Ligne, int Colonne, float Valeur);
 	Matrice Transposee() const;
-	Matrice Commatrice() const;
 	float Determinant() const;
 	Matrice Inverse() const;
 	bool Inversible() const;

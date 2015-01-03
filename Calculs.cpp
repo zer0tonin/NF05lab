@@ -1,4 +1,5 @@
 #include "Calculs.h"
+#include "Math.h"
 
 /*
  * On assigne l'opérateur '+' à l'addition de deux matrices de même tailles :
@@ -113,30 +114,38 @@ Matrice operator/(const Matrice &M1, float Scalaire)
 }
 
 /*
- * La fonction ProduitScalaire() permet de connaître le produit scalaire de deux vecteurs.
- * Pour cela on additionne le produit des valeurs contenues dans chacun des vecteurs.
+ * La fonction ProduitScalaire() permet de connaître le produit scalaire de deux matrices.
+ * Pour cela on additionne le produit des valeurs contenues dans chacunes des matrices.
 */
 
 float ProduitScalaire(Matrice M1, Matrice M2)
 {
-	int i;
+	int i,j;
 	float Resultat = 0;
-	if (M1.ObtenirColonnes() == 1 && M2.ObtenirColonnes() == 1 && M1.ObtenirLignes() == M2.ObtenirLignes())
+	for (i=0; i<M1.ObtenirLignes(); i++)
 	{
-		for (i=0; i<M1.ObtenirLignes(); i++)
+		for (j=0; j<M2.ObtenirColonnes(); j++)
 		{
-			Resultat += M1.ObtenirValeur(i, 1) * M2.ObtenirValeur(i, 1);
-		}
-	}
-	else if (M1.ObtenirLignes() == 1 && M2.ObtenirLignes() == 1 && M1.ObtenirColonnes() == M2.ObtenirColonnes())
-	{
-		for (i=0; i<M1.ObtenirColonnes(); i++)
-		{
-			Resultat += M1.ObtenirValeur(i, 1) * M2.ObtenirValeur(i, 1);
+			Resultat += M1.ObtenirValeur(i,j) * M2.ObtenirValeur(i,j);
 		}
 	}
 	return Resultat;
 }
+
+/*
+ * La fonction Norme() permet de connaître la norme d'une matrice, 
+ * c'est à dire la racine carrée de son produit scalaire par elle même.
+ */
+float Norme(Matrice M1)
+{
+	return sqrt(ProduitScalaire(M1, M1));
+}
+
+/*
+ * La fonction Puissance utilise une relation de récurrenc afin de renvoyer la matrice à la puissance indiquée.
+ * C'est à dire que l'on sait que si la matrice puissance est 0 on renvoie la matrice identité.
+ * Sinon on utilise la formule matrice^scalaire = matrice * matrice^scalaire-1.
+ */
 
 Matrice Puissance(Matrice matrice, float scalaire)
 {
@@ -158,7 +167,6 @@ Matrice Puissance(Matrice matrice, float scalaire)
 		}
 		else //scalaire < 0
 		{
-			//TODO : Gérer le cas des matrices non inversibles
 			return matrice.Inverse() * Puissance(matrice.Inverse(), -scalaire - 1); //Evite de recalculer l'inverse à chaque étape
 		}
 	}
