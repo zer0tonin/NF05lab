@@ -52,9 +52,11 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 	{
 		for (j=0; j<nombreEquations; j++)
 		{
+			valeurCellule = 0;
 			m_tableauMatriceSysteme->GetCellValue(i,j).ToDouble(&valeurCellule);
 			Application.FixerValeur(i,j, (float)valeurCellule);
 		}
+		valeurCellule = 0;
 		m_tableauVecteurSysteme->GetCellValue(i,0).ToDouble(&valeurCellule);
 		Vecteur.FixerValeur(i,0, (float)valeurCellule);
 	}
