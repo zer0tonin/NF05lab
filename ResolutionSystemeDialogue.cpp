@@ -39,6 +39,12 @@ void ResolutionSystemeDialogue::SurClicBoutonValiderSysteme(wxCommandEvent& even
 	}
 }
 
+/*
+ * la fonction ResolutionSystemeDialogue affecte à la matrice application le contenu des valeurs comprises dans la première wxGrid et à la matrice vecteur le contenu de la seconde wxGrid.
+ * On affiche ensuite la matrice solution obtenu grâce au calcul : Solution = Application^(-1) * Vecteur.
+ * Si application n'est pas inversible on affiche une erreur.
+ */
+
 void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 {
 	int nombreEquations = m_equationsSpin->GetValue(), i ,j;
@@ -48,6 +54,7 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 	Matrice Vecteur(nombreEquations, 1);
 	Matrice Solution(nombreEquations, 1);
 	
+	//On affecte le contenu des wxGrid aux matrices:
 	for (i=0; i<nombreEquations; i++)
 	{
 		for (j=0; j<nombreEquations; j++)
@@ -61,6 +68,7 @@ void ResolutionSystemeDialogue::SurCLicBouttonResoudre(wxCommandEvent& event)
 		Vecteur.FixerValeur(i,0, (float)valeurCellule);
 	}
 	
+	//Si un résultat existe on l'affiche:
 	if (Application.Inversible())
 	{
 		Solution = Application.Inverse() * Vecteur;
