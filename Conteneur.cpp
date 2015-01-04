@@ -55,6 +55,14 @@ bool Conteneur::Existe(char Nom)
 	}
 }
 
+/**
+ * La méthode Vider permet de vider la liste des matrices
+ */
+void Conteneur::Vider()
+{
+	m_conteneur.clear();
+}
+
 /*
  * La méthode MAJGUI met à jour l'arbre des variables.
  * Pour cela on efface l'arbre existant, on ajoute un racine puis on parcours le conteneur dont on ajoute tous les éléments.

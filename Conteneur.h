@@ -21,6 +21,7 @@ public:
 	void AjouterVariable(char nom, int Lignes, int Colonnes);
 	void SupprimerVariable(char nom);
 	bool Existe(char nom);
+	void Vider();
 	void MAJGUI(wxTreeCtrl* Arbre) const;
 	
 private:

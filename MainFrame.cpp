@@ -63,6 +63,7 @@ void MainFrame::ExecuterCommande()
 		//Affichage de l'erreur si échec
 		m_zoneResultats->SetValue(m_zoneResultats->GetValue() + "\n" + m_zoneCommande->GetValue() + "\n Erreur : " + e.what());
 	}
+	m_zoneResultats->AppendText("");
 		
 
 	m_arbreSyntaxe->ExpandAll();
@@ -83,6 +84,8 @@ void MainFrame::ExecuterCommande()
         <valeur>valeur en 1,1</valeur>
 		<valeur>valeur en 1,2</valeur>
 		<valeur>...</valeur>
+		<valeur>valeur en 2,1</valeur>
+		<valeur>...</valeur>
     </matrice>
 	<matrice>
 	...
@@ -93,7 +96,6 @@ void MainFrame::ExecuterCommande()
 
 void MainFrame::Enregistrer()
 {
-	
 	int i, j, k;
 	tinyxml2::XMLDocument fichier;
 	tinyxml2::XMLNode *racine;
@@ -109,6 +111,8 @@ void MainFrame::Enregistrer()
 	{
 		return; //Si l'utilisateur annule, on sort de la fonction
 	}
+	
+	//Ouverture du fichier pour l'écriture
 	wxFileOutputStream sortie(dialogueOuverture.GetPath());
 	if (!sortie.IsOk())
 	{
@@ -128,7 +132,8 @@ void MainFrame::Enregistrer()
 			racine->InsertEndChild(elementMatrice);
 			
 			elementNom = fichier.NewElement("nom");
-			elementNom->SetText(65+i);
+			std::string nomVariable = new char(65+i);
+			elementNom->SetText(nomVariable.c_str());
 			elementMatrice->InsertEndChild(elementNom);
 			
 			elementLignes = fichier.NewElement("lignes");
@@ -136,7 +141,7 @@ void MainFrame::Enregistrer()
 			elementMatrice->InsertEndChild(elementLignes);
 			
 			elementColonnes = fichier.NewElement("colonnes");
-			elementColonnes->SetText(m_conteneurVariables.Variable(65+i).ObtenirLignes());
+			elementColonnes->SetText(m_conteneurVariables.Variable(65+i).ObtenirColonnes());
 			elementMatrice->InsertEndChild(elementColonnes);
 			
 			//On utilise deux boucles pour ajouter toutes les valeurs de la matrice au fichier.
@@ -198,6 +203,7 @@ void MainFrame::SurClicEnregistrer(wxRibbonButtonBarEvent& event)
 
 void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 {
+	//On demande à l'utilisateur s'il souhaite enregistrer avant.
 	int confirmation;
 	confirmation = wxMessageBox("Souhaitez vous enregistrer avant d'ouvrir un nouveau fichier?", "Confirmation",wxYES_NO | wxCANCEL,this); //On demande d'abord si l'utilisateur veut enregistrer son trabail en cours
 	if (confirmation == wxYES)
@@ -209,6 +215,10 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 		return;
 	}
 	
+	//On efface toutes les matrices
+	m_conteneurVariables.Vider();
+	
+	//Lecture du fichier
 	tinyxml2::XMLDocument fichier;
 	tinyxml2::XMLNode *racine;
 	tinyxml2::XMLNode *noeudMatrice;
@@ -217,7 +227,6 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 	int lignes, colonnes, i,j;
 	char nom;
 	float valeur;
-	
 	
 	if (dialogueOuverture.ShowModal() ==  wxID_CANCEL)
 	{
@@ -237,12 +246,12 @@ void MainFrame::SurClicOuvrir(wxRibbonButtonBarEvent& event)
 	for(noeudMatrice = racine->FirstChild(); noeudMatrice != NULL; noeudMatrice = noeudMatrice->NextSibling()) // Pour chaque <matrice></matrice>
 	{
 		curseur = noeudMatrice->FirstChildElement();
-		nom = (char)atoi(curseur->GetText()); 
+		nom = curseur->GetText()[0]; 
 		curseur = curseur->NextSiblingElement();
 		lignes = atoi(curseur->GetText());
 		curseur = curseur->NextSiblingElement();
 		colonnes = atoi(curseur->GetText());
-		m_conteneurVariables.AjouterVariable(nom, lignes, colonnes); //On ajotue une matrice au conteneur avec le nom et le nombre de lignes/colonnes stocké dans le fichier.
+		m_conteneurVariables.AjouterVariable(nom, lignes, colonnes); //On ajoutee une matrice au conteneur avec le nom et le nombre de lignes/colonnes stocké dans le fichier.
 		//On se sert de deux boucles pour inscrire toutes les valeurs dans le fichier :
 		for(i=0; i<lignes;i++)
 		{
@@ -368,12 +377,6 @@ void MainFrame::SurClicViderVariables( wxRibbonButtonBarEvent& event)
 		return;
 	}
 	
-	for(i=65; i<91; i++)
-	{
-		if (m_conteneurVariables.Existe(i))
-		{
-			m_conteneurVariables.SupprimerVariable(i);
-		}
-	}
+	m_conteneurVariables.Vider();
 	m_conteneurVariables.MAJGUI(m_arbreVariables);
 }
